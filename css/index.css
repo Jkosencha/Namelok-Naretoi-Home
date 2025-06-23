@@ -41,7 +41,7 @@ body {
 .logo {
     padding-left: 15vh;
     z-index: 2;
-    color: orangered;
+    color: orange;
 }
 
 /*navigation bar styling*/
@@ -70,8 +70,8 @@ body {
 }
 
 .navbar ul li:hover {
-    color: orangered;
-    text-decoration: underline orangered 3px;
+    color: orange;
+    text-decoration: underline orange 3px;
     cursor: pointer;
 
 }
@@ -110,7 +110,7 @@ body {
     margin-bottom: 2vh;
     position: relative;
     z-index: 2;
-    color: white;
+    color: orange;
 
 }
 
@@ -263,8 +263,17 @@ body {
 .section5 {
     width: 100%;
     height: 100vh;
+    text-align: center;
+    
 }
 
+.section5 form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top:2vh;
+}
 
 
 /* footer styling*/
