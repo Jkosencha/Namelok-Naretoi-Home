@@ -44,11 +44,7 @@ body {
     bottom: 0;
     width: 100%;
     height: 100vh;
-<<<<<<< HEAD
-    background-color: rgba(0, 0, 0, 0.45);
-=======
     background-color: rgba(0, 0, 0, 0.7);
->>>>>>> 059474ca291bad326cf141a17fbf54126d6962cf
     /* Dark overlay */
     z-index: 1;
 }
@@ -66,15 +62,10 @@ body {
 
 }
 
-
 .logo {
     padding-left: 15vh;
     z-index: 2;
-<<<<<<< HEAD
-    color: orangered;
-=======
     color: orange;
->>>>>>> 059474ca291bad326cf141a17fbf54126d6962cf
 }
 
 /*navigation bar styling*/
@@ -82,26 +73,14 @@ body {
     width: 60vh;
     padding-right: 0vh;
     z-index: 2;
-<<<<<<< HEAD
-    position: fixed;
 }
 .navbar{
-    width: 100%;
+    width: 93%;
     margin: auto;
     padding: 5px 0;
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    position: fixed;
-}
-
-.logo{
-    /* width: 60px;
-    height: 60px; */
-    cursor: pointer;
-    border-radius: 50%;
-=======
->>>>>>> 059474ca291bad326cf141a17fbf54126d6962cf
+    /* position: fixed; */
 }
 
 .nav ul {
@@ -123,17 +102,11 @@ body {
 }
 
 .navbar ul li:hover {
-<<<<<<< HEAD
-    color: orangered;
-    text-decoration: underline orangered 3px;
-=======
     color: orange;
     text-decoration: underline orange 3px;
->>>>>>> 059474ca291bad326cf141a17fbf54126d6962cf
     cursor: pointer;
 
 }
-
 
 .nav-links {
     list-style: none;
@@ -142,11 +115,7 @@ body {
 }
 
 .nav-links a {
-<<<<<<< HEAD
-    color: rgb(244, 151, 120);
-=======
     color: white;
->>>>>>> 059474ca291bad326cf141a17fbf54126d6962cf
     text-decoration: none;
     font-weight: bold;
 }
@@ -158,11 +127,7 @@ body {
 
 .mainBody {
     display: flex;
-<<<<<<< HEAD
     /* justify-content: center; */
-=======
-    justify-content: center;
->>>>>>> 059474ca291bad326cf141a17fbf54126d6962cf
     align-items: center;
     height: 80vh;
     text-align: center;
@@ -171,7 +136,6 @@ body {
     color: white;
 }
 
-<<<<<<< HEAD
 /* Animation Keyframes */
 @keyframes slideIn {
     0% {
@@ -231,26 +195,12 @@ body {
         opacity: 1;
     }
 }
-=======
-.mainText h2 {
-    font-size: 5vh;
-    margin-bottom: 2vh;
-    position: relative;
-    z-index: 2;
-    color: orange;
-
-}
-
->>>>>>> 059474ca291bad326cf141a17fbf54126d6962cf
 .mainText p {
     font-size: 2.5vh;
     position: relative;
     z-index: 2;
     color: white;
-<<<<<<< HEAD
     animation: slideInLeft 2s ease-out;
-=======
->>>>>>> 059474ca291bad326cf141a17fbf54126d6962cf
 
 }
 
@@ -266,24 +216,27 @@ body {
 
 .aboutUs {
     display: flex;
-    gap: 4vh;
+    gap: 10vh;
     justify-content: center;
     align-items: center;
     padding-top: 7vh;
+    /* width: 100%; */
+    margin-left: 10vh;
+    margin-right: 10vh;
 }
 
 .aboutUsImg img {
-    width: 70%;
+    width: 100%;
     border-radius: 4vh;
 }
 
 .aboutImg {
-    height: 70vh;
+    height: 80vh;
 }
 
 .aboutUsText p {
     font-size: 3vh;
-    width: 45vh;
+    width: 90vh;
 
 }
 
@@ -300,11 +253,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-<<<<<<< HEAD
-    padding-top:4vh;
-=======
     padding-top: 4vh;
->>>>>>> 059474ca291bad326cf141a17fbf54126d6962cf
 }
 
 .carousel {
@@ -332,13 +281,8 @@ body {
     margin-top: 3%;
 }
 
-<<<<<<< HEAD
-.contactSummary{
-    width:45vh;
-=======
 .contactSummary {
     width: 45vh;
->>>>>>> 059474ca291bad326cf141a17fbf54126d6962cf
 }
 
 .input-tab {
@@ -384,12 +328,17 @@ body {
 
 }
 
+.button {
+    text-align: center;  /* centers the button inside the div */
+    margin-top: 20px;    /* optional: adds space above the button */
+}
+
 .submit {
     width: 100px;
-    height: 5vh;
+    /* height: 5vh; */
     font-size: 15px;
-    color: black;
-    background-color: transparent;
+    color: #fff;
+    background-color: #000;
     border: 1px solid orange;
     border-radius: 50px;
 }
@@ -397,15 +346,9 @@ body {
 .submit:hover {
     cursor: pointer;
     box-shadow: 5px 3px 3px 3px rgb(53, 53, 53);
+    background-color: #242329;
 }
 
-
-
-.section5 {
-    width: 100%;
-<<<<<<< HEAD
-    height: 100vh;
-}
 
 /*-----------------form----------------*/
 .col-sm-6{
@@ -413,12 +356,9 @@ body {
     float: left;
     margin: 10px;
 }
-.button{
-    color: #647bff;
-    
-}
+
 .j-form{
-    background: url(Images/img1.jpg);
+    background: url(Images/fire.jpg);
     width: 500px;
     height: 400px;
     padding: 0 8px;
@@ -431,7 +371,6 @@ body {
 .j-form input, button {
     padding: 8px;
     margin: 10px;
-
     width: 80%;
 }
 .j-form textarea{
@@ -466,7 +405,7 @@ sections h1{
     font-size: 25px;
 }
 sections div{
-    height: 200px;
+    height: 300px;
     width: 250px;
     color: white;
     padding: 35px;
@@ -491,11 +430,9 @@ sections div:hover {
 }
 sections div:hover ~ div {
     transform: translateX(130px);
-=======
-    height: 70vh;
-    text-align: center;
-    position: relative;
 }
+
+/* arrow */
 
 .upArrow {
     height: 4vh;
@@ -517,6 +454,14 @@ sections div:hover ~ div {
     z-index: 2;
 }
 
+/* Newsletter */
+
+.section5 {
+    width: 100%;
+    height: 70vh;
+    text-align: center;
+    position: relative;
+}
 
 .section5 form {
     display: flex;
@@ -524,9 +469,7 @@ sections div:hover ~ div {
     justify-content: center;
     align-items: center;
     padding-top: 2vh;
->>>>>>> 059474ca291bad326cf141a17fbf54126d6962cf
 }
-
 
 /* footer styling*/
 .footer {
