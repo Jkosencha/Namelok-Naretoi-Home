@@ -5,10 +5,35 @@ body {
 .section1 {
     width: 100%;
     height: 100vh;
-    background-image: url("../images/namelokBG.jpg");
     z-index: 0.5;
     background-repeat: no-repeat;
     background-size: cover;
+    background-position: center;
+    animation: slideshow 30s infinite;
+}
+
+/*slideshow keyframmes*/
+@keyframes slideshow {
+    0% {
+        background-image: url('../images/namelokBG.jpg');
+    }
+
+    25% {
+        background-image: url('../images/aboutUs3.jpg');
+    }
+
+    50% {
+        background-image: url('../images/aboutUs2.jpg');
+    }
+
+    75% {
+        background-image: url("../images/namelokBG2.jpg");
+    }
+
+    100% {
+        background-image: url('../images/namelokBG.jpg');
+    }
+
 
 }
 
@@ -19,7 +44,11 @@ body {
     bottom: 0;
     width: 100%;
     height: 100vh;
+<<<<<<< HEAD
     background-color: rgba(0, 0, 0, 0.45);
+=======
+    background-color: rgba(0, 0, 0, 0.7);
+>>>>>>> 059474ca291bad326cf141a17fbf54126d6962cf
     /* Dark overlay */
     z-index: 1;
 }
@@ -41,7 +70,11 @@ body {
 .logo {
     padding-left: 15vh;
     z-index: 2;
+<<<<<<< HEAD
     color: orangered;
+=======
+    color: orange;
+>>>>>>> 059474ca291bad326cf141a17fbf54126d6962cf
 }
 
 /*navigation bar styling*/
@@ -49,6 +82,7 @@ body {
     width: 60vh;
     padding-right: 0vh;
     z-index: 2;
+<<<<<<< HEAD
     position: fixed;
 }
 .navbar{
@@ -66,6 +100,8 @@ body {
     height: 60px; */
     cursor: pointer;
     border-radius: 50%;
+=======
+>>>>>>> 059474ca291bad326cf141a17fbf54126d6962cf
 }
 
 .nav ul {
@@ -87,8 +123,13 @@ body {
 }
 
 .navbar ul li:hover {
+<<<<<<< HEAD
     color: orangered;
     text-decoration: underline orangered 3px;
+=======
+    color: orange;
+    text-decoration: underline orange 3px;
+>>>>>>> 059474ca291bad326cf141a17fbf54126d6962cf
     cursor: pointer;
 
 }
@@ -101,7 +142,11 @@ body {
 }
 
 .nav-links a {
+<<<<<<< HEAD
     color: rgb(244, 151, 120);
+=======
+    color: white;
+>>>>>>> 059474ca291bad326cf141a17fbf54126d6962cf
     text-decoration: none;
     font-weight: bold;
 }
@@ -113,7 +158,11 @@ body {
 
 .mainBody {
     display: flex;
+<<<<<<< HEAD
     /* justify-content: center; */
+=======
+    justify-content: center;
+>>>>>>> 059474ca291bad326cf141a17fbf54126d6962cf
     align-items: center;
     height: 80vh;
     text-align: center;
@@ -122,6 +171,7 @@ body {
     color: white;
 }
 
+<<<<<<< HEAD
 /* Animation Keyframes */
 @keyframes slideIn {
     0% {
@@ -181,12 +231,26 @@ body {
         opacity: 1;
     }
 }
+=======
+.mainText h2 {
+    font-size: 5vh;
+    margin-bottom: 2vh;
+    position: relative;
+    z-index: 2;
+    color: orange;
+
+}
+
+>>>>>>> 059474ca291bad326cf141a17fbf54126d6962cf
 .mainText p {
     font-size: 2.5vh;
     position: relative;
     z-index: 2;
     color: white;
+<<<<<<< HEAD
     animation: slideInLeft 2s ease-out;
+=======
+>>>>>>> 059474ca291bad326cf141a17fbf54126d6962cf
 
 }
 
@@ -236,7 +300,11 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+<<<<<<< HEAD
     padding-top:4vh;
+=======
+    padding-top: 4vh;
+>>>>>>> 059474ca291bad326cf141a17fbf54126d6962cf
 }
 
 .carousel {
@@ -264,8 +332,13 @@ body {
     margin-top: 3%;
 }
 
+<<<<<<< HEAD
 .contactSummary{
     width:45vh;
+=======
+.contactSummary {
+    width: 45vh;
+>>>>>>> 059474ca291bad326cf141a17fbf54126d6962cf
 }
 
 .input-tab {
@@ -330,6 +403,7 @@ body {
 
 .section5 {
     width: 100%;
+<<<<<<< HEAD
     height: 100vh;
 }
 
@@ -417,6 +491,40 @@ sections div:hover {
 }
 sections div:hover ~ div {
     transform: translateX(130px);
+=======
+    height: 70vh;
+    text-align: center;
+    position: relative;
+}
+
+.upArrow {
+    height: 4vh;
+    z-index: 2;
+}
+
+.upArrowCont {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 5vh;
+    right: 5%;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    z-index: 2;
+}
+
+
+.section5 form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 2vh;
+>>>>>>> 059474ca291bad326cf141a17fbf54126d6962cf
 }
 
 
