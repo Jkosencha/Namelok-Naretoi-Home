@@ -65,7 +65,7 @@ body {
 .logo {
     padding-left: 15vh;
     z-index: 2;
-    color: orange;
+    color: #f38a03;
 }
 
 /*navigation bar styling*/
@@ -102,8 +102,8 @@ body {
 }
 
 .navbar ul li:hover {
-    color: orange;
-    text-decoration: underline orange 3px;
+    color: #f38a03;
+    text-decoration: underline #f38a03 3px;
     cursor: pointer;
 
 }
@@ -155,6 +155,7 @@ body {
     z-index: 2;
     color: white;
     animation: slideIn 2s ease-out;
+    color: #f38a03;
 
 }
 
@@ -209,7 +210,7 @@ body {
 
 .section2 {
     width: 100%;
-    height: 100vh;
+    height: 120vh;
 }
 
 /*About us section styling*/
@@ -232,11 +233,40 @@ body {
 
 .aboutImg {
     height: 80vh;
+    justify-content: center;
+    align-items: center;
+    padding-top: 14vh;
+}
+
+.aboutUsImg {
+    width:60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.aboutImg {
+    width:80vh;
+    border-radius: 4vh;
+    height: 70vh;
+}
+
+.aboutUsText{
+        width: 40%;
+
+}
+
+.aboutUsText h2{
+    color: #f38a03;
 }
 
 .aboutUsText p {
     font-size: 3vh;
-    width: 90vh;
+    width: 45vh;
+     display: flex;
+    justify-content: center;
+    align-items: center;
 
 }
 
@@ -263,7 +293,7 @@ body {
 }
 
 .carousel-inner img {
-    width: 70vh;
+    width: 80vh;
     height: 70vh;
     border-radius: 1vh;
 }
@@ -318,13 +348,13 @@ body {
     color: white;
     padding-inline: 5px;
     background: #242329;
-    border: 2px solid orange;
+    border: 2px solid #f38a03;
 
 
 }
 
 .input:is(:focus, :valid) {
-    outline-color: orange;
+    outline-color: #f38a03;
 
 }
 
@@ -340,6 +370,9 @@ body {
     color: #fff;
     background-color: #000;
     border: 1px solid orange;
+    color: black;
+    background-color: transparent;
+    border: 1px solid #f38a03;
     border-radius: 50px;
 }
 
@@ -354,7 +387,30 @@ body {
 .col-sm-6{
     width: 600px;
     float: left;
-    margin: 10px;
+    margin: 10px;}
+
+.section5 {
+    width: 100%;
+    height: 100vh;
+    text-align: center;
+    position: relative;
+    padding-top: 5vh;
+    background-image: url(../images/namelokBG3.jpg);
+    background-position: center;
+    background-size:cover ;
+    background-repeat:no-repeat ;
+    z-index: 2;
+}
+
+.tint2 {
+    position: absolute;
+   top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    /* Dark overlay */
+    z-index: 1;
 }
 
 .j-form{
@@ -471,12 +527,87 @@ sections div:hover ~ div {
     padding-top: 2vh;
 }
 
+.upArrowCont :hover {
+    cursor: pointer;
+}
+
+.section5 h2{
+    z-index: 2;
+}
+
+.newsLetter{
+    z-index: 2;
+    width:100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.newsLetterInfo{
+    width:50%;
+    display: flex;
+    align-items: left;
+    justify-content: left;
+    flex-direction: column;
+    color: white;
+    padding-left: 25vh;
+    padding-top: 6vh;
+    z-index: 2;
+}
+
+.newsLetterInfo h2{
+    width:65vh;
+    color: #f38a03;
+    font-size: 7vh;
+}
+
+.newsLetterInfo p{
+    width:65vh;
+    font-size: 3vh;
+}
+
+.newsLetterForm{
+    z-index: 2;
+    width:50%;
+    padding-top: 9vh;
+   
+}
+
+.form{
+    padding-top: 9vh;
+    z-index: 2;
+      width:80vh;
+      height:70vh;
+       background-color:rgb(243, 138, 3, 0.4);
+    padding: 4vh;
+    padding-top:4vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-size:2.7vh;
+}
+
+.form label{
+    z-index: 2;
+    color: white;
+}
+
+.form input{
+    z-index: 2;
+}
+
+.subscribeBtn{
+    background-color:#FFA026;
+    font-weight: 600;
+}
+
 /* footer styling*/
 .footer {
     height: 7vh;
-    background-color: #8B5E3C;
-    color: white;
+    /*background-color: #8B5E3C;*/
+    color: black;
     text-align: center;
     padding: 1rem 0;
-    font-size: 0.9rem;
+    font-size: 2.11vh;
 }
