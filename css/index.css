@@ -44,19 +44,19 @@ body {
     bottom: 0;
     width: 100%;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.64);
     /* Dark overlay */
     z-index: 1;
 }
 
 .title {
-    width: 90%;
+    width: 95%;
     height: 10vh;
     padding-top: 2vh;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color: white;
+    color: rgb(250, 250, 250);
     position: relative;
     z-index: 2;
 
@@ -187,7 +187,8 @@ body {
 }
 
 .mainText a:hover {
-    background-color: #FFA500;
+    background-color: rgb(255, 165, 0, 0.7);
+    border: rgb(255, 165, 0, 0.7);
 
 }
 
@@ -220,9 +221,31 @@ body {
 .section2 {
     width: 100%;
     height: 120vh;
+    position: relative;
 }
 
-/*About us section styling*/
+.counterContainer{
+    position: absolute;
+    top:85vh;
+    left:30vh;
+    width:70vh;
+    height:17vh;
+    border-radius: 4vh;
+    background-color: #8c2727;
+    color: white;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: space-evenly;
+    align-items: center;
+        box-sizing: border-box;
+        padding-top: 2vh;
+
+}
+
+.elementor{
+    box-sizing: border-box;
+}
 
 .aboutUs {
     display: flex;
@@ -258,12 +281,18 @@ body {
     width: 40%;
 }
 
+.aboutUsText h3{
+    font-size:5vh;
+    font-weight: 900;
+}
+
 .aboutUsText h2 {
     color: #f38a03;
+    font-size: 4vh;
 }
 
 .aboutUsText p {
-    font-size: 3vh;
+    font-size: 2.6vh;
     width: 70vh;
     display: flex;
     justify-content: center;
@@ -284,7 +313,7 @@ body {
 }
 
 .gallery-heading h2 {
-    font-size: 2.5rem;
+    font-size: 4.5vh;
     color: #FFA500; /* Orange heading */
     margin-bottom: 10px;
 }
@@ -320,13 +349,6 @@ body {
     transform: scale(1.02);
 }
 
-/* Carousel controls */
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-    background-color: #000;
-    border-radius: 50%;
-    padding: 10px;
-}
 
 /*End gallery section*/
 
@@ -344,52 +366,6 @@ body {
     margin-top: 3%;
 }
 
-.contactSummary {
-    width: 45vh;
-}
-
-.input-tab {
-    position: relative;
-    margin-bottom: 5%;
-
-}
-
-.input {
-    padding: 10px;
-    width: 400px;
-    height: 6vh;
-    border: none;
-    border-radius: 20px;
-    font: inherit;
-    color: black;
-    background-color: transparent;
-    outline: 2px solid white;
-}
-
-.input-label {
-    color: black;
-    position: absolute;
-    top: 0;
-    left: 0;
-    transform: translate(10px, 10px);
-    transition: transform.25s;
-}
-
-.input:focus+.input-label,
-.input:valid+.input-label {
-    transform: translate(10px, -14px) scale(0.8);
-    color: white;
-    padding-inline: 5px;
-    background: #242329;
-    border: 2px solid #f38a03;
-
-
-}
-
-.input:is(:focus, :valid) {
-    outline-color: #f38a03;
-
-}
 
 .button {
     text-align: center;
@@ -405,7 +381,7 @@ body {
     color: #fff;
     background-color: #000;
     border: 1px solid orange;
-    color: black;
+    color: white;
     background-color: transparent;
     border: 1px solid #f38a03;
     border-radius: 50px;
@@ -415,10 +391,11 @@ body {
     cursor: pointer;
     box-shadow: 5px 3px 3px 3px rgb(53, 53, 53);
     background-color: #242329;
+    color: white;
 }
 
 
-/*-----------------form----------------*/
+/*-----------------Contact form----------------*/
 .col-sm-6 {
     width: 600px;
     float: left;
