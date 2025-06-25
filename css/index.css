@@ -608,6 +608,6 @@ sections div:hover ~ div {
     /*background-color: #8B5E3C;*/
     color: black;
     text-align: center;
-    padding: 1rem 0;
+    padding: 1vh 0;
     font-size: 2.11vh;
 }
