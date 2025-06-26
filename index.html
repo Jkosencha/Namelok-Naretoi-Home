@@ -20,17 +20,10 @@
 <body>
     <!--Homepage section-->
     <section class="section1" id="home">
-
         <div class="tint"></div>
 
-
-        <!--Logo and navigation bar starts-->
+        <!--Logo and navigation bar-->
         <div class="title">
-            <!-- <div class="logo">
-                <img src="" alt="">
-                <h5>NAMELOK NARETOI HOME</h5>
-            </div> -->
-
             <nav class="navbar">
                 <div class="logo">
                     <img src="" alt="">
@@ -39,16 +32,13 @@
                 <ul class="nav-links">
                     <li><a href="#home">HOME</a></li>
                     <li><a href="#aboutUs">ABOUT US</a></li>
+                    <li><a href="#stories">STORIES</a></li>
                     <li><a href="#gallery">OUR GALLERY</a></li>
                     <li><a href="#contactUs">CONTACT US</a></li>
                     <li><a href="#newsletter">NEWSLETTER</a></li>
-
                 </ul>
             </nav>
-
-
         </div>
-        <!--End of logo and navigation bar-->
 
         <!--Homepage text-->
         <div class="mainBody">
@@ -60,7 +50,6 @@
             </div>
         </div>
     </section>
-    <!--End of homepage section-->
 
     <!--About section-->
     <section class="section2" id="aboutUs">
@@ -71,13 +60,18 @@
 
             <div class="counterContainer">
                 <div class="yearsCounter elementor">
-                    <h1 class="counter" data-target="9">0</h1>
+                    <h1 class="counter" data-target="30">0</h1>
                     <p>YEARS</p>
                 </div>
 
                 <div class="girlsCounter elementor">
                     <h1 class="counter" data-target="716">0</h1>
-                    <p>GIRLS</p>
+                    <p>DISABLED</p>
+                </div>
+
+                <div class="girlsCounter elementor">
+                    <h1 class="counter" data-target="100">0</h1>
+                    <p>RESCUED-GIRLS</p>
                 </div>
             </div>
 
@@ -86,6 +80,7 @@
                 <h3>Dedicated to improving the lives of vulnerable children and families through education,
                     support, and empowerment.
                 </h3>
+
                 <p>Namelok Naretoi Home is a community-based initiative dedicated to improving the lives of
                     vulnerable
                     children and families through education,
@@ -98,10 +93,59 @@
                     explicabo animi molestias debitis.
                     !</p>
             </div>
-
         </div>
     </section>
-    <!--End of about section-->
+
+    <!-- stories -->
+    <section class="stories-section" id="stories">
+        <h2>Our Beneficiary Stories</h2>
+        <div class="carousel-wrapper">
+
+            <div class="stories-container" id="carouselTrack">
+                <div class="story-card">
+                    <img src="images/aboutUs3.jpg" alt="Grace's story">
+                    <h3>Grace’s Journey</h3>
+                    <p>From fear to freedom, Grace found a new home and a fresh start...</p>
+                    <a href="Stories/story1.html">Read More</a>
+                </div>
+
+                <div class="story-card">
+                    <img src="images/aboutUs.jpg" alt="Naserian's story">
+                    <h3>Naserian’s Voice</h3>
+                    <p>Once silenced by tradition, Naserian now speaks up for other girls...</p>
+                    <a href="Stories/story2.html">Read More</a>
+                </div>
+
+                <div class="story-card">
+                    <img src="images/aboutUs3.jpg" alt="Mercy's story">
+                    <h3>Mercy’s Hope</h3>
+                    <p>Rescued from early marriage, Mercy dreams of becoming a doctor...</p>
+                    <a href="Stories/story3.html">Read More</a>
+                </div>
+
+                <div class="story-card">
+                    <img src="images/aboutUs2.jpg" alt="Faith's story">
+                    <h3>Faith’s New Path</h3>
+                    <p>Faith’s determination lit a way for her and others in her village...</p>
+                    <a href="Stories/story4.html">Read More</a>
+                </div>
+
+                <div class="story-card">
+                    <img src="images/aboutUs.jpg" alt="Shiku's story">
+                    <h3>Shiku’s Strength</h3>
+                    <p>Survivor of abuse, Shiku has become a leader in her rescue center...</p>
+                    <a href="Stories/story5.html">Read More</a>
+                </div>
+
+                <div class="story-card">
+                    <img src="images/namelokBG.jpg" alt="Teresia's story">
+                    <h3>Teresia’s Triumph</h3>
+                    <p>Despite disability and stigma, Teresia now thrives in school and art...</p>
+                    <a href="Stories/story6.html">Read More</a>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!--Gallery section-->
     <section class="section3" id="gallery">
@@ -138,16 +182,10 @@
             </div>
         </div>
     </section>
-    <!--End of gallery section-->
-
 
     <!--Contact section-->
     <section class="section4" id="contactUs">
         <div class="mainContact">
-            <!-- <div class="contactSummary">
-                <p>Make a real impact, support important causes,
-                    and bring positive change to the lives of those in need.</p>
-            </div> -->
             <div class="col-sm-6">
                 <h2>Quick Quotes</h2>
                 <sections>
@@ -168,32 +206,7 @@
                 </sections>
             </div>
 
-            <!-- <div class="contactForm">
-                <div class="input-tab nametab">
-                    <input type="text" id="fullname" required class="input nametab">
-                    <label for="fullname" class="input-label">Enter your full name</label>
-                </div>
-                <div class="flex">
-                    <div class="input-tab  emailtab">
-                        <input type="text" id="email" required class="input emailtab">
-                        <label for="email" class="input-label">Email Address</label>
-                    </div>
-                    <div class="input-tab phonetab">
-                        <input type="text" id="number" required class="input phonetab">
-                        <label for="number" class="input-label">Phone Number</label>
-                    </div>
-                </div>
 
-                <div class="input-tab ">
-                    <input type="text" id="msg" required class="input msgtab">
-                    <label for="msg" class="input-label">Enter Your message</label>
-                </div>
-
-                <div>
-                    <button class="submit" id="submitBtn">Submit</button>
-                </div>
-
-            </div> -->
             <div class="col-sm-6">
                 <h2>Contact Us</h2>
                 <form class="j-form" action="jenniferkosencha@gmail.com" method="post">
@@ -208,15 +221,13 @@
 
             </div>
 
+            </div>
         </div>
     </section>
-    <!--End of contact section-->
 
     <!--Newsletter section-->
     <section class="section5 bg-light" id="newsletter">
-
         <div class="tint2"></div>
-
         <div class="upArrowCont" id="upArrow">
             <img src="images/upArrow.svg" alt="" class="upArrow" id="upArrow">
         </div>
@@ -241,7 +252,6 @@
             </div>
         </div>
     </section>
-    <!--End of newsletter section-->
 
     <!-- Footer -->
     <footer class="footer">
@@ -249,7 +259,6 @@
     </footer>
 
 </body>
-
 <script src="js/index.js"></script>
 
 </html>
