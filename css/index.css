@@ -199,6 +199,9 @@ body {
     animation: slideInLeft 2s ease-out;
 }
 
+.navDefault{
+color:#FFA500 !important;
+}
 /*-----------------About Us----------------*/
 .section2 {
     width: 100%;
@@ -812,3 +815,382 @@ sections div:hover~div {
     padding: 1vh;
     font-size: 2.11vh;
 }
+/*end footer styling*/
+
+/*responsive styling*/
+/* Base Styles */
+body {
+    font-family: 'Bentham', serif;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    background-color: #f8f9fa;
+    padding: 10px;
+}
+
+.navbar-nav .nav-link {
+    color: #333;
+    padding: 10px 15px;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #0056b3;
+}
+
+.mainBody {
+    text-align: center;
+    padding: 50px 0;
+}
+
+.mainText h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.mainText p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.mainText a {
+    display: inline-block;
+    margin: 10px 20px;
+    padding: 10px 25px;
+    text-decoration: none;
+    background-color: #0056b3;
+    color: white;
+    border-radius: 30px;
+}
+
+.mainText a:hover {
+    background-color: #003c75;
+}
+
+.section2 {
+    background-color: #f1f1f1;
+    padding: 50px 0;
+}
+
+.aboutUsImg img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.counterContainer {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 30px;
+}
+
+.counter {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0056b3;
+}
+
+.aboutUsText h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.aboutUsText p {
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.gallery-heading h2,
+.gallery-heading p {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.carousel-inner img {
+    width: 100%;
+    height: auto;
+}
+
+.partners-title {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.supporter {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.supporter img {
+    width: 80%;
+    max-width: 200px;
+    margin-bottom: 10px;
+}
+
+/* Newsletter */
+.newsLetter h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.newsLetterForm input,
+.newsLetterForm textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.newsLetterForm button {
+    padding: 10px 20px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+}
+
+.newsLetterForm button:hover {
+    background-color: #003c75;
+}
+
+/* Media Queries for Responsiveness */
+
+/* Small devices (portrait phones) */
+@media screen and (max-width: 575px) {
+    .navbar .navbar-nav {
+        text-align: center;
+    }
+
+    .mainText h2 {
+        font-size: 1.6rem;
+    }
+
+    .mainText p {
+        font-size: 1rem;
+    }
+
+    .mainText a {
+        padding: 8px 20px;
+        font-size: 1rem;
+    }
+
+    .counterContainer {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .counter {
+        font-size: 1.5rem;
+    }
+
+    .aboutUsText p {
+        font-size: 0.9rem;
+    }
+
+    .gallery-heading h2,
+    .gallery-heading p {
+        font-size: 1.5rem;
+    }
+
+    .partners-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .partners-carousel .supporter {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .partners-carousel .supporter img {
+        width: 50%;
+    }
+
+    .newsLetterForm input,
+    .newsLetterForm textarea {
+        width: 90%;
+    }
+
+    .newsLetterForm button {
+        width: 90%;
+    }
+}
+
+/* Medium devices (tablets) */
+@media screen and (min-width: 576px) and (max-width: 767px) {
+    .navbar .navbar-nav {
+        text-align: center;
+    }
+
+    .mainText h2 {
+        font-size: 1.8rem;
+    }
+
+    .mainText p {
+        font-size: 1.1rem;
+    }
+
+    .mainText a {
+        padding: 10px 25px;
+    }
+
+    .counterContainer {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .counter {
+        font-size: 1.7rem;
+    }
+
+    .aboutUsText p {
+        font-size: 1rem;
+    }
+
+    .gallery-heading h2,
+    .gallery-heading p {
+        font-size: 1.7rem;
+    }
+
+    .partners-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .partners-carousel .supporter {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .partners-carousel .supporter img {
+        width: 60%;
+    }
+
+    .newsLetterForm input,
+    .newsLetterForm textarea {
+        width: 90%;
+    }
+
+    .newsLetterForm button {
+        width: 90%;
+    }
+}
+
+/* Large devices (desktops and large tablets) */
+@media screen and (min-width: 768px) and (max-width: 991px) {
+    .navbar .navbar-nav {
+        text-align: center;
+    }
+
+    .mainText h2 {
+        font-size: 2.2rem;
+    }
+
+    .mainText p {
+        font-size: 1.2rem;
+    }
+
+    .mainText a {
+        padding: 10px 30px;
+    }
+
+    .counterContainer {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .counter {
+        font-size: 2rem;
+    }
+
+    .aboutUsText p {
+        font-size: 1.1rem;
+    }
+
+    .gallery-heading h2,
+    .gallery-heading p {
+        font-size: 1.8rem;
+    }
+
+    .partners-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .partners-carousel .supporter img {
+        width: 70%;
+    }
+
+    .newsLetterForm input,
+    .newsLetterForm textarea {
+        width: 90%;
+    }
+
+    .newsLetterForm button {
+        width: 90%;
+    }
+}
+
+/* Extra large devices (desktops) */
+@media screen and (min-width: 992px) {
+    .navbar .navbar-nav {
+        text-align: center;
+    }
+
+    .mainText h2 {
+        font-size: 2.5rem;
+    }
+
+    .mainText p {
+        font-size: 1.3rem;
+    }
+
+    .mainText a {
+        padding: 12px 35px;
+    }
+
+    .counterContainer {
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+    .counter {
+        font-size: 2.2rem;
+    }
+
+    .aboutUsText p {
+        font-size: 1.2rem;
+    }
+
+    .gallery-heading h2,
+    .gallery-heading p {
+        font-size: 2rem;
+    }
+
+    .partners-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .partners-carousel .supporter img {
+        width: 80%;
+    }
+
+    .newsLetterForm input,
+    .newsLetterForm textarea {
+        width: 80%;
+    }
+
+    .newsLetterForm button {
+        width: 80%;
+    }
+}
+
+/*end responsive styling*/
