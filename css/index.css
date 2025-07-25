@@ -1,13 +1,15 @@
 :root {
-    --primary: #e74f2e;
-    --primary-hover: rgba(255, 85, 0, 0.7);
+    --primary: #e7972e;
+    --primary-hover: rgba(255, 162, 0, 0.7);
     --dark: #000;
     --light: #fff;
     --tint-dark: rgba(0, 0, 0, 0.64);
 }
+
 body {
     font-family: 'Bentham', serif, Georgia, Times, 'Times New Roman';
 }
+
 html {
     scroll-behavior: smooth;
 }
@@ -42,25 +44,41 @@ html {
     transition: color 0.3s;
 }
 
+.donate-btn {
+    background-color: #e7972e;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.donate-btn:hover {
+    background-color: #fff;
+}
+
+
 body.home .nav-links a,
 body.home .dropdown .arrow {
     color: white;
 }
 
 body.home .nav-links a:hover {
-    color: #e74f2e;
+    color: #e7972e;
 }
 
 body:not(.home) .nav-links a,
 body:not(.home) .arrow {
     color: black;
 }
-body:not(.home) .dropdown-menu a{
+
+body:not(.home) .dropdown-menu a {
     color: white;
 }
 
 body:not(.home) .nav-links a:hover {
-    color: #e74f2e;
+    color: #e7972e;
 }
 
 /* Dropdown */
@@ -193,6 +211,10 @@ body:not(.home) .nav-links a:hover {
     animation: slideInLeft 2s ease-out;
 }
 
+.navDefault {
+    color: #FFA500 !important;
+}
+
 /*-----------------About Us----------------*/
 .section2 {
     width: 100%;
@@ -207,7 +229,7 @@ body:not(.home) .nav-links a:hover {
     width: 70vh;
     height: 17vh;
     border-radius: 4vh;
-    background-color: #e74f2e;
+    background-color: #e7972e;
     color: white;
     display: flex;
     flex-wrap: wrap;
@@ -354,12 +376,12 @@ body:not(.home) .nav-links a:hover {
 .story-card {
     flex: 0 0 300px;
     scroll-snap-align: start;
-    background: #f8f0e3;
+    background: #fff;
     border-radius: 10px;
     padding: 15px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: left;
-    transition: transform 0.3s ease;
+    transition: transform 0.4s ease;
 }
 
 .story-card:hover {
@@ -492,6 +514,7 @@ h2 {
     font-size: 25px;
     padding: 10px;
 }
+
 .button {
     text-align: center;
     margin-top: 20px;
@@ -595,77 +618,37 @@ sections div:hover~div {
 }
 
 /*-----------------Our Partners----------------*/
-.partners-title {
+.partners-section {
+    background-color: #f8f0e3;
+    padding: 60px 20px;
     text-align: center;
+}
+
+.partners-title {
     font-size: 2.5rem;
-    color: var(--primary);
+    color: #e7972e;
     margin-bottom: 40px;
 }
 
-.partners-container {
+.partner-logos {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 40px;
-    gap: 20px;
-}
-
-.supporter-strip {
-    display: flex;
-    justify-content: space-between;
-    gap: 40px;
-    padding: 60px 5%;
-    background-color: #fef7f3;
     flex-wrap: wrap;
-}
-
-.supporter {
-    flex: 1;
-    min-width: 250px;
-    max-width: 32%;
-    padding: 10px;
-    background-color: transparent;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-    border-radius: 10px;
-    transition: transform 0.3s ease;
-}
-
-.supporter:hover {
-    transform: translateY(-5px);
-}
-
-.supporter .role {
-    font-weight: bold;
-    color: #555;
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-.supporter-content {
-    display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 15px;
+    gap: 120px;
 }
 
-.supporter-content img {
-    width: 60px;
-    height: 60px;
+.partner-logos img {
+    max-height: 120px;
     object-fit: contain;
+    transition: filter 0.3s ease;
 }
 
-.supporter-content h3 {
-    font-size: 1.3rem;
-    color: var(--primary);
-    margin: 0;
+.partner-logos img:hover {
+    filter: grayscale(0%);
 }
 
-.supporter-content p {
-    font-size: 0.95rem;
-    color: #333;
-    margin: 5px 0 0;
-}
-
-/*-----------------News Letter----------------*/
+/*-----------------Contact----------------*/
 .section5 {
     width: 100%;
     height: 100vh;
@@ -693,7 +676,7 @@ sections div:hover~div {
     z-index: 2;
 }
 
-.newsLetter {
+.contact {
     z-index: 2;
     width: 100%;
     display: flex;
@@ -701,7 +684,7 @@ sections div:hover~div {
     justify-content: space-around;
 }
 
-.newsLetterInfo {
+.contactInfo {
     width: 50%;
     display: flex;
     align-items: left;
@@ -713,18 +696,18 @@ sections div:hover~div {
     z-index: 2;
 }
 
-.newsLetterInfo h2 {
+.contactInfo h2 {
     width: 65vh;
     color: var(--primary);
     font-size: 7vh;
 }
 
-.newsLetterInfo p {
+.contactInfo p {
     width: 65vh;
     font-size: 3vh;
 }
 
-.newsLetterForm {
+.contactForm {
     z-index: 2;
     width: 50%;
     padding-top: 9vh;
@@ -750,6 +733,7 @@ sections div:hover~div {
     color: white;
 }
 
+
 .form input {
     z-index: 2;
 }
@@ -759,15 +743,90 @@ sections div:hover~div {
     font-weight: 600;
 }
 
-/*-----------------Footer----------------*/
-.footer {
-    height: 7vh;
-    color: black;
-    text-align: center;
-    padding: 1vh;
-    font-size: 2.11vh;
+.subscribeBtn:hover {
+    cursor: pointer;
+    box-shadow: 5px 3px 3px 3px rgb(232, 119, 63);
+    background-color: #94370c;
+    color: white;
 }
 
+/*-----------------Footer----------------*/
+.namelok-footer {
+    background-color: #fff;
+    color: #000;
+    padding: 30px 20px 20px;
+    font-family: 'Bentham', serif;
+}
+
+.footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+.footer-section {
+    flex: 1 1 200px;
+    min-width: 250px;
+}
+
+.footer-section h2,
+.footer-section h3 {
+    color: #e7972e;
+    margin-bottom: 20px;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 10px;
+}
+
+.footer-section ul li a {
+    color: #000;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-section ul li a:hover {
+    color: #fff;
+}
+
+.footer-section p,
+.footer-section a {
+    color: #000;
+    font-size: 0.95rem;
+    flex-direction: column;
+}
+
+.footer-bottom {
+    border-top: 1px solid #444;
+    margin-top: 40px;
+    padding-top: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #000;
+}
+
+.footer-section.contact {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.footer-donate {
+    margin-top: 20px;
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
 
 /*-----------------External About/History Hero-Section-----------------*/
 .hero-section {
@@ -962,6 +1021,67 @@ sections div:hover~div {
     transform: scale(1.02);
 }
 
+/* donate */
+.donate-section {
+    padding: 15px 15px;
+    height: auto;
+    text-align: center;
+    background: url('../images/namelokBG3.jpg');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: 2;
+}
+
+.donate-container {
+    max-width: 500px;
+    margin: auto;
+    background-color: rgb(243, 138, 3, 0.4);
+    padding: 40px;
+    height: 95vh;
+    border-radius: 20px;
+}
+
+.donate-container h1 {
+    color: #e3992a;
+    margin-bottom: 10px;
+}
+
+.donate-container p {
+    color: #000;
+}
+
+.donate-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.donate-form input {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #fff;
+}
+
+.donate-form label{
+    color: #fefefe;
+    font-style: italic;
+}
+
+.donate-form button {
+    background-color: #e7972e;
+    color: white;
+    font-weight: bold;
+    padding: 12px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+.donate-form button:hover {
+    background-color: #ff522b;
+}
+
 /*slideshow keyframmes*/
 @keyframes slideshow {
     0% {
@@ -1035,12 +1155,13 @@ sections div:hover~div {
 
 /*-----------------Responsiveness----------------*/
 @media (max-width: 600px) {
-  .history-header h1,
-  .about-header h1 {
-    font-size: 2rem;
-  }
 
-  .contact-button {
-    width: 100%;
-  }
+    .history-header h1,
+    .about-header h1 {
+        font-size: 2rem;
+    }
+
+    .contact-button {
+        width: 100%;
+    }
 }

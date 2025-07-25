@@ -19,110 +19,64 @@
       rel="stylesheet"
     />
 
-    <title>About Us – Namelok Naretoi Home</title>
+    <title>Namelok Naretoi Home</title>
   </head>
 
-  <body>
-    <div class="title">
-      <nav class="navbar">
-        <div class="logo">
-          <img src="images/logo.png" alt="Brand Logo" class="logo" />
-        </div>
-        <ul class="nav-links">
-          <li><a href="index.html#home">HOME</a></li>
-          <li class="dropdown">
-            <a href="#aboutUs">ABOUT US</a>
-            <span class="arrow">&#9662;</span>
-            <ul class="dropdown-menu">
-              <li><a href="about.html">About Us</a></li>
-              <li><a href="history.html">Our History</a></li>
-            </ul>
-          </li>
-          <li><a href="index.html#stories">STORIES</a></li>
-          <li><a href="gallery.html">OUR GALLERY</a></li>
-          <li><a href="about.html#contact">CONTACT US</a></li>
-          <li><a href="donate.html" class="donate-btn">Donate</a></li>
-        </ul>
-      </nav>
-    </div>
-    <div class="hero-section hero-about">
-      <div class="hero-text">
-        <h1>About Namelok Naretoi Home</h1>
+  <body class="donate-page">
+    <section class="donate-section">
+      <div class="title">
+        <nav class="navbar">
+          <div class="logo">
+            <a href="index.html">
+              <img src="images/logo.png" alt="Brand Logo" />
+            </a>
+          </div>
+
+          <ul class="nav-links">
+            <li><a href="index.html">HOME</a></li>
+            <li class="dropdown">
+              <a href="about.html"
+                >ABOUT US <span class="arrow">&#9662;</span></a
+              >
+              <ul class="dropdown-menu">
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="history.html">Our History</a></li>
+              </ul>
+            </li>
+            <li><a href="index.html/#stories">STORIES</a></li>
+            <li><a href="gallery.html">OUR GALLERY</a></li>
+            <li><a href="#contact">CONTACT US</a></li>
+            <li><a href="donate.html" class="donate-btn">Donate</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="donate-container">
+        <h1><b> Support Our Mission</b></h1>
         <p>
-          We are a sanctuary for vulnerable children, committed to healing,
-          educating, protecting, and empowering them through love and support.
+          <b
+            >Your donation helps us continue our work and make a lasting
+            impact.</b
+          >
         </p>
+        <form class="donate-form">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" placeholder="Your Name" required />
+
+          <label for="email">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            placeholder="you@example.com"
+            required
+          />
+
+          <label for="amount">Donation Amount (KES)</label>
+          <input type="number" id="amount" placeholder="1000" required />
+
+          <button type="submit">Donate Now</button>
+        </form>
       </div>
-    </div>
-
-    <div class="about-container">
-      <div class="about-header">
-        <h1>Our Programs</h1>
-        <p>
-          Namelok is dedicated to providing a safe space, motivation and love to
-          children from maginalized families.
-        </p>
-      </div>
-
-      <div class="services">
-        <div class="service-card">
-          <h3>Access to Healthcare</h3>
-          <p>
-            We provide access to essential medical treatment, physiotherapy, and
-            rehabilitation for children living with disabilities or who have
-            suffered trauma.
-          </p>
-        </div>
-
-        <div class="service-card">
-          <h3>Support Inclusive Education</h3>
-          <p>
-            Education is at the heart of transformation. Ensure disabled
-            children and rescued girls receive access to special needs and
-            mainstream education, helping them integrate into schools based on
-            their abilities.
-          </p>
-        </div>
-
-        <div class="service-card">
-          <h3>Rescued Girls</h3>
-          <p>
-            Girls rescued from harmful practices such as FGM and child marriage
-            are given safety, counseling, and opportunities to rebuild their
-            lives and dreams.
-          </p>
-        </div>
-
-        <div class="service-card">
-          <h3>Provide a Safe and Nurturing Home</h3>
-          <p>
-            We provide a loving, stable environment where children in recovery
-            receive the care and resources they need.
-          </p>
-        </div>
-
-        <div class="service-card">
-          <h3>Awareness Program</h3>
-          <p>
-            We run community campaigns that raise awareness on children's
-            rights, disability rights, gender equality, menstrual health and the
-            dangers of harmful cultural practices.
-          </p>
-        </div>
-      </div>
-
-      <div class="video-section">
-        <div class="video-wrapper">
-          <iframe
-            width="100%"
-            height="400"
-            src="https://www.youtube.com/embed/wNAwy60G0jg"
-            frameborder="0"
-            allowfullscreen
-          ></iframe>
-        </div>
-      </div>
-    </div>
+    </section>
 
     <section class="section5 bg-light" id="contact">
       <div class="tint2"></div>
