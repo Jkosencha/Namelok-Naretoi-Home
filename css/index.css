@@ -8,29 +8,39 @@
 
 body {
     font-family: 'Bentham', serif, Georgia, Times, 'Times New Roman';
+    margin: 0;
+    padding: 0;
 }
 
 html {
     scroll-behavior: smooth;
+    margin: 0;
+    padding: 0;
 }
 
 /*-----------------Navigation Bar----------------*/
 .navbar {
     width: 95%;
-    margin: auto;
-    padding: 5px 0;
+    height: 7vh;
+    margin: 0 auto;
+    padding: 3px 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: relative;
     z-index: 1000;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    top:0;
+
 }
 
 .logo img {
     max-width: 100px;
-    height: auto;
+    height: 4vh;
     object-fit: contain;
 }
+
 
 .nav-links {
     list-style: none;
@@ -300,8 +310,8 @@ body:not(.home) .nav-links a:hover {
 
 .aboutUsImg {
     position: relative;
-    width: 80vh;
-    height: 80vh;
+    width: 60vh;
+    height: 60vh;
     border-radius: 5vh;
     overflow: hidden;
     display: flex;
@@ -310,8 +320,8 @@ body:not(.home) .nav-links a:hover {
 }
 
 .aboutUsImg img {
-    width: 100%;
-    height: 100%;
+    width: 80%;
+    height: 80%;
     object-fit: cover;
     display: block;
 }
@@ -699,7 +709,7 @@ sections div:hover~div {
 .contactInfo h2 {
     font-size: 7vh;
     color: var(--primary);
-    margin-bottom: 3vh;
+    margin-bottom: 1.5vh;
 }
 
 .contactInfo p {
@@ -727,7 +737,7 @@ sections div:hover~div {
 .form input,
 .form textarea {
     width: 80%;
-    padding: 1.5vh;
+    padding: 0.5vh;
     border-radius: 10px;
     border: none;
     font-size: 2.2vh;
@@ -735,7 +745,7 @@ sections div:hover~div {
 
 .form textarea {
     resize: none;
-    height: 20vh;
+    height: 15vh;
 }
 
 .form label {
@@ -819,11 +829,11 @@ sections div:hover~div {
 .footer-bottom {
     border-top: 1px solid #444;
     padding-top: 10px;
-    margin-bottom:0px;
+    margin-bottom: 0px;
     text-align: center;
     font-size: 0.9rem;
     color: #000;
-    
+
 }
 
 .footer-section.contact {
@@ -1077,7 +1087,7 @@ sections div:hover~div {
     border: 1px solid #fff;
 }
 
-.donate-form label{
+.donate-form label {
     color: #fefefe;
     font-style: italic;
 }
@@ -1183,165 +1193,170 @@ sections div:hover~div {
 /* === RESPONSIVENESS FOR ALL SCREEN SIZES === */
 
 @media (max-width: 1024px) {
-  .mainBody {
-    flex-direction: column;
-    align-items: flex-start;
-    padding-left: 5vw;
-    height: auto;
-    padding-top: 5vh;
-  }
+    .mainBody {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-left: 5vw;
+        height: fit-content;
+        max-height: fit-content;
+        padding-top: 5vh;
+    }
 
-  .mainText h2 {
-    font-size: 6vh;
-  }
+    .mainText h2 {
+        font-size: 6vh;
+    }
 
-  .mainText p {
-    font-size: 2vh;
-  }
+    .mainText p {
+        font-size: 2vh;
+    }
 
-  .aboutUs {
-    flex-direction: column;
-    margin-left: 5vw;
-    margin-right: 5vw;
-  }
+    .aboutUs {
+        flex-direction: column;
+        margin-left: 5vw;
+        margin-right: 5vw;
+        height: fit-content;
+        max-height: fit-content;
+    }
 
-  .aboutUsText,
-  .aboutUsImg {
-    width: 100%;
-    height: auto;
-    text-align: center;
-  }
+    .aboutUsText,
+    .aboutUsImg {
+        width: 100%;
+        height: auto;
+        text-align: center;
+    }
 
-  .aboutUsText h2,
-  .aboutUsText h3 {
-    font-size: 3vh;
-  }
+    .aboutUsText h2,
+    .aboutUsText h3 {
+        font-size: 3vh;
+    }
 
-  .aboutUsText p {
-    font-size: 2vh;
-    padding: 0 1rem;
-  }
+    .aboutUsText p {
+        font-size: 2vh;
+        padding: 0 1rem;
+    }
 
-  .contact {
-    flex-direction: column;
-    padding: 0 2vw;
-  }
+    .contact {
+        flex-direction: column;
+        padding: 0 2vw;
+    }
 
-  .contactInfo,
-  .contactForm {
-    width: 100%;
-    text-align: center;
-    align-items: center;
-  }
+    .contactInfo,
+    .contactForm {
+        width: 80%;
+        text-align: center;
+        align-items: center;
+    }
 
-  .form label {
-    padding-left: 0;
-  }
+    .form label {
+        padding-left: 0;
+    }
 
-  .stories-container {
-    padding: 0 20px;
-  }
+    .stories-container {
+        padding: 0 20px;
+    }
 
-  .partner-logos {
-    gap: 40px;
-  }
+    .partner-logos {
+        gap: 40px;
+    }
 
-  .donate-container {
-    height: auto;
-    padding: 20px;
-  }
+    .donate-container {
+        height: auto;
+        padding: 20px;
+    }
 }
 
 @media (max-width: 768px) {
-  .navbar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
 
-  .nav-links {
-    flex-direction: column;
-    gap: 1rem;
-  }
+    .nav-links {
+        flex-direction: column;
+        gap: 1rem;
+    }
 
-  .section1 {
-    height: auto;
-  }
+    .section1 {
+        height: auto;
+    }
 
-  .mainText h2 {
-    font-size: 5vh;
-    text-align: center;
-  }
+    .mainText h2 {
+        font-size: 5vh;
+        text-align: center;
+    }
 
-  .mainText p {
-    text-align: center;
-    padding-left: 0;
-  }
+    .mainText p {
+        text-align: center;
+        padding-left: 0;
+    }
 
-  .section2 {
-    height: auto;
-  }
+    .section2 {
+        height: auto;
+        height: fit-content;
+        max-height: fit-content;
+    }
 
-  .counterContainer {
-    flex-direction: column;
-    gap: 1vh;
-    height: auto;
-    padding: 2vh 1rem;
-  }
+    .counterContainer {
+        flex-direction: column;
+        gap: 1vh;
+        height: auto;
+        padding: 2vh 1rem;
+    }
 
-  .galleryContainer {
-    flex-direction: column;
-  }
+    .galleryContainer {
+        flex-direction: column;
+    }
 
-  .carousel-inner img {
-    height: auto;
-  }
+    .carousel-inner img {
+        height: auto;
+    }
 
-  .footer-container {
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-  }
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
 }
 
 @media (max-width: 480px) {
-  .mainText h2 {
-    font-size: 4vh;
-  }
+    .mainText h2 {
+        font-size: 4vh;
+    }
 
-  .mainText a {
-    width: 100%;
-    margin: 10px 0;
-  }
+    .mainText a {
+        width: 100%;
+        margin: 10px 0;
+    }
 
-  .aboutUsText h2,
-  .aboutUsText h3 {
-    font-size: 2.5vh;
-  }
+    .aboutUsText h2,
+    .aboutUsText h3 {
+        font-size: 2.5vh;
+    }
 
-  .aboutUsText p {
-    font-size: 1.8vh;
-  }
+    .aboutUsText p {
+        font-size: 1.8vh;
+    }
 
-  .donate-form input,
-  .donate-form textarea,
-  .donate-form button {
-    width: 100%;
-  }
+    .donate-form input,
+    .donate-form textarea,
+    .donate-form button {
+        width: 100%;
+    }
 
-  .subscribeBtn {
-    width: 80%;
-  }
+    .subscribeBtn {
+        width: 80%;
+    }
 
-  .services {
-    grid-template-columns: 1fr;
-  }
+    .services {
+        grid-template-columns: 1fr;
+    }
 
-  .gallery-container {
-    column-count: 1;
-  }
+    .gallery-container {
+        column-count: 1;
+    }
 
-  .carousel-inner img {
-    height: 250px;
-  }
+    .carousel-inner img {
+        height: 250px;
+    }
 }
