@@ -81,6 +81,46 @@ body:not(.home) .nav-links a:hover {
     color: #e7972e;
 }
 
+/* Hamburger Menu */
+.menu-toggle {
+    display: none;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--primary);
+    transition: transform 0.3s ease;
+}
+
+
+/* Mobile/Tablet Navbar */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        gap: 1rem;
+        background-color: var(--dark);
+        position: absolute;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        padding: 15px 0;
+        text-align: center;
+        z-index: 999;
+    }
+
+    .nav-links.show {
+        display: flex;
+    }
+
+    .nav-links a {
+        color: var(--light);
+        font-size: 1.2rem;
+    }
+}
+
 /* Dropdown */
 .dropdown {
     position: relative;
@@ -215,6 +255,31 @@ body:not(.home) .nav-links a:hover {
     color: #FFA500 !important;
 }
 
+
+/* Tablet */
+@media (max-width: 992px) {
+    .mainText h2 {
+        font-size: 2.2rem;
+    }
+    .mainText p {
+        font-size: 1rem;
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .mainText h2 {
+        font-size: 1.8rem;
+    }
+    .mainText p {
+        font-size: 0.9rem;
+    }
+    .mainText a {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+    }
+}
+
 /*-----------------About Us----------------*/
 .section2 {
     width: 100%;
@@ -333,6 +398,41 @@ body:not(.home) .nav-links a:hover {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+
+/* Tablet */
+@media (max-width: 992px) {
+    .aboutUs {
+        flex-direction: column;
+        gap: 3rem;
+        padding: 3rem 1rem;
+    }
+
+    .counterContainer {
+        position: static;
+        transform: none;
+        flex-wrap: wrap;
+        width: 150%;
+        margin: 0 auto 0 auto;
+        justify-content: space-evenly;
+    }
+    .aboutUsImg, .aboutUsText {
+        max-width: auto;
+    }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .counterContainer {
+        flex-direction: column;
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .counterContainer .counter {
+        font-size: 1.8rem;
+    }
 }
 
 /*-----------------Stories----------------*/
@@ -1026,7 +1126,8 @@ sections div:hover~div {
     padding: 15px 15px;
     height: auto;
     text-align: center;
-    background: url('../images/namelokBG3.jpg');
+    /* background: url('../images/namelokBG3.jpg'); */
+    background-color: #fefefe;
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;

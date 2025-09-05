@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grace’s Story</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f0e3;
+        }
+
+        .story-wrapper {
+            max-width: 1000px;
+            margin: 50px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .story-header {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            align-items: flex-start;
+            margin-bottom: 30px;
+        }
+
+        .story-header img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            object-fit: cover;
+            border-radius: 8px;
+            flex-shrink: 0;
+        }
+
+        .story-info {
+            flex: 1;
+        }
+
+        .story-info h2 {
+            margin-top: 0;
+            color: #e65d3f;
+        }
+
+        .story-info ul {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0;
+        }
+
+        .story-info ul li {
+            font-size: 1.05rem;
+            margin-bottom: 6px;
+            color: #444;
+        }
+
+        .story-content p {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            color: #333;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 20px;
+            background: #e65d3f;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .back-button:hover {
+            background: #d14d2f;
+        }
+
+        @media (max-width: 768px) {
+            .story-header {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .story-info {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="story-wrapper">
+        <div class="story-header">
+            <img src='../images/aboutUs2.jpg' alt="Grace’s journey" />
+            <div class="story-info">
+                <h2>Grace’s Profile</h2>
+                <ul>
+                    <li><strong>Name:</strong> Grace</li>
+                    <li><strong>Age:</strong> 13</li>
+                    <li><strong>Gender:</strong> Female</li>
+                    <li><strong>Status:</strong> Rescued from early marriage</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="story-content">
+            <p>
+                Grace’s story begins in a remote village where tradition once dictated her path. After escaping a forced
+                early marriage,
+                she was brought to Namelok Naretoi Home. With support, counseling, and a renewed sense of hope, Grace
+                began school
+                and discovered a love for learning. She now dreams of becoming a teacher and helping other girls in her
+                community.
+            </p>
+        </div>
+
+        <a href="../index.html#stories" class="back-button">← Back to Stories</a>
+    </div>
+
+</body>
+
+</html>

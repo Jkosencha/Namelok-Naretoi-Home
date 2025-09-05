@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--bootstrap links-->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!--css links-->
+    <link rel="stylesheet" href="css/index.css" />
+
+    <!--font links-->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bentham:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>Namelok Naretoi Home</title>
+  </head>
+  <body>
+    <!--Logo and navigation bar-->
+    <div class="title">
+      <nav class="navbar">
+        <div class="logo">
+          <a href="index.html">
+            <img src="images/logo.png" alt="Brand Logo" />
+          </a>
+        </div>
+
+        <ul class="nav-links">
+          <li><a href="index.html">HOME</a></li>
+          <li class="dropdown">
+            <a href="about.html">ABOUT US <span class="arrow">&#9662;</span></a>
+            <ul class="dropdown-menu">
+              <li><a href="about.html">About Us</a></li>
+              <li><a href="history.html">Our History</a></li>
+            </ul>
+          </li>
+          <li><a href="#stories">STORIES</a></li>
+          <li><a href="gallery.html">OUR GALLERY</a></li>
+          <li><a href="history.html#contact">CONTACT US</a></li>
+          <li><a href="donate.html" class="donate-btn">Donate</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <section class="masonry-gallery">
+      <div class="gallery-container">
+        <img src="images/child1.jpg" alt="" />
+        <img src="images/child2.jpg" alt="" />
+        <img src="images/child4.jpg" alt="" />
+        <img src="images/child5.jpg" alt="" />
+        <img src="images/child8.jpg" alt="" />
+      </div>
+    </section>
+
+    <section class="section5 bg-light" id="contact">
+      <div class="tint2"></div>
+      <div class="upArrowCont" id="upArrow">
+        <img src="images/upArrow.svg" alt="" class="upArrow" id="upArrow" />
+      </div>
+
+      <div class="contact">
+        <div class="contactInfo">
+          <h2>Talk to Us Today</h2>
+          <p>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vel
+            distinctio exercitationem earum, quod ad quia pariatur, fuga eveniet
+            rem sed quis illo dolore molestiae id, porro eos ex alias tempore.
+          </p>
+        </div>
+
+        <div class="contactForm">
+          <form
+            class="mt-3 rounded-4 form"
+            action="mailto:jenniferkosencha@gmail.com"
+            method="POST"
+            enctype="text/plain"
+          >
+            <input
+              type="text"
+              class="form-control w-75 rounded-4"
+              id="name"
+              name="name"
+              placeholder="Full Name"
+              required
+            />
+            <br />
+
+            <input
+              type="email"
+              class="form-control w-75 rounded-4"
+              id="email"
+              name="email"
+              placeholder="Email Address"
+              required
+            />
+            <br />
+
+            <input
+              type="text"
+              class="form-control w-75 rounded-4"
+              id="subject"
+              name="subject"
+              placeholder="Subject"
+              required
+            />
+            <br />
+
+            <textarea
+              class="form-control w-75 rounded-4"
+              id="message"
+              name="message"
+              rows="5"
+              placeholder="Type your message here..."
+              required
+            ></textarea>
+            <br />
+
+            <button
+              class="btn w-25 rounded-4 subscribeBtn text-white"
+              type="submit"
+            >
+              Send
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="namelok-footer">
+      <div class="footer-container">
+        <div class="footer-section about">
+          <h2>The Power of Giving</h2>
+          <p>Support a cause and make a difference through charity.</p>
+          <div class="footer-donate">
+            <a href="donate.html" class="donate-btn">Donate</a>
+          </div>
+        </div>
+
+        <div class="footer-section links">
+          <h3>About</h3>
+          <ul>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="history.html">Our History</a></li>
+            <li><a href="#">What We Believe</a></li>
+            <li><a href="about.html">Our Programs</a></li>
+            <li><a href="#">Partners</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section links">
+          <h3>Ways to Give</h3>
+          <ul>
+            <li><a href="#">Fundraise</a></li>
+            <li><a href="#">Planned Giving</a></li>
+            <li><a href="#">Brand Partnership</a></li>
+            <li><a href="#">Legacy Giving</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section contact">
+          <h3>Contact Info</h3>
+          <p>1234 Thornridge Cir.<br />Syracuse, Connecticut 56789</p>
+          <p>(406) 555-0121</p>
+          <p><a href="mailto:mail@example.com">mail@example.com</a></p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 Namelok Naretoi Home. All rights reserved.</p>
+      </div>
+    </footer>
+  </body>
+</html>
