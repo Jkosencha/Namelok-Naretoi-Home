@@ -17,28 +17,9 @@
   </head>
 
   <body>
-    <div class="title">
-      <nav class="navbar">
-        <div class="logo">
-          <img src="images/logo.png" alt="Brand Logo" class="logo" />
-        </div>
-        <ul class="nav-links">
-          <li><a href="index.html#home">HOME</a></li>
-          <li class="dropdown">
-            <a href="#">ABOUT US</a>
-            <span class="arrow">&#9662;</span>
-            <ul class="dropdown-menu">
-              <li><a href="about.html">About Us</a></li>
-              <li><a href="history.html">Our History</a></li>
-            </ul>
-          </li>
-          <li><a href="index.html#stories">STORIES</a></li>
-          <li><a href="gallery.html">OUR GALLERY</a></li>
-          <li><a href="history.html#contact">CONTACT US</a></li>
-          <li><a href="donate.html" class="donate-btn">Donate</a></li>
-        </ul>
-      </nav>
-    </div>
+   <div id="navbar"></div>
+<script src="/components/navbar.js"></script>
+
     <div class="hero-section hero-history">
       <div class="history-header">
         <h1>Our History</h1>
@@ -76,123 +57,11 @@
       </div>
     </section>
 
-    <section class="section5 bg-light" id="contact">
-      <div class="tint2"></div>
-      <div class="upArrowCont" id="upArrow">
-        <img src="images/upArrow.svg" alt="" class="upArrow" id="upArrow" />
-      </div>
-
-      <div class="contact">
-        <div class="contactInfo">
-          <h2>Talk to Us Today</h2>
-          <p>
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vel
-            distinctio exercitationem earum, quod ad quia pariatur, fuga eveniet
-            rem sed quis illo dolore molestiae id, porro eos ex alias tempore.
-          </p>
-        </div>
-
-        <div class="contactForm">
-          <form
-            class="mt-3 rounded-4 form"
-            action="mailto:jenniferkosencha@gmail.com"
-            method="POST"
-            enctype="text/plain"
-          >
-            <input
-              type="text"
-              class="form-control w-75 rounded-4"
-              id="name"
-              name="name"
-              placeholder="Full Name"
-              required
-            />
-            <br />
-
-            <input
-              type="email"
-              class="form-control w-75 rounded-4"
-              id="email"
-              name="email"
-              placeholder="Email Address"
-              required
-            />
-            <br />
-
-            <input
-              type="text"
-              class="form-control w-75 rounded-4"
-              id="subject"
-              name="subject"
-              placeholder="Subject"
-              required
-            />
-            <br />
-
-            <textarea
-              class="form-control w-75 rounded-4"
-              id="message"
-              name="message"
-              rows="5"
-              placeholder="Type your message here..."
-              required
-            ></textarea>
-            <br />
-
-            <button
-              class="btn w-25 rounded-4 subscribeBtn text-white"
-              type="submit"
-            >
-              Send
-            </button>
-          </form>
-        </div>
-      </div>
-    </section>
+      <div id="contact-section"></div>
+<script src="/components/contact-section.js"></script>
 
     <!-- Footer -->
-    <footer class="namelok-footer">
-      <div class="footer-container">
-        <div class="footer-section about">
-          <h2>The Power of Giving</h2>
-          <p>Support a cause and make a difference through charity.</p>
-          <div class="footer-donate">
-            <a href="donate.html" class="donate-btn">Donate</a>
-          </div>
-        </div>
-
-        <div class="footer-section links">
-          <h3>About</h3>
-          <ul>
-            <li><a href="#about">About Us</a></li>
-            <li><a href="history.html">Our History</a></li>
-            <li><a href="#">What We Believe</a></li>
-            <li><a href="about.html">Our Programs</a></li>
-            <li><a href="#">Partners</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-section links">
-          <h3>Ways to Give</h3>
-          <ul>
-            <li><a href="#">Fundraise</a></li>
-            <li><a href="#">Planned Giving</a></li>
-            <li><a href="#">Brand Partnership</a></li>
-            <li><a href="#">Legacy Giving</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-section contact">
-          <h3>Contact Info</h3>
-          <p>1234 Thornridge Cir.<br />Syracuse, Connecticut 56789</p>
-          <p>(406) 555-0121</p>
-          <p><a href="mailto:mail@example.com">mail@example.com</a></p>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <p>&copy; 2025 Namelok Naretoi Home. All rights reserved.</p>
-      </div>
-    </footer>
+    <div id="footer"></div>
+<script src="/components/footer.js"></script>
   </body>
 </html>

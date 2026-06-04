@@ -82,14 +82,3 @@ const observer = new IntersectionObserver(entries => {
 
 observer.observe(document.querySelector('.counterContainer'));
 
-// ------------------ Hamburger Menu Toggle ------------------
-const menuToggle = document.getElementById('menu-toggle');
-const navLinks = document.querySelector('.nav-links');
-
-if (menuToggle) {
-  menuToggle.addEventListener('click', () => {
-    navLinks.classList.toggle('show');
-    // Change icon to "X" when menu is open
-    menuToggle.textContent = navLinks.classList.contains('show') ? '✖' : '☰';
-  });
-}

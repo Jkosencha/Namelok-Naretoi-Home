@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="css/index.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Bentham&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+    <title>Contact Us – Namelok Naretoi Home</title>
+    <style>
+      /* ── Page-specific styles ── */
+      .contact-page {
+        background-color: #fdf8f2;
+        min-height: 100vh;
+      }
+
+      /* Hero */
+      .contact-hero {
+        position: relative;
+        background: url('images/namelokBG3.jpg') center/cover no-repeat;
+        height: 46vh;
+        display: flex;
+        align-items: flex-end;
+        padding-bottom: 48px;
+        padding-left: 6vw;
+      }
+      .contact-hero::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.72) 100%);
+      }
+      .contact-hero-text {
+        position: relative;
+        z-index: 2;
+        color: #fff;
+      }
+      .contact-hero-text span {
+        display: inline-block;
+        font-size: 0.75rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: #e7972e;
+        margin-bottom: 10px;
+      }
+      .contact-hero-text h1 {
+        font-family: 'Lora', serif;
+        font-size: clamp(2rem, 5vw, 3.6rem);
+        font-weight: 600;
+        line-height: 1.1;
+        margin: 0;
+      }
+
+      /* Main layout */
+      .contact-body {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 70px 24px 100px;
+        display: grid;
+        grid-template-columns: 1fr 1.4fr;
+        gap: 60px;
+        align-items: start;
+      }
+
+      /* Left info panel */
+      .contact-info-panel {
+        position: sticky;
+        top: 40px;
+      }
+      .contact-info-panel h2 {
+        font-family: 'Lora', serif;
+        font-size: 1.7rem;
+        color: #111;
+        margin-bottom: 10px;
+      }
+      .contact-info-panel > p {
+        font-size: 0.97rem;
+        color: #666;
+        line-height: 1.8;
+        margin-bottom: 40px;
+      }
+
+      .info-block {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        margin-bottom: 28px;
+      }
+      .info-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background-color: #e7972e;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .info-icon svg {
+        width: 20px;
+        height: 20px;
+        fill: white;
+      }
+      .info-text strong {
+        display: block;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: #aaa;
+        margin-bottom: 4px;
+      }
+      .info-text p, .info-text a {
+        font-size: 0.97rem;
+        color: #222;
+        margin: 0;
+        text-decoration: none;
+        line-height: 1.6;
+      }
+      .info-text a:hover { color: #e7972e; }
+
+      /* Social links */
+      .social-row {
+        display: flex;
+        gap: 12px;
+        margin-top: 36px;
+      }
+      .social-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 18px;
+        border-radius: 30px;
+        font-size: 0.82rem;
+        font-weight: bold;
+        text-decoration: none;
+        transition: transform 0.2s, box-shadow 0.2s;
+        letter-spacing: 0.04em;
+      }
+      .social-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+      }
+      .social-btn.facebook { background: #1877f2; color: #fff; }
+      .social-btn.twitter  { background: #000; color: #fff; }
+
+      /* Right: form */
+      .contact-form-wrap {
+        background: #fff;
+        border-radius: 20px;
+        padding: 48px 40px;
+        box-shadow: 0 8px 40px rgba(0,0,0,0.07);
+      }
+      .contact-form-wrap h3 {
+        font-family: 'Lora', serif;
+        font-size: 1.4rem;
+        color: #111;
+        margin-bottom: 6px;
+      }
+      .contact-form-wrap p {
+        font-size: 0.9rem;
+        color: #888;
+        margin-bottom: 32px;
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 16px;
+      }
+      .form-group label {
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: #888;
+        margin-bottom: 8px;
+        font-weight: bold;
+      }
+      .form-group input,
+      .form-group textarea,
+      .form-group select {
+        padding: 13px 16px;
+        border: 1.5px solid #e8e8e8;
+        border-radius: 10px;
+        font-family: 'Bentham', serif;
+        font-size: 0.95rem;
+        color: #222;
+        background: #fafafa;
+        transition: border-color 0.2s, background 0.2s;
+        outline: none;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .form-group input:focus,
+      .form-group textarea:focus,
+      .form-group select:focus {
+        border-color: #e7972e;
+        background: #fff;
+      }
+      .form-group textarea {
+        resize: vertical;
+        min-height: 130px;
+      }
+
+      .submit-btn {
+        width: 100%;
+        padding: 16px;
+        background: #e7972e;
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        font-family: 'Bentham', serif;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        letter-spacing: 0.06em;
+        transition: background 0.3s, transform 0.2s;
+        margin-top: 8px;
+      }
+      .submit-btn:hover {
+        background: #c97820;
+        transform: translateY(-1px);
+      }
+
+      /* Success message */
+      .success-msg {
+        display: none;
+        text-align: center;
+        padding: 30px;
+        animation: fadeInUp 0.5s ease;
+      }
+      .success-msg .checkmark {
+        width: 56px;
+        height: 56px;
+        background: #e7972e;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 16px;
+      }
+      .success-msg .checkmark svg {
+        width: 28px;
+        height: 28px;
+        fill: white;
+      }
+      .success-msg h4 {
+        font-family: 'Lora', serif;
+        font-size: 1.4rem;
+        color: #111;
+      }
+      .success-msg p {
+        color: #666;
+        font-size: 0.95rem;
+        margin-bottom: 0;
+      }
+
+      /* CTA strip */
+      .contact-cta-strip {
+        background: #111;
+        color: #fff;
+        text-align: center;
+        padding: 60px 24px;
+      }
+      .contact-cta-strip h2 {
+        font-family: 'Lora', serif;
+        font-size: clamp(1.4rem, 3vw, 2rem);
+        color: #fff;
+        margin-bottom: 10px;
+      }
+      .contact-cta-strip p {
+        color: #aaa;
+        font-size: 0.97rem;
+        margin-bottom: 28px;
+      }
+      .contact-cta-strip a {
+        display: inline-block;
+        padding: 14px 36px;
+        background: #e7972e;
+        color: #fff;
+        border-radius: 30px;
+        font-weight: bold;
+        text-decoration: none;
+        transition: background 0.3s;
+      }
+      .contact-cta-strip a:hover { background: #c97820; }
+
+      /* Responsive */
+      @media (max-width: 860px) {
+        .contact-body {
+          grid-template-columns: 1fr;
+          gap: 40px;
+          padding: 50px 20px 80px;
+        }
+        .contact-info-panel {
+          position: static;
+        }
+        .contact-form-wrap {
+          padding: 32px 24px;
+        }
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="contact-page">
+
+    <div id="navbar"></div>
+    <script src="components/navbar.js"></script>
+
+    <!-- Hero -->
+    <div class="contact-hero">
+      <div class="contact-hero-text">
+        <span>Namelok Naretoi Home</span>
+        <h1>Get in Touch</h1>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="contact-body">
+
+      <!-- Left: info -->
+      <div class="contact-info-panel">
+        <h2>We'd love to hear from you.</h2>
+        <p>Whether you want to partner with us, volunteer, ask about our programs, or simply learn more — our team is always happy to connect.</p>
+
+        <div class="info-block">
+          <div class="info-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/></svg>
+          </div>
+          <div class="info-text">
+            <strong>Location</strong>
+            <p>Narok, Kenya</p>
+          </div>
+        </div>
+
+        <div class="info-block">
+          <div class="info-icon">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          </div>
+          <div class="info-text">
+            <strong>Email</strong>
+            <a href="mailto:jenniferkosencha@gmail.com">jenniferkosencha@gmail.com</a>
+          </div>
+        </div>
+
+        <div class="info-block">
+          <div class="info-icon">
+            <svg viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.45 2.33.69 3.58.69a1 1 0 011 1V20a1 1 0 01-1 1C10.61 21 3 13.39 3 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.24 2.45.69 3.57a1 1 0 01-.24 1.02l-2.33 2.2z"/></svg>
+          </div>
+          <div class="info-text">
+            <strong>Phone</strong>
+            <a href="tel:+254700000000">+254 700 000 000</a>
+          </div>
+        </div>
+
+        <div class="social-row">
+          <a href="#" class="social-btn facebook">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+            Facebook
+          </a>
+          <a href="#" class="social-btn twitter">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            X / Twitter
+          </a>
+        </div>
+      </div>
+
+      <!-- Right: form -->
+      <div class="contact-form-wrap">
+        <h3>Send us a message</h3>
+        <p>We'll get back to you within 2 business days.</p>
+
+        <div id="contactFormInner">
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" id="firstName" placeholder="Jane" required />
+            </div>
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text" id="lastName" placeholder="Doe" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="contactEmail" placeholder="you@example.com" required />
+          </div>
+
+          <div class="form-group">
+            <label>Reason for reaching out</label>
+            <select id="reason">
+              <option value="" disabled selected>Select a reason</option>
+              <option>General Inquiry</option>
+              <option>Partnership / Sponsorship</option>
+              <option>Volunteering</option>
+              <option>Donation Question</option>
+              <option>Media / Press</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Message</label>
+            <textarea id="contactMessage" placeholder="Tell us more..."></textarea>
+          </div>
+
+          <button class="submit-btn" onclick="handleContactSubmit()">Send Message</button>
+        </div>
+
+        <!-- Success state -->
+        <div class="success-msg" id="successMsg">
+          <div class="checkmark">
+            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+          </div>
+          <h4>Message sent!</h4>
+          <p>Thank you for reaching out. We'll be in touch soon.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA Strip -->
+    <div class="contact-cta-strip">
+      <h2>Want to make a direct impact?</h2>
+      <p>Your donation helps us continue supporting disabled children and rescued girls in Narok.</p>
+      <a href="donate.html">Donate Now</a>
+    </div>
+
+    <div id="footer"></div>
+    <script src="components/footer.js"></script>
+
+    <script>
+      function handleContactSubmit() {
+        const first = document.getElementById('firstName').value.trim();
+        const email = document.getElementById('contactEmail').value.trim();
+        const message = document.getElementById('contactMessage').value.trim();
+
+        if (!first || !email || !message) {
+          alert('Please fill in your name, email, and message.');
+          return;
+        }
+
+        // In production: replace with fetch() to your backend or a service like Formspree
+        // e.g. fetch('https://formspree.io/f/YOUR_ID', { method: 'POST', body: formData })
+
+        document.getElementById('contactFormInner').style.display = 'none';
+        const msg = document.getElementById('successMsg');
+        msg.style.display = 'block';
+      }
+    </script>
+  </body>
+</html>
