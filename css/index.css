@@ -115,19 +115,21 @@ select:focus-visible {
 
 /* NAVIGATION BAR */
 .title {
-  background-color: rgba(253, 248, 242, 0.82);
-  backdrop-filter: blur(14px) saturate(160%);
-  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  background-color: transparent;
   border-bottom: 1px solid transparent;
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
   padding: 6px 0;
   z-index: 1000;
-  transition: box-shadow 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+  transition: box-shadow 0.3s ease, border-color 0.3s ease, background-color 0.3s ease, backdrop-filter 0.3s ease;
 }
 
 .title.scrolled {
+  background-color: rgba(253, 248, 242, 0.82);
+  backdrop-filter: blur(14px) saturate(160%);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
   border-bottom-color: var(--border-soft);
   box-shadow: 0 4px 24px rgba(28, 20, 8, 0.06);
 }
@@ -169,9 +171,15 @@ select:focus-visible {
   font-size: 0.85rem;
   letter-spacing: 0.03em;
   text-decoration: none;
-  color: var(--ink-soft);
+  color: #fff;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
   position: relative;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.title.scrolled .nav-links a {
+  color: var(--ink-soft);
+  text-shadow: none;
 }
 
 .nav-links > li > a:not(.donate-btn)::after {
@@ -187,8 +195,12 @@ select:focus-visible {
 }
 
 .nav-links > li > a:not(.donate-btn):hover {
-  color: var(--ink);
+  color: var(--primary);
   text-decoration: none;
+}
+
+.title.scrolled .nav-links > li > a:not(.donate-btn):hover {
+  color: var(--ink);
 }
 
 .nav-links > li > a:not(.donate-btn):hover::after {
