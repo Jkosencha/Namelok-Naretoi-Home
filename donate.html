@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="css/index.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Bentham&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
     <title>Donate – Namelok Naretoi Home</title>
   </head>
 
@@ -46,7 +48,7 @@
       <!-- Left: form -->
       <div class="donate-form-wrap">
         <h2>Choose your donation</h2>
-        <p>One-time or recurring — every amount changes a life.</p>
+        <p>One-time or recurring, every amount changes a life.</p>
 
         <div id="donateFormInner">
           <!-- Amount presets -->
@@ -181,7 +183,7 @@
 
         <div class="donor-quote">
           <p>Namelok gave my daughter a future I never thought was possible. She is in school, she is healthy, and she is happy.</p>
-          <cite>— Parent of a supported child, Narok</cite>
+          <cite>Parent of a supported child, Narok</cite>
         </div>
 
         <div class="trust-badges">
@@ -201,8 +203,22 @@
       </div>
     </div>
 
+    <!-- CTA Strip -->
+    <div class="cross-cta-strip">
+      <h2>Have questions before you give?</h2>
+      <p>Our team is happy to walk you through where your donation goes and how to get involved.</p>
+      <a href="contact.html">Contact Us</a>
+    </div>
+
     <div id="footer"></div>
     <script src="components/footer.js"></script>
+
+    <!-- Back to top -->
+    <div class="upArrowCont" id="upArrow">
+      <img src="images/upArrow.svg" alt="Back to top" class="upArrow" />
+    </div>
+
+    <script src="js/index.js"></script>
 
     <script>
       let selectedAmount = 1000;

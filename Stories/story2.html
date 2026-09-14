@@ -5,28 +5,46 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Impact Story</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <style>
+        :root {
+            --primary: #e7972e;
+            --primary-dark: #b5701a;
+            --ink: #1c1a17;
+            --ink-soft: #524d46;
+            --ink-mute: #8a8378;
+            --border-soft: rgba(28, 26, 23, 0.09);
+        }
+
+        * { box-sizing: border-box; }
+
         body {
             margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8f0e3;
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background-color: #fdf8f2;
+            color: var(--ink-soft);
+            -webkit-font-smoothing: antialiased;
         }
 
         .story-wrapper {
             max-width: 1000px;
-            margin: 50px auto;
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            margin: 60px auto;
+            background-color: #fff;
+            padding: 44px;
+            border: 1px solid var(--border-soft);
+            border-radius: 26px;
+            box-shadow: 0 24px 60px rgba(28, 20, 8, 0.12);
+            animation: fadeInUp 0.7s cubic-bezier(0.2, 0.7, 0.3, 1);
         }
 
         .story-header {
             display: flex;
             flex-wrap: wrap;
-            gap: 30px;
+            gap: 34px;
             align-items: flex-start;
-            margin-bottom: 30px;
+            margin-bottom: 34px;
         }
 
         .story-header img {
@@ -34,7 +52,8 @@
             max-width: 300px;
             height: auto;
             object-fit: cover;
-            border-radius: 8px;
+            border-radius: 18px;
+            box-shadow: 0 12px 30px rgba(28, 20, 8, 0.15);
             flex-shrink: 0;
         }
 
@@ -44,7 +63,10 @@
 
         .story-info h2 {
             margin-top: 0;
-            color: #e65d3f;
+            font-family: "Fraunces", Georgia, serif;
+            font-weight: 600;
+            font-size: 1.8rem;
+            color: var(--ink);
         }
 
         .story-info ul {
@@ -54,32 +76,52 @@
         }
 
         .story-info ul li {
-            font-size: 1.05rem;
-            margin-bottom: 6px;
-            color: #444;
+            font-size: 1rem;
+            margin-bottom: 8px;
+            color: var(--ink-soft);
+        }
+
+        .story-info ul li strong {
+            color: var(--ink);
         }
 
         .story-content p {
-            font-size: 1.1rem;
-            line-height: 1.7;
-            color: #333;
+            font-size: 1.05rem;
+            line-height: 1.85;
+            color: var(--ink-soft);
         }
 
         .back-button {
             display: inline-block;
             margin-top: 30px;
-            padding: 10px 20px;
-            background: #e65d3f;
+            padding: 14px 30px;
+            background: linear-gradient(135deg, #f4a83f 0%, #d9731c 100%);
             color: white;
+            font-weight: 700;
             text-decoration: none;
-            border-radius: 5px;
+            border: none;
+            border-radius: 999px;
+            box-shadow: 0 10px 30px rgba(231, 151, 46, 0.35);
+            transition: transform 0.25s ease, filter 0.25s ease;
         }
 
         .back-button:hover {
-            background: #d14d2f;
+            transform: translateY(-3px);
+            filter: brightness(1.05);
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         @media (max-width: 768px) {
+            .story-wrapper {
+                margin: 30px auto;
+                padding: 26px;
+                border-radius: 20px;
+            }
+
             .story-header {
                 flex-direction: column;
                 align-items: center;

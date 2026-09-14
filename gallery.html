@@ -10,21 +10,27 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
     <!--css links-->
     <link rel="stylesheet" href="css/index.css" />
 
-    <!--font links-->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bentham:wght@300;400;600;700&display=swap"
-      rel="stylesheet"
-    />
-
-    <title>Namelok Naretoi Home</title>
+    <title>Our Gallery – Namelok Naretoi Home</title>
   </head>
   <body>
     <!--Logo and navigation bar-->
     <div id="navbar"></div>
-<script src="/components/navbar.js"></script>
+<script src="components/navbar.js"></script>
+
+    <div class="hero-section hero-gallery">
+      <div class="hero-text">
+        <h1>Our Gallery</h1>
+        <p>Glimpses of life and work at Namelok Naretoi Home.</p>
+      </div>
+    </div>
 
     <section class="masonry-gallery">
       <div class="gallery-container">
@@ -37,10 +43,17 @@
     </section>
 
     <div id="contact-section"></div>
-<script src="/components/contact-section.js"></script>
+<script src="components/contact-section.js"></script>
 
     <!-- Footer -->
     <div id="footer"></div>
-<script src="/components/footer.js"></script>
+<script src="components/footer.js"></script>
+
+    <!-- Back to top -->
+    <div class="upArrowCont" id="upArrow">
+      <img src="images/upArrow.svg" alt="Back to top" class="upArrow" />
+    </div>
+
+    <script src="js/index.js"></script>
   </body>
 </html>

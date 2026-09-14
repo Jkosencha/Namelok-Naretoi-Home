@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="css/index.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Bentham&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
     <title>Contact Us – Namelok Naretoi Home</title>
     <style>
       /* ── Page-specific styles ── */
@@ -18,38 +20,47 @@
       /* Hero */
       .contact-hero {
         position: relative;
-        background: url('images/namelokBG3.jpg') center/cover no-repeat;
-        height: 46vh;
+        height: 50vh;
+        background: url('images/namelokBG3.jpg') no-repeat center center/cover;
         display: flex;
-        align-items: flex-end;
-        padding-bottom: 48px;
-        padding-left: 6vw;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+        padding: 10px;
       }
       .contact-hero::after {
         content: '';
         position: absolute;
-        inset: 0;
-        background: linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.72) 100%);
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(180deg, rgba(10, 8, 6, 0.4) 0%, rgba(10, 8, 6, 0.72) 100%);
+        z-index: 1;
       }
       .contact-hero-text {
         position: relative;
         z-index: 2;
-        color: #fff;
+        padding: 0 20px;
       }
       .contact-hero-text span {
-        display: inline-block;
+        display: block;
         font-size: 0.75rem;
         letter-spacing: 0.2em;
         text-transform: uppercase;
         color: #e7972e;
         margin-bottom: 10px;
+        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
       }
       .contact-hero-text h1 {
-        font-family: 'Lora', serif;
-        font-size: clamp(2rem, 5vw, 3.6rem);
+        font-family: "Fraunces", Georgia, serif;
         font-weight: 600;
-        line-height: 1.1;
+        font-size: clamp(1.8rem, 4vw, 3.2rem);
         margin: 0;
+        display: inline-block;
+        color: #fff;
+        text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
       }
 
       /* Main layout */
@@ -58,20 +69,21 @@
         margin: 0 auto;
         padding: 70px 24px 100px;
         display: grid;
-        grid-template-columns: 1fr 1.4fr;
+        grid-template-columns: 1.1fr 1fr;
         gap: 60px;
         align-items: start;
       }
 
-      /* Left info panel */
+      /* Right info panel */
       .contact-info-panel {
         position: sticky;
         top: 40px;
       }
       .contact-info-panel h2 {
-        font-family: 'Lora', serif;
-        font-size: 1.7rem;
-        color: #111;
+        font-family: "Fraunces", Georgia, serif;
+        font-weight: 600;
+        font-size: 1.9rem;
+        color: #1a1a1a;
         margin-bottom: 10px;
       }
       .contact-info-panel > p {
@@ -88,10 +100,11 @@
         margin-bottom: 28px;
       }
       .info-icon {
-        width: 44px;
-        height: 44px;
-        border-radius: 50%;
-        background-color: #e7972e;
+        width: 46px;
+        height: 46px;
+        border-radius: 14px;
+        background: linear-gradient(135deg, #f4a83f 0%, #d9731c 100%);
+        box-shadow: 0 10px 24px rgba(231, 151, 46, 0.35);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -129,32 +142,33 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        padding: 9px 18px;
-        border-radius: 30px;
+        padding: 10px 20px;
+        border-radius: 999px;
+        border: none;
         font-size: 0.82rem;
-        font-weight: bold;
+        font-weight: 700;
         text-decoration: none;
-        transition: transform 0.2s, box-shadow 0.2s;
         letter-spacing: 0.04em;
+        transition: transform 0.25s ease;
       }
-      .social-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-      }
+      .social-btn:hover { transform: translateY(-2px); }
       .social-btn.facebook { background: #1877f2; color: #fff; }
       .social-btn.twitter  { background: #000; color: #fff; }
 
-      /* Right: form */
+      /* Left: form */
       .contact-form-wrap {
         background: #fff;
-        border-radius: 20px;
+        border: 1px solid rgba(28, 26, 23, 0.09);
+        border-radius: 26px;
+        box-shadow: 0 12px 30px rgba(28, 20, 8, 0.1);
         padding: 48px 40px;
-        box-shadow: 0 8px 40px rgba(0,0,0,0.07);
+        box-sizing: border-box;
       }
       .contact-form-wrap h3 {
-        font-family: 'Lora', serif;
-        font-size: 1.4rem;
-        color: #111;
+        font-family: "Fraunces", Georgia, serif;
+        font-weight: 600;
+        font-size: 1.5rem;
+        color: #1a1a1a;
         margin-bottom: 6px;
       }
       .contact-form-wrap p {
@@ -187,13 +201,13 @@
       .form-group textarea,
       .form-group select {
         padding: 13px 16px;
-        border: 1.5px solid #e8e8e8;
+        border: 1.5px solid rgba(28, 26, 23, 0.12);
         border-radius: 10px;
-        font-family: 'Bentham', serif;
+        font-family: "Inter", sans-serif;
         font-size: 0.95rem;
         color: #222;
         background: #fafafa;
-        transition: border-color 0.2s, background 0.2s;
+        transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
         outline: none;
         width: 100%;
         box-sizing: border-box;
@@ -203,6 +217,7 @@
       .form-group select:focus {
         border-color: #e7972e;
         background: #fff;
+        box-shadow: 0 0 0 4px #fef3e4;
       }
       .form-group textarea {
         resize: vertical;
@@ -211,22 +226,23 @@
 
       .submit-btn {
         width: 100%;
-        padding: 16px;
-        background: #e7972e;
+        padding: 18px;
+        background: linear-gradient(135deg, #f4a83f 0%, #d9731c 100%);
         color: #fff;
         border: none;
-        border-radius: 12px;
-        font-family: 'Bentham', serif;
+        border-radius: 999px;
+        font-family: "Inter", sans-serif;
         font-size: 1rem;
-        font-weight: bold;
+        font-weight: 700;
         cursor: pointer;
-        letter-spacing: 0.06em;
-        transition: background 0.3s, transform 0.2s;
+        letter-spacing: 0.03em;
         margin-top: 8px;
+        box-shadow: 0 10px 30px rgba(231, 151, 46, 0.35);
+        transition: transform 0.25s ease, filter 0.25s ease;
       }
       .submit-btn:hover {
-        background: #c97820;
-        transform: translateY(-1px);
+        transform: translateY(-2px);
+        filter: brightness(1.05);
       }
 
       /* Success message */
@@ -237,10 +253,11 @@
         animation: fadeInUp 0.5s ease;
       }
       .success-msg .checkmark {
-        width: 56px;
-        height: 56px;
-        background: #e7972e;
+        width: 60px;
+        height: 60px;
         border-radius: 50%;
+        background: linear-gradient(135deg, #f4a83f 0%, #d9731c 100%);
+        box-shadow: 0 10px 30px rgba(231, 151, 46, 0.35);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -252,45 +269,16 @@
         fill: white;
       }
       .success-msg h4 {
-        font-family: 'Lora', serif;
-        font-size: 1.4rem;
-        color: #111;
+        font-family: "Fraunces", Georgia, serif;
+        font-weight: 600;
+        font-size: 1.5rem;
+        color: #1a1a1a;
       }
       .success-msg p {
         color: #666;
         font-size: 0.95rem;
         margin-bottom: 0;
       }
-
-      /* CTA strip */
-      .contact-cta-strip {
-        background: #111;
-        color: #fff;
-        text-align: center;
-        padding: 60px 24px;
-      }
-      .contact-cta-strip h2 {
-        font-family: 'Lora', serif;
-        font-size: clamp(1.4rem, 3vw, 2rem);
-        color: #fff;
-        margin-bottom: 10px;
-      }
-      .contact-cta-strip p {
-        color: #aaa;
-        font-size: 0.97rem;
-        margin-bottom: 28px;
-      }
-      .contact-cta-strip a {
-        display: inline-block;
-        padding: 14px 36px;
-        background: #e7972e;
-        color: #fff;
-        border-radius: 30px;
-        font-weight: bold;
-        text-decoration: none;
-        transition: background 0.3s;
-      }
-      .contact-cta-strip a:hover { background: #c97820; }
 
       /* Responsive */
       @media (max-width: 860px) {
@@ -328,54 +316,7 @@
     <!-- Body -->
     <div class="contact-body">
 
-      <!-- Left: info -->
-      <div class="contact-info-panel">
-        <h2>We'd love to hear from you.</h2>
-        <p>Whether you want to partner with us, volunteer, ask about our programs, or simply learn more — our team is always happy to connect.</p>
-
-        <div class="info-block">
-          <div class="info-icon">
-            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/></svg>
-          </div>
-          <div class="info-text">
-            <strong>Location</strong>
-            <p>Narok, Kenya</p>
-          </div>
-        </div>
-
-        <div class="info-block">
-          <div class="info-icon">
-            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-          </div>
-          <div class="info-text">
-            <strong>Email</strong>
-            <a href="mailto:jenniferkosencha@gmail.com">jenniferkosencha@gmail.com</a>
-          </div>
-        </div>
-
-        <div class="info-block">
-          <div class="info-icon">
-            <svg viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.45 2.33.69 3.58.69a1 1 0 011 1V20a1 1 0 01-1 1C10.61 21 3 13.39 3 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.24 2.45.69 3.57a1 1 0 01-.24 1.02l-2.33 2.2z"/></svg>
-          </div>
-          <div class="info-text">
-            <strong>Phone</strong>
-            <a href="tel:+254700000000">+254 700 000 000</a>
-          </div>
-        </div>
-
-        <div class="social-row">
-          <a href="#" class="social-btn facebook">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
-            Facebook
-          </a>
-          <a href="#" class="social-btn twitter">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-            X / Twitter
-          </a>
-        </div>
-      </div>
-
-      <!-- Right: form -->
+      <!-- Left: form -->
       <div class="contact-form-wrap">
         <h3>Send us a message</h3>
         <p>We'll get back to you within 2 business days.</p>
@@ -427,10 +368,57 @@
           <p>Thank you for reaching out. We'll be in touch soon.</p>
         </div>
       </div>
+
+      <!-- Right: info -->
+      <div class="contact-info-panel">
+        <h2>We'd love to hear from you.</h2>
+        <p>Whether you want to partner with us, volunteer, ask about our programs, or simply learn more, our team is always happy to connect.</p>
+
+        <div class="info-block">
+          <div class="info-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/></svg>
+          </div>
+          <div class="info-text">
+            <strong>Location</strong>
+            <p>Narok, Kenya</p>
+          </div>
+        </div>
+
+        <div class="info-block">
+          <div class="info-icon">
+            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+          </div>
+          <div class="info-text">
+            <strong>Email</strong>
+            <a href="mailto:jenniferkosencha@gmail.com">jenniferkosencha@gmail.com</a>
+          </div>
+        </div>
+
+        <div class="info-block">
+          <div class="info-icon">
+            <svg viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.45 2.33.69 3.58.69a1 1 0 011 1V20a1 1 0 01-1 1C10.61 21 3 13.39 3 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.24 2.45.69 3.57a1 1 0 01-.24 1.02l-2.33 2.2z"/></svg>
+          </div>
+          <div class="info-text">
+            <strong>Phone</strong>
+            <a href="tel:+254700000000">+254 700 000 000</a>
+          </div>
+        </div>
+
+        <div class="social-row">
+          <a href="#" class="social-btn facebook">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+            Facebook
+          </a>
+          <a href="#" class="social-btn twitter">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            X / Twitter
+          </a>
+        </div>
+      </div>
     </div>
 
     <!-- CTA Strip -->
-    <div class="contact-cta-strip">
+    <div class="cross-cta-strip">
       <h2>Want to make a direct impact?</h2>
       <p>Your donation helps us continue supporting disabled children and rescued girls in Narok.</p>
       <a href="donate.html">Donate Now</a>
@@ -438,6 +426,13 @@
 
     <div id="footer"></div>
     <script src="components/footer.js"></script>
+
+    <!-- Back to top -->
+    <div class="upArrowCont" id="upArrow">
+      <img src="images/upArrow.svg" alt="Back to top" class="upArrow" />
+    </div>
+
+    <script src="js/index.js"></script>
 
     <script>
       function handleContactSubmit() {

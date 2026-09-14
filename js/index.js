@@ -1,60 +1,42 @@
-// // Carousel functionality
-const track = document.getElementById('carouselTrack');
-const scrollAmount = 320; // Adjust to match your card width + gap
+// Back to top button — fades in after scrolling, scrolls smoothly to top
+const upArrow = document.getElementById("upArrow");
+if (upArrow) {
+  const upArrowCont = document.getElementById("upArrow");
 
-function scrollCarousel(direction) {
-  const maxScrollLeft = track.scrollWidth - track.clientWidth;
+  upArrowCont.onclick = function () {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
-  // If scrolling right and at (or near) the end
-  if (direction === 1 && Math.ceil(track.scrollLeft) >= maxScrollLeft) {
-    track.scrollTo({
-      left: 0,
-      behavior: 'smooth'
-    });
-  }
-  // If scrolling left and at (or near) the beginning
-  else if (direction === -1 && track.scrollLeft <= 0) {
-    track.scrollTo({
-      left: maxScrollLeft,
-      behavior: 'smooth'
-    });
-  }
-  // Otherwise just scroll normally
-  else {
-    track.scrollBy({
-      left: scrollAmount * direction,
-      behavior: 'smooth'
-    });
-  }
+  const toggleUpArrow = () => {
+    upArrowCont.classList.toggle("visible", window.scrollY > 400);
+  };
+  window.addEventListener("scroll", toggleUpArrow, { passive: true });
+  toggleUpArrow();
 }
 
-// Auto-scroll carousel every 4 seconds
-setInterval(() => {
-  scrollCarousel(1);
-}, 3000);
+// Scroll progress bar
+const progressBar = document.createElement("div");
+progressBar.id = "scroll-progress";
+document.body.appendChild(progressBar);
 
-// Scroll to top when up arrow is clicked
-document.getElementById("upArrow").onclick = function () {
-  window.scrollTo({
-    top: 0,
-    behavior: 'smooth'
-  });
+const updateProgressBar = () => {
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+  progressBar.style.width = progress + "%";
 };
-
-document.getElementById("upArrow").onclick = function () {
-  //scroll to top
-  window.scrollTo(0, 0);
-}
+window.addEventListener("scroll", updateProgressBar, { passive: true });
+updateProgressBar();
 
 // Counter animation
-const counters = document.querySelectorAll('.counter');
+const counters = document.querySelectorAll(".counter");
 
 const startCount = () => {
-  counters.forEach(counter => {
-    const target = +counter.getAttribute('data-target');
-    const duration = 2000; // Total duration in ms for the count animation
-    const frameRate = 20;  // ms between frames
-    const increment = Math.ceil(target / (duration / frameRate)); // adaptive increment
+  counters.forEach((counter) => {
+    const target = +counter.getAttribute("data-target");
+    const duration = 2000;
+    const frameRate = 20;
+    const increment = Math.ceil(target / (duration / frameRate));
 
     const updateCount = () => {
       let count = +counter.innerText;
@@ -70,15 +52,69 @@ const startCount = () => {
   });
 };
 
-// Animate only when counter section is visible
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      startCount();
-      observer.disconnect(); // run only once
-    }
+const counterContainer = document.querySelector(".counterContainer");
+if (counterContainer) {
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        startCount();
+        counterObserver.disconnect();
+      }
+    });
   });
+  counterObserver.observe(counterContainer);
+}
+
+// Scroll-reveal animation for content blocks
+const revealSelectors = [
+  ".aboutUsLeft",
+  ".aboutUsText",
+  ".stories-section h2",
+  ".stories-subtitle",
+  ".story-card",
+  ".section4-heading",
+  ".mv-card",
+  ".gallery-heading",
+  ".galleryContainer",
+  ".partners-title",
+  ".partner-logos",
+  ".service-card",
+  ".video-section",
+  ".history-content",
+  ".history-cta",
+  ".donate-form-wrap",
+  ".trust-panel",
+  ".contact-form-wrap",
+  ".contact-info-panel",
+  ".impact-stat",
+  ".gallery-container img",
+];
+
+const revealEls = document.querySelectorAll(revealSelectors.join(","));
+revealEls.forEach((el, i) => {
+  el.classList.add("reveal");
+  el.style.transitionDelay = Math.min((i % 6) * 0.08, 0.4) + "s";
 });
 
-observer.observe(document.querySelector('.counterContainer'));
+const revealObserver = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  },
+  { threshold: 0.12 }
+);
+revealEls.forEach((el) => revealObserver.observe(el));
 
+// Navbar shadow/blur state on scroll
+const navTitle = document.querySelector(".title");
+if (navTitle) {
+  const toggleNavShadow = () => {
+    navTitle.classList.toggle("scrolled", window.scrollY > 30);
+  };
+  window.addEventListener("scroll", toggleNavShadow, { passive: true });
+  toggleNavShadow();
+}
