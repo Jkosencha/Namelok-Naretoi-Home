@@ -16,14 +16,7 @@
         <div class="menu-toggle" id="menu-toggle">☰</div>
         <ul class="nav-links">
           <li><a href="${root}index.html">HOME</a></li>
-          <li class="dropdown">
-            <a href="${root}about.html">ABOUT US <span class="arrow">&#9662;</span></a>
-            <ul class="dropdown-menu">
-              <li><a href="${root}about.html">About Us</a></li>
-              <li><a href="${root}about.html#history">Our History</a></li>
-              <li><a href="${root}about.html#programs">Our Programs</a></li>
-            </ul>
-          </li>
+          <li><a href="${root}about.html">ABOUT US</a></li>
           <li><a href="${root}index.html#stories">STORIES</a></li>
           <li><a href="${root}gallery.html">OUR GALLERY</a></li>
           <li><a href="${root}contact.html">CONTACT US</a></li>

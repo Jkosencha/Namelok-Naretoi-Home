@@ -203,15 +203,13 @@ select:focus-visible {
   border-radius: var(--radius-pill);
   font-weight: 700;
   text-decoration: none !important;
-  box-shadow: var(--shadow-glow);
-  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+  transition: transform 0.25s ease, filter 0.25s ease;
   display: inline-block;
 }
 
 .donate-btn:hover {
   transform: translateY(-2px);
   filter: brightness(1.05);
-  box-shadow: 0 14px 34px rgba(231, 151, 46, 0.45);
 }
 
 /* Hamburger Menu */
@@ -268,67 +266,6 @@ select:focus-visible {
   .donate-btn {
     margin-top: 6px;
   }
-
-  .dropdown-menu {
-    position: static !important;
-    background-color: rgba(255, 255, 255, 0.08) !important;
-    width: 100%;
-    border-radius: 0;
-  }
-}
-
-/* Dropdown */
-.dropdown {
-  position: relative;
-}
-
-.dropdown .arrow {
-  font-size: 0.6em;
-  margin-left: 5px;
-}
-
-.dropdown-menu {
-  display: none;
-  position: absolute;
-  top: 130%;
-  left: 0;
-  background-color: var(--ink);
-  color: white;
-  border: none;
-  border-radius: var(--radius-sm);
-  min-width: 180px;
-  z-index: 9999;
-  list-style: none;
-  padding: 8px;
-  margin: 0;
-  box-shadow: var(--shadow-lg);
-  opacity: 0;
-  transform: translateY(6px);
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-.dropdown:hover .dropdown-menu {
-  display: block;
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.dropdown-menu li {
-  padding: 4px;
-}
-
-.dropdown-menu li a {
-  color: white;
-  text-decoration: none;
-  display: block;
-  padding: 8px 12px;
-  border-radius: var(--radius-sm);
-  font-size: 0.85rem;
-}
-
-.dropdown-menu li a:hover {
-  color: #fff;
-  background: rgba(231, 151, 46, 0.25);
 }
 
 /* HERO / HOME SECTION */
@@ -414,7 +351,6 @@ select:focus-visible {
 .mainText a:first-of-type {
   background: var(--gradient);
   border-color: transparent;
-  box-shadow: var(--shadow-glow);
 }
 
 .mainText a:hover {
@@ -579,13 +515,11 @@ select:focus-visible {
   border-radius: var(--radius-pill);
   text-align: center;
   cursor: pointer;
-  box-shadow: var(--shadow-glow);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  transition: transform 0.25s ease;
 }
 
 .aboutUsText a:hover {
   transform: translateY(-3px);
-  box-shadow: 0 14px 34px rgba(231, 151, 46, 0.45);
 }
 
 @media (max-width: 900px) {
@@ -985,7 +919,6 @@ select:focus-visible {
   border: none;
   border-radius: var(--radius-pill);
   font-weight: 700;
-  box-shadow: var(--shadow-glow);
   transition: transform 0.25s ease;
 }
 
@@ -1009,7 +942,7 @@ select:focus-visible {
   align-items: center;
   z-index: 9999;
   cursor: pointer;
-  box-shadow: var(--shadow-glow);
+  box-shadow: var(--shadow-md);
   opacity: 0;
   transform: translateY(16px) scale(0.9);
   pointer-events: none;
@@ -1218,45 +1151,67 @@ select:focus-visible {
 
 .services {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 26px;
-  margin-top: 44px;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 28px;
+  margin-top: 50px;
   counter-reset: service-count;
 }
 
 .service-card {
   background-color: var(--surface);
   border: 1px solid var(--border-soft);
-  border-radius: var(--radius-md);
-  padding: 30px 28px;
+  border-radius: var(--radius-lg);
+  padding: 36px 32px;
   counter-increment: service-count;
   box-shadow: var(--shadow-sm);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+  position: relative;
 }
 
 .service-card:hover {
-  transform: translateY(-6px);
-  box-shadow: var(--shadow-md);
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(231, 151, 46, 0.35);
 }
 
 .service-card h3 {
-  margin-top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  margin: 0 0 14px;
   color: var(--ink);
-  font-size: 1.15rem;
+  font-size: 1.22rem;
   font-weight: 600;
+  line-height: 1.35;
 }
 
 .service-card h3::before {
-  content: counter(service-count, decimal-leading-zero) " ";
-  color: var(--primary);
-  font-family: var(--font-display);
-  margin-right: 4px;
+  content: counter(service-count, decimal-leading-zero);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: var(--gradient);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 700;
+  box-shadow: var(--shadow-glow);
+  transition: transform 0.35s ease;
+}
+
+.service-card:hover h3::before {
+  transform: scale(1.08) rotate(-4deg);
 }
 
 .service-card p {
   font-size: 0.97rem;
-  line-height: 1.7;
+  line-height: 1.8;
   color: var(--ink-mute);
+  margin: 0;
 }
 
 .video-section {
@@ -1322,7 +1277,6 @@ select:focus-visible {
   text-decoration: none;
   font-weight: 700;
   font-size: 1rem;
-  box-shadow: var(--shadow-glow);
   transition: transform 0.25s ease;
 }
 
@@ -1414,7 +1368,6 @@ select:focus-visible {
   border-color: transparent;
   color: #fff;
   transform: translateY(-3px);
-  box-shadow: var(--shadow-glow);
 }
 
 /* DONATE CTA SECTION */
@@ -1493,7 +1446,6 @@ select:focus-visible {
   background: var(--gradient);
   border-color: transparent;
   color: #fff;
-  box-shadow: var(--shadow-glow);
 }
 
 .donate-amount-btn.featured:hover {
@@ -1535,13 +1487,13 @@ select:focus-visible {
 }
 
 .cta-strip-inner {
-  max-width: 900px;
+  max-width: 700px;
   margin: 0 auto;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  gap: 30px;
-  flex-wrap: wrap;
+  text-align: center;
+  gap: 24px;
 }
 
 .cta-strip-text h3 {
@@ -1569,8 +1521,6 @@ select:focus-visible {
   font-weight: 700;
   text-decoration: none;
   white-space: nowrap;
-  flex-shrink: 0;
-  box-shadow: var(--shadow-glow);
   transition: transform 0.25s ease;
 }
 
@@ -1580,10 +1530,6 @@ select:focus-visible {
 }
 
 @media (max-width: 600px) {
-  .cta-strip-inner {
-    flex-direction: column;
-    text-align: center;
-  }
   .cta-strip-btn { width: 100%; text-align: center; }
 }
 
@@ -1909,7 +1855,6 @@ select:focus-visible {
   cursor: pointer;
   letter-spacing: 0.03em;
   margin-top: 8px;
-  box-shadow: var(--shadow-glow);
   transition: transform 0.25s ease, filter 0.25s ease;
 }
 .donate-submit-btn:hover {
@@ -2088,7 +2033,6 @@ select:focus-visible {
   border-radius: var(--radius-pill);
   font-weight: 700;
   text-decoration: none;
-  box-shadow: var(--shadow-glow);
   transition: transform 0.25s ease;
 }
 .cross-cta-strip a:hover {
