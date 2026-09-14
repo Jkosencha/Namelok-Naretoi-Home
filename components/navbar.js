@@ -20,7 +20,8 @@
             <a href="${root}about.html">ABOUT US <span class="arrow">&#9662;</span></a>
             <ul class="dropdown-menu">
               <li><a href="${root}about.html">About Us</a></li>
-              <li><a href="${root}history.html">Our History</a></li>
+              <li><a href="${root}about.html#history">Our History</a></li>
+              <li><a href="${root}about.html#programs">Our Programs</a></li>
             </ul>
           </li>
           <li><a href="${root}index.html#stories">STORIES</a></li>

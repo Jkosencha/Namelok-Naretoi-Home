@@ -61,6 +61,11 @@ html {
   scroll-behavior: smooth;
 }
 
+section[id],
+.about-header[id] {
+  scroll-margin-top: 90px;
+}
+
 ::selection {
   background: var(--primary);
   color: #fff;
@@ -1178,10 +1183,6 @@ select:focus-visible {
 }
 
 .hero-about {
-  background: url("../images/namelokBG3.jpg") no-repeat center center/cover;
-}
-
-.hero-history {
   background: url("../images/namelokBG3.jpg") no-repeat center center/cover;
 }
 

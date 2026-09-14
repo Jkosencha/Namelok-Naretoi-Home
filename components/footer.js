@@ -19,7 +19,7 @@
           <h3>About</h3>
           <ul>
             <li><a href="${root}about.html">About Us</a></li>
-            <li><a href="${root}history.html">Our History</a></li>
+            <li><a href="${root}about.html#history">Our History</a></li>
             <li><a href="${root}about.html#programs">Our Programs</a></li>
           </ul>
         </div>
