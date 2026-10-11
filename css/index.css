@@ -2065,3 +2065,115 @@ select:focus-visible {
   .impact-bar { flex-wrap: wrap; }
   .impact-stat { min-width: 130px; }
 }
+
+/* WHAT WE DO (HOME PAGE) */
+.programs-section {
+  padding: 0 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.programs-head {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto 50px;
+}
+
+.programs-eyebrow {
+  display: inline-block;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 10px;
+}
+
+.programs-head h2 {
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 600;
+  margin: 0 0 10px;
+}
+
+.programs-head p {
+  color: var(--ink-mute);
+  font-size: clamp(0.95rem, 1.4vw, 1.05rem);
+  margin: 0;
+}
+
+.programs-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.program-card {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 36px 24px 32px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.3, 1), box-shadow 0.35s ease;
+}
+
+.program-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-lg);
+}
+
+.program-icon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 20px;
+  border-radius: 50%;
+  background: var(--primary-tint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+}
+
+.program-icon svg {
+  width: 38px;
+  height: 38px;
+  fill: none;
+  stroke: var(--primary-dark);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 0.3s ease;
+}
+
+.program-card:hover .program-icon {
+  background: var(--gradient);
+}
+
+.program-card:hover .program-icon svg {
+  stroke: #fff;
+}
+
+.program-card h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0 0 10px;
+}
+
+.program-card p {
+  font-size: 0.9rem;
+  line-height: 1.7;
+  color: var(--ink-mute);
+  margin: 0;
+}
+
+@media (max-width: 960px) {
+  .programs-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .programs-grid {
+    grid-template-columns: 1fr;
+  }
+}
