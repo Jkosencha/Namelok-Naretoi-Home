@@ -2686,3 +2686,22 @@ select:focus-visible {
     min-width: 0;
   }
 }
+
+/* NAVBAR: DIRECTOR PHONE NUMBER (ALL PAGES) */
+.nav-links a.nav-phone {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.nav-phone svg {
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+@media (min-width: 769px) and (max-width: 1180px) {
+  .nav-phone-item {
+    display: none;
+  }
+}
