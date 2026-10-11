@@ -136,3 +136,19 @@ if (videoModal) {
     videoFrame.src = "";
   });
 }
+
+// Partner logos: repeat the set so the scrolling strip loops seamlessly
+const partnerLogos = document.querySelector(".partner-marquee .partner-logos");
+if (partnerLogos) {
+  const originals = [...partnerLogos.children];
+  const copies = Math.max(2, Math.ceil(12 / originals.length));
+  for (let i = 1; i < copies * 2; i++) {
+    originals.forEach((logo) => {
+      const copy = logo.cloneNode(true);
+      copy.alt = "";
+      copy.setAttribute("aria-hidden", "true");
+      partnerLogos.appendChild(copy);
+    });
+  }
+  partnerLogos.classList.add("is-scrolling");
+}
