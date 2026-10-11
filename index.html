@@ -22,7 +22,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
     <!-- Styles & Fonts -->
-    <link rel="stylesheet" href="css/index.css" />
+    <link rel="stylesheet" href="css/index.css?v=6" />
 
     <title>Namelok Naretoi Home – Narok, Kenya</title>
   </head>
@@ -31,11 +31,15 @@
 
     <!-- ── NAVBAR ── -->
     <div id="navbar"></div>
-    <script src="components/navbar.js"></script>
+    <script src="components/navbar.js?v=6"></script>
 
     <!-- ── HERO ── -->
     <section class="section1" id="home">
       <div class="tint"></div>
+      <span class="hero-dot hero-dot-1" aria-hidden="true"></span>
+      <span class="hero-dot hero-dot-2" aria-hidden="true"></span>
+      <span class="hero-dot hero-dot-3" aria-hidden="true"></span>
+      <span class="hero-dot hero-dot-4" aria-hidden="true"></span>
       <div class="mainBody">
         <div class="mainText">
           <h2>
@@ -55,8 +59,20 @@
 
         <!-- Left: image + counter attached -->
         <div class="aboutUsLeft">
-          <div class="aboutUsImg">
-            <img src="images/namelokBG2.jpg" alt="Children at Namelok Naretoi Home" />
+          <div class="about-collage">
+            <span class="collage-pattern" aria-hidden="true"></span>
+            <div class="collage-circle collage-main">
+              <img src="images/namelokBG2.jpg" alt="Children at Namelok Naretoi Home" />
+            </div>
+            <div class="collage-circle collage-top">
+              <img src="images/nam10.jpg" alt="A caregiver with children at the home" />
+            </div>
+            <div class="collage-circle collage-bottom">
+              <img src="images/nam5.jpg" alt="A child in a wheelchair with a caregiver" />
+            </div>
+            <span class="collage-dot collage-dot-1" aria-hidden="true"></span>
+            <span class="collage-dot collage-dot-2" aria-hidden="true"></span>
+            <span class="collage-dot collage-dot-3" aria-hidden="true"></span>
           </div>
           <div class="counterContainer">
             <div class="elementor">
@@ -86,9 +102,56 @@
             rescue girls from FGM and early marriage, and provide shelter, counseling, and education
             to those who need it most.
           </p>
-          <a href="about.html">Learn More</a>
+          <div class="about-actions">
+            <a href="about.html">Learn More</a>
+            <button type="button" class="video-btn" id="videoOpen">
+              <span class="video-btn-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="18" height="18"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>
+              </span>
+              Watch Video
+            </button>
+          </div>
         </div>
 
+      </div>
+    </section>
+
+    <!-- ── WHAT WE DO ── -->
+    <section class="programs-section" id="programs">
+      <div class="programs-head">
+        <span class="programs-eyebrow">What We Do</span>
+        <h2>Making a Difference</h2>
+        <p>Four ways we care for the most vulnerable children in our community.</p>
+      </div>
+      <div class="programs-grid">
+        <div class="program-card">
+          <div class="program-icon">
+            <svg viewBox="0 0 48 48" width="38" height="38" fill="none" stroke="currentColor" aria-hidden="true"><path d="M24 41s-15-9.2-15-20.2C9 15.4 13 12 17.4 12c3 0 5.2 1.6 6.6 3.8C25.4 13.6 27.6 12 30.6 12 35 12 39 15.4 39 20.8 39 31.8 24 41 24 41z"/><path d="M14 25h6l2.5-5 4 9 2.5-4H34"/></svg>
+          </div>
+          <h3>Healthcare</h3>
+          <p>Medical treatment, physiotherapy and rehabilitation for children living with disabilities.</p>
+        </div>
+        <div class="program-card">
+          <div class="program-icon">
+            <svg viewBox="0 0 48 48" width="38" height="38" fill="none" stroke="currentColor" aria-hidden="true"><path d="M4 18l20-9 20 9-20 9z"/><path d="M12 22v9c0 3 5.4 6 12 6s12-3 12-6v-9"/><path d="M42 19v11"/></svg>
+          </div>
+          <h3>Inclusive Education</h3>
+          <p>Scholarships and support in special needs and mainstream schools, based on each child's abilities.</p>
+        </div>
+        <div class="program-card">
+          <div class="program-icon">
+            <svg viewBox="0 0 48 48" width="38" height="38" fill="none" stroke="currentColor" aria-hidden="true"><path d="M24 5l15 6v11c0 9.5-6.4 17.6-15 21-8.6-3.4-15-11.5-15-21V11z"/><path d="M17 24l5 5 9-10"/></svg>
+          </div>
+          <h3>Rescued Girls</h3>
+          <p>Safety, counseling and a fresh start for girls escaping FGM and early marriage.</p>
+        </div>
+        <div class="program-card">
+          <div class="program-icon">
+            <svg viewBox="0 0 48 48" width="38" height="38" fill="none" stroke="currentColor" aria-hidden="true"><path d="M6 22L24 7l18 15"/><path d="M11 18v22h26V18"/><path d="M20 40V29h8v11"/></svg>
+          </div>
+          <h3>A Safe Home</h3>
+          <p>A loving, stable place where children in recovery get the care and resources they need.</p>
+        </div>
       </div>
     </section>
 
@@ -173,6 +236,129 @@
       </div>
     </section>
 
+    <!-- ── WAYS TO HELP ── -->
+    <section class="help-section" id="help">
+      <div class="programs-head">
+        <span class="programs-eyebrow">We Need Your Help</span>
+        <h2>Ways You Can Help</h2>
+        <p>Every gift goes directly to a child's care, schooling or safety.</p>
+      </div>
+      <div class="help-grid">
+        <article class="help-card">
+          <div class="help-img"><img src="images/sch1.jpg" alt="Children at school" /></div>
+          <div class="help-body">
+            <span class="help-tag">Education</span>
+            <h3>Sponsor a Child's Schooling</h3>
+            <p>Cover school fees, uniforms and supplies so a child with a disability can learn alongside their peers.</p>
+          </div>
+          <a href="donate.html" class="help-plus" aria-label="Donate to sponsor a child's schooling">+</a>
+        </article>
+        <article class="help-card">
+          <div class="help-img"><img src="images/hsp1.jpg" alt="Child receiving medical care" /></div>
+          <div class="help-body">
+            <span class="help-tag">Healthcare</span>
+            <h3>Fund Medical Rehabilitation</h3>
+            <p>Help pay for surgery, physiotherapy and follow-up care that gives children mobility and independence.</p>
+          </div>
+          <a href="donate.html" class="help-plus" aria-label="Donate to fund medical rehabilitation">+</a>
+        </article>
+        <article class="help-card">
+          <div class="help-img"><img src="images/rescued1.jpeg" alt="Rescued girls at the home" /></div>
+          <div class="help-body">
+            <span class="help-tag">Rescue</span>
+            <h3>Protect a Rescued Girl</h3>
+            <p>Provide shelter, counseling and education for a girl who has escaped FGM or early marriage.</p>
+          </div>
+          <a href="donate.html" class="help-plus" aria-label="Donate to protect a rescued girl">+</a>
+        </article>
+      </div>
+      <div class="give-strip">
+        <div class="give-text">
+          <h3>Give today</h3>
+          <p>Choose an amount to get started.</p>
+        </div>
+        <div class="give-amounts">
+          <a href="donate.html?amount=500" class="give-btn"><strong>KES 500</strong><span>Stationery for 1 child</span></a>
+          <a href="donate.html?amount=1000" class="give-btn"><strong>KES 1,000</strong><span>Weekly meals</span></a>
+          <a href="donate.html?amount=5000" class="give-btn"><strong>KES 5,000</strong><span>Monthly support</span></a>
+          <a href="donate.html?amount=custom" class="give-btn give-btn-other"><strong>Other</strong><span>Your choice</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── VOLUNTEER ── -->
+    <section class="volunteer-section" id="volunteer">
+      <div class="volunteer-inner">
+        <div class="volunteer-text">
+          <span class="programs-eyebrow">Get Involved</span>
+          <h2>Volunteer With Us</h2>
+          <p class="volunteer-lead">
+            Your time and your story can show a child what is possible. We welcome volunteers who want to
+            share, visit and give.
+          </p>
+          <ul class="volunteer-roles">
+            <li>
+              <span class="role-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3z"/><path d="M19 11a7 7 0 0 1-14 0"/><path d="M12 18v3"/></svg>
+              </span>
+              <div>
+                <h3>Workshop Speaker</h3>
+                <p>Lead or speak at our workshops and share your knowledge and experience.</p>
+              </div>
+            </li>
+            <li>
+              <span class="role-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3 6.5 7 .9-5.1 4.8 1.3 6.8L12 17.8 5.8 21l1.3-6.8L2 9.4l7-.9z"/></svg>
+              </span>
+              <div>
+                <h3>Mentor &amp; Role Model</h3>
+                <p>Visit the children, talk with them and show them that their dreams are possible.</p>
+              </div>
+            </li>
+            <li>
+              <span class="role-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V10l7-5 7 5v11"/><path d="M10 21v-6h4v6"/></svg>
+              </span>
+              <div>
+                <h3>School Outreach</h3>
+                <p>Join our school visits and talk with girls, boys and parents about children's rights and harmful practices.</p>
+              </div>
+            </li>
+            <li>
+              <span class="role-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v9H4v-9"/><path d="M2 7h20v5H2z"/><path d="M12 21V7"/><path d="M12 7H8a2.5 2.5 0 1 1 0-5c3 0 4 5 4 5zM12 7h4a2.5 2.5 0 1 0 0-5c-3 0-4 5-4 5z"/></svg>
+              </span>
+              <div>
+                <h3>Donation Drives</h3>
+                <p>Help collect and hand out donations to the children at the home.</p>
+              </div>
+            </li>
+          </ul>
+          <a href="contact.html?reason=volunteering" class="volunteer-btn">Become a Volunteer</a>
+        </div>
+        <div class="volunteer-media">
+          <img src="images/nam6.jpg" alt="A workshop with children at Namelok Naretoi Home" />
+          <div class="volunteer-badge">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+            Narok, Kenya
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── QUOTE ── -->
+    <!-- PLACEHOLDER QUOTE: replace with a real quote (with permission) before going live -->
+    <section class="quote-section">
+      <figure class="quote-inner">
+        <span class="quote-mark" aria-hidden="true">&ldquo;</span>
+        <blockquote>
+          When I came here I thought my life was over. Today I am in school, I have friends,
+          and I believe I can become anything I want.
+        </blockquote>
+        <figcaption>A girl supported by Namelok Naretoi Home</figcaption>
+      </figure>
+    </section>
+
     <!-- ── MISSION & VISION ── -->
     <section class="section4" id="mission">
       <div class="section4-heading">
@@ -238,9 +424,11 @@
     <!-- ── PARTNERS ── -->
     <section class="partners-section">
       <h2 class="partners-title">Our Partners</h2>
-      <div class="partner-logos">
-        <img src="images/Third Ladder.png" alt="Third Ladder" />
-        <img src="images/HNI.jpg" alt="HNI" />
+      <div class="partner-marquee">
+        <div class="partner-logos">
+          <img src="images/Third Ladder.png" alt="Third Ladder" />
+          <img src="images/HNI.jpg" alt="HNI" />
+        </div>
       </div>
     </section>
 
@@ -252,11 +440,19 @@
     <div id="footer"></div>
     <script src="components/footer.js"></script>
 
+    <!-- Video modal -->
+    <dialog class="video-modal" id="videoModal" aria-label="Namelok Naretoi Home video">
+      <button type="button" class="video-close" id="videoClose" aria-label="Close video">&times;</button>
+      <div class="video-frame">
+        <iframe id="videoFrame" title="Namelok Naretoi Home video" data-src="https://www.youtube.com/embed/wNAwy60G0jg?autoplay=1&rel=0" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
+      </div>
+    </dialog>
+
     <!-- Back to top -->
     <div class="upArrowCont" id="upArrow">
       <img src="images/upArrow.svg" alt="Back to top" class="upArrow" />
     </div>
 
-    <script src="js/index.js"></script>
+    <script src="js/index.js?v=6"></script>
   </body>
 </html>

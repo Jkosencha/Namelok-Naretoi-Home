@@ -118,3 +118,37 @@ if (navTitle) {
   window.addEventListener("scroll", toggleNavShadow, { passive: true });
   toggleNavShadow();
 }
+
+// Homepage video modal: load the video only when opened, stop it on close
+const videoModal = document.getElementById("videoModal");
+if (videoModal) {
+  const videoFrame = document.getElementById("videoFrame");
+
+  document.getElementById("videoOpen").addEventListener("click", () => {
+    videoFrame.src = videoFrame.dataset.src;
+    videoModal.showModal();
+  });
+  document.getElementById("videoClose").addEventListener("click", () => videoModal.close());
+  videoModal.addEventListener("click", (e) => {
+    if (e.target === videoModal) videoModal.close();
+  });
+  videoModal.addEventListener("close", () => {
+    videoFrame.src = "";
+  });
+}
+
+// Partner logos: repeat the set so the scrolling strip loops seamlessly
+const partnerLogos = document.querySelector(".partner-marquee .partner-logos");
+if (partnerLogos) {
+  const originals = [...partnerLogos.children];
+  const copies = Math.max(2, Math.ceil(12 / originals.length));
+  for (let i = 1; i < copies * 2; i++) {
+    originals.forEach((logo) => {
+      const copy = logo.cloneNode(true);
+      copy.alt = "";
+      copy.setAttribute("aria-hidden", "true");
+      partnerLogos.appendChild(copy);
+    });
+  }
+  partnerLogos.classList.add("is-scrolling");
+}
