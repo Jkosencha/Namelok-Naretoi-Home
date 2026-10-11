@@ -118,3 +118,21 @@ if (navTitle) {
   window.addEventListener("scroll", toggleNavShadow, { passive: true });
   toggleNavShadow();
 }
+
+// Homepage video modal: load the video only when opened, stop it on close
+const videoModal = document.getElementById("videoModal");
+if (videoModal) {
+  const videoFrame = document.getElementById("videoFrame");
+
+  document.getElementById("videoOpen").addEventListener("click", () => {
+    videoFrame.src = videoFrame.dataset.src;
+    videoModal.showModal();
+  });
+  document.getElementById("videoClose").addEventListener("click", () => videoModal.close());
+  videoModal.addEventListener("click", (e) => {
+    if (e.target === videoModal) videoModal.close();
+  });
+  videoModal.addEventListener("close", () => {
+    videoFrame.src = "";
+  });
+}

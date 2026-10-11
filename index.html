@@ -98,7 +98,15 @@
             rescue girls from FGM and early marriage, and provide shelter, counseling, and education
             to those who need it most.
           </p>
-          <a href="about.html">Learn More</a>
+          <div class="about-actions">
+            <a href="about.html">Learn More</a>
+            <button type="button" class="video-btn" id="videoOpen">
+              <span class="video-btn-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="18" height="18"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>
+              </span>
+              Watch Video
+            </button>
+          </div>
         </div>
 
       </div>
@@ -340,6 +348,14 @@
     <!-- ── FOOTER ── -->
     <div id="footer"></div>
     <script src="components/footer.js"></script>
+
+    <!-- Video modal -->
+    <dialog class="video-modal" id="videoModal" aria-label="Namelok Naretoi Home video">
+      <button type="button" class="video-close" id="videoClose" aria-label="Close video">&times;</button>
+      <div class="video-frame">
+        <iframe id="videoFrame" title="Namelok Naretoi Home video" data-src="https://www.youtube.com/embed/wNAwy60G0jg?autoplay=1&rel=0" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>
+      </div>
+    </dialog>
 
     <!-- Back to top -->
     <div class="upArrowCont" id="upArrow">
