@@ -237,6 +237,15 @@
         }
       }
 
+      // Preselect an amount passed from the homepage, e.g. donate.html?amount=500
+      const requestedAmount = new URLSearchParams(window.location.search).get('amount');
+      if (requestedAmount) {
+        const value = requestedAmount === 'custom' ? 0 : parseInt(requestedAmount, 10);
+        const presetBtn = [...document.querySelectorAll('.preset-btn')]
+          .find(b => b.getAttribute('onclick') === `selectAmount(${value}, this)`);
+        if (presetBtn) selectAmount(value, presetBtn);
+      }
+
       function selectPayment(type, tab) {
         document.querySelectorAll('.pay-tab').forEach(t => t.classList.remove('active'));
         document.querySelectorAll('.pay-panel').forEach(p => p.classList.remove('visible'));

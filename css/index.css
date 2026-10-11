@@ -2597,3 +2597,92 @@ select:focus-visible {
     animation: none;
   }
 }
+
+/* WAYS TO HELP: GIVE TODAY STRIP (HOME PAGE) */
+.give-strip {
+  margin-top: 40px;
+  padding: 30px 34px;
+  border-radius: var(--radius-lg);
+  background: var(--primary-tint);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px 40px;
+  flex-wrap: wrap;
+}
+
+.give-text h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 4px;
+}
+
+.give-text p {
+  margin: 0;
+  color: var(--ink-mute);
+  font-size: 0.95rem;
+}
+
+.give-amounts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.give-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 140px;
+  padding: 12px 18px;
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  border: 1.5px solid rgba(231, 151, 46, 0.35);
+  text-decoration: none;
+  transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+
+.give-btn strong {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.give-btn span {
+  font-size: 0.78rem;
+  color: var(--ink-mute);
+}
+
+.give-btn:hover {
+  transform: translateY(-3px);
+  border-color: var(--primary);
+}
+
+.give-btn-other {
+  background: var(--gradient);
+  border-color: transparent;
+}
+
+.give-btn-other strong,
+.give-btn-other span {
+  color: #fff;
+}
+
+@media (max-width: 620px) {
+  .give-strip {
+    padding: 26px 20px;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .give-amounts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+  }
+
+  .give-btn {
+    min-width: 0;
+  }
+}
