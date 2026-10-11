@@ -3,64 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="description" content="Get in touch with Namelok Naretoi Home in Narok, Kenya about partnerships, volunteering, donations or our programmes. Call 0722 537 380." />
+    <meta property="og:title" content="Contact Us – Namelok Naretoi Home" />
+    <meta property="og:description" content="Get in touch with Namelok Naretoi Home in Narok, Kenya about partnerships, volunteering, donations or our programmes. Call 0722 537 380." />
+    <meta property="og:image" content="images/namelokBG3.jpg" />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/png" href="images/logo.png" />
+    <link rel="apple-touch-icon" href="images/logo.png" />
+    <meta name="theme-color" content="#e7972e" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="css/index.css?v=6" />
+    <link rel="stylesheet" href="css/index.css?v=26" />
     <title>Contact Us – Namelok Naretoi Home</title>
     <style>
       /* ── Page-specific styles ── */
       .contact-page {
         background-color: #fdf8f2;
         min-height: 100vh;
-      }
-
-      /* Hero */
-      .contact-hero {
-        position: relative;
-        height: 50vh;
-        background: url('images/namelokBG3.jpg') no-repeat center center/cover;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        color: white;
-        padding: 10px;
-      }
-      .contact-hero::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(180deg, rgba(10, 8, 6, 0.4) 0%, rgba(10, 8, 6, 0.72) 100%);
-        z-index: 1;
-      }
-      .contact-hero-text {
-        position: relative;
-        z-index: 2;
-        padding: 0 20px;
-      }
-      .contact-hero-text span {
-        display: block;
-        font-size: 0.75rem;
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-        color: #e7972e;
-        margin-bottom: 10px;
-        text-shadow: 0 1px 4px rgba(0, 0, 0, 0.8);
-      }
-      .contact-hero-text h1 {
-        font-family: "Fraunces", Georgia, serif;
-        font-weight: 600;
-        font-size: clamp(1.8rem, 4vw, 3.2rem);
-        margin: 0;
-        display: inline-block;
-        color: #fff;
-        text-shadow: 0 2px 16px rgba(0, 0, 0, 0.5);
       }
 
       /* Main layout */
@@ -302,15 +262,21 @@
   <body class="contact-page">
 
     <div id="navbar"></div>
-    <script src="components/navbar.js?v=6"></script>
+    <script src="components/navbar.js?v=7"></script>
 
     <!-- Hero -->
-    <div class="contact-hero">
-      <div class="contact-hero-text">
-        <span>Namelok Naretoi Home</span>
-        <h1>Get in Touch</h1>
+    <section class="page-hero page-hero-contact">
+      <div class="page-hero-inner">
+        <div class="page-hero-content">
+          <span class="hero-eyebrow">Contact Us</span>
+          <h1>Get in <span class="hero-accent">Touch</span></h1>
+          <p>Partnerships, volunteering or questions about our programmes, we'd love to hear from you.</p>
+          <nav class="page-hero-crumbs" aria-label="Breadcrumb">
+            <a href="index.html">Home</a><span aria-hidden="true">&rsaquo;</span>Contact Us
+          </nav>
+        </div>
       </div>
-    </div>
+    </section>
 
     <!-- Body -->
     <div class="contact-body">
@@ -399,7 +365,7 @@
           </div>
           <div class="info-text">
             <strong>Phone</strong>
-            <a href="tel:+254700000000">+254 700 000 000</a>
+            <a href="tel:+254722537380">0722 537 380</a>
           </div>
         </div>
 
@@ -424,14 +390,14 @@
     </div>
 
     <div id="footer"></div>
-    <script src="components/footer.js"></script>
+    <script src="components/footer.js?v=2"></script>
 
     <!-- Back to top -->
     <div class="upArrowCont" id="upArrow">
       <img src="images/upArrow.svg" alt="Back to top" class="upArrow" />
     </div>
 
-    <script src="js/index.js?v=6"></script>
+    <script src="js/index.js?v=11"></script>
 
     <script>
       // Preselect the reason passed in the link, e.g. contact.html?reason=volunteering

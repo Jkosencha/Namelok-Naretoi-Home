@@ -17,7 +17,7 @@
         <ul class="nav-links">
           <li><a href="${root}index.html">HOME</a></li>
           <li><a href="${root}about.html">ABOUT US</a></li>
-          <li><a href="${root}index.html#stories">STORIES</a></li>
+          <li><a href="${root}stories.html">STORIES</a></li>
           <li><a href="${root}gallery.html">OUR GALLERY</a></li>
           <li><a href="${root}contact.html">CONTACT US</a></li>
           <li class="nav-phone-item">
