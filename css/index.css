@@ -2510,3 +2510,54 @@ select:focus-visible {
     justify-content: center;
   }
 }
+
+/* HERO: FLOATING ACCENT DOTS (HOME PAGE) */
+.hero-dot {
+  position: absolute;
+  z-index: 2;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: collageFloat 7s ease-in-out infinite;
+}
+
+.hero-dot-1 {
+  top: 24%;
+  right: 12%;
+  width: 18px;
+  height: 18px;
+  background: var(--primary);
+}
+
+.hero-dot-2 {
+  top: 58%;
+  right: 24%;
+  width: 11px;
+  height: 11px;
+  background: #3aa0d8;
+  animation-delay: -2s;
+}
+
+.hero-dot-3 {
+  top: 36%;
+  right: 34%;
+  width: 22px;
+  height: 22px;
+  border: 2.5px solid rgba(255, 255, 255, 0.7);
+  animation-delay: -4s;
+}
+
+.hero-dot-4 {
+  bottom: 22%;
+  right: 8%;
+  width: 10px;
+  height: 10px;
+  background: #6cbf4b;
+  animation-delay: -5s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-dot,
+  .video-btn-icon::after {
+    animation: none;
+  }
+}
