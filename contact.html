@@ -434,6 +434,14 @@
     <script src="js/index.js"></script>
 
     <script>
+      // Preselect the reason passed in the link, e.g. contact.html?reason=volunteering
+      const requestedReason = new URLSearchParams(window.location.search).get('reason');
+      if (requestedReason) {
+        const reasonSelect = document.getElementById('reason');
+        const match = [...reasonSelect.options].find(o => o.text.toLowerCase() === requestedReason.toLowerCase());
+        if (match) reasonSelect.value = match.value;
+      }
+
       function handleContactSubmit() {
         const first = document.getElementById('firstName').value.trim();
         const email = document.getElementById('contactEmail').value.trim();

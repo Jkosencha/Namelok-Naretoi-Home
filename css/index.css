@@ -2705,3 +2705,154 @@ select:focus-visible {
     display: none;
   }
 }
+
+/* VOLUNTEER (HOME PAGE) */
+.volunteer-section {
+  background: #f8f0e3;
+  padding: 100px 20px;
+}
+
+.volunteer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.volunteer-text h2 {
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+
+.volunteer-lead {
+  color: var(--ink-soft);
+  font-size: 1.02rem;
+  line-height: 1.75;
+  margin: 0 0 28px;
+  max-width: 540px;
+}
+
+.volunteer-roles {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 32px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.volunteer-roles li {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.volunteer-roles li:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.role-icon {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--primary-tint);
+  color: var(--primary-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.volunteer-roles h3 {
+  font-size: 1.02rem;
+  font-weight: 600;
+  margin: 2px 0 6px;
+}
+
+.volunteer-roles p {
+  font-size: 0.86rem;
+  line-height: 1.6;
+  color: var(--ink-mute);
+  margin: 0;
+}
+
+.volunteer-btn {
+  display: inline-block;
+  padding: 14px 34px;
+  background: var(--gradient);
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: var(--radius-pill);
+  transition: transform 0.25s ease;
+}
+
+.volunteer-btn:hover {
+  color: #fff;
+  transform: translateY(-3px);
+}
+
+.volunteer-media {
+  position: relative;
+}
+
+.volunteer-media img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  display: block;
+  border-radius: 200px 200px var(--radius-lg) var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.volunteer-badge {
+  position: absolute;
+  left: -20px;
+  bottom: 40px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background: var(--surface);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-md);
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--ink);
+}
+
+.volunteer-badge svg {
+  color: var(--primary);
+}
+
+@media (max-width: 960px) {
+  .volunteer-inner {
+    grid-template-columns: 1fr;
+    gap: 44px;
+  }
+
+  .volunteer-media {
+    max-width: 440px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .volunteer-badge {
+    left: 16px;
+  }
+}
+
+@media (max-width: 560px) {
+  .volunteer-roles {
+    grid-template-columns: 1fr;
+  }
+}
