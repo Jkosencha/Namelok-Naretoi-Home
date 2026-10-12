@@ -3,12 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!--bootstrap links-->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
-    />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="description" content="Photos of life at Namelok Naretoi Home, our school awareness programmes and the healthcare and rehabilitation we provide to children in Narok, Kenya." />
+    <meta property="og:title" content="Our Gallery – Namelok Naretoi Home" />
+    <meta property="og:description" content="Photos of life at Namelok Naretoi Home, our school awareness programmes and the healthcare and rehabilitation we provide to children in Narok, Kenya." />
+    <meta property="og:image" content="images/namelokBG.jpg" />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/png" href="images/logo.png" />
+    <link rel="apple-touch-icon" href="images/logo.png" />
+    <meta name="theme-color" content="#e7972e" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -16,44 +18,275 @@
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
     <!--css links-->
-    <link rel="stylesheet" href="css/index.css?v=6" />
+    <link rel="stylesheet" href="css/index.css?v=26" />
 
     <title>Our Gallery – Namelok Naretoi Home</title>
   </head>
   <body>
     <!--Logo and navigation bar-->
     <div id="navbar"></div>
-<script src="components/navbar.js?v=6"></script>
+<script src="components/navbar.js?v=7"></script>
 
-    <div class="hero-section hero-gallery">
-      <div class="hero-text">
-        <h1>Our Gallery</h1>
-        <p>Glimpses of life and work at Namelok Naretoi Home.</p>
-      </div>
-    </div>
-
-    <section class="masonry-gallery">
-      <div class="gallery-container">
-        <img src="images/child1.jpg" alt="" />
-        <img src="images/child2.jpg" alt="" />
-        <img src="images/child4.jpg" alt="" />
-        <img src="images/child5.jpg" alt="" />
-        <img src="images/child8.jpg" alt="" />
+    <section class="page-hero page-hero-gallery">
+      <div class="page-hero-inner">
+        <div class="page-hero-content">
+          <span class="hero-eyebrow">Our Gallery</span>
+          <h1>Moments of <span class="hero-accent">Change</span></h1>
+          <p>Glimpses of life and work at Namelok Naretoi Home.</p>
+          <nav class="page-hero-crumbs" aria-label="Breadcrumb">
+            <a href="index.html">Home</a><span aria-hidden="true">&rsaquo;</span>Our Gallery
+          </nav>
+        </div>
       </div>
     </section>
 
+    <section class="gallery-page">
+      <div class="gallery-toolbar">
+        <p class="gallery-count"><strong>35</strong> photos from our work in Narok</p>
+        <div class="gallery-filters" role="group" aria-label="Filter photos">
+          <button type="button" class="g-filter is-active" data-filter="all" aria-pressed="true">All <span>35</span></button>
+          <button type="button" class="g-filter" data-filter="home" aria-pressed="false">Life at the Home <span>12</span></button>
+          <button type="button" class="g-filter" data-filter="school" aria-pressed="false">School Outreach <span>11</span></button>
+          <button type="button" class="g-filter" data-filter="health" aria-pressed="false">Healthcare <span>12</span></button>
+        </div>
+      </div>
+      <div class="gallery-masonry">
+        <figure class="g-item" data-cat="home">
+          <button type="button" class="g-open" data-full="images/nam10.jpg">
+            <img src="images/web/thumbs/nam10.jpg" alt="A caregiver with children at the home" loading="lazy" />
+          </button>
+          <figcaption><span>Life at the Home</span>A caregiver with children at the home</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="school">
+          <button type="button" class="g-open" data-full="images/web/sch4.jpg">
+            <img src="images/web/thumbs/sch4.jpg" alt="Handing out sanitary pads at a school" loading="lazy" />
+          </button>
+          <figcaption><span>School Outreach</span>Handing out sanitary pads at a school</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="health">
+          <button type="button" class="g-open" data-full="images/hsp3.jpg">
+            <img src="images/web/thumbs/hsp3.jpg" alt="A medical worker fitting a leg brace" loading="lazy" />
+          </button>
+          <figcaption><span>Healthcare</span>A medical worker fitting a leg brace</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="home">
+          <button type="button" class="g-open" data-full="images/nam2.jpg">
+            <img src="images/web/thumbs/nam2.jpg" alt="Children in football kits at the home" loading="lazy" />
+          </button>
+          <figcaption><span>Life at the Home</span>Children in football kits at the home</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="school">
+          <button type="button" class="g-open" data-full="images/web/sch1.jpg">
+            <img src="images/web/thumbs/sch1.jpg" alt="Pupils gathered for a school visit" loading="lazy" />
+          </button>
+          <figcaption><span>School Outreach</span>Pupils gathered for a school visit</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="health">
+          <button type="button" class="g-open" data-full="images/nam5.jpg">
+            <img src="images/web/thumbs/nam5.jpg" alt="A child in a wheelchair with a caregiver" loading="lazy" />
+          </button>
+          <figcaption><span>Healthcare</span>A child in a wheelchair with a caregiver</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="home">
+          <button type="button" class="g-open" data-full="images/nam3.jpg">
+            <img src="images/web/thumbs/nam3.jpg" alt="Staff and children outside the home" loading="lazy" />
+          </button>
+          <figcaption><span>Life at the Home</span>Staff and children outside the home</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="school">
+          <button type="button" class="g-open" data-full="images/namelokBG2.jpg">
+            <img src="images/web/thumbs/namelokBG2.jpg" alt="Girls celebrating their new sanitary pads" loading="lazy" />
+          </button>
+          <figcaption><span>School Outreach</span>Girls celebrating their new sanitary pads</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="health">
+          <button type="button" class="g-open" data-full="images/hsp1.jpg">
+            <img src="images/web/thumbs/hsp1.jpg" alt="Children and mothers on the way to hospital" loading="lazy" />
+          </button>
+          <figcaption><span>Healthcare</span>Children and mothers on the way to hospital</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="home">
+          <button type="button" class="g-open" data-full="images/nam4.jpg">
+            <img src="images/web/thumbs/nam4.jpg" alt="Children sharing a meal outdoors" loading="lazy" />
+          </button>
+          <figcaption><span>Life at the Home</span>Children sharing a meal outdoors</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="school">
+          <button type="button" class="g-open" data-full="images/web/sch2.jpg">
+            <img src="images/web/thumbs/sch2.jpg" alt="Students listening during an awareness talk" loading="lazy" />
+          </button>
+          <figcaption><span>School Outreach</span>Students listening during an awareness talk</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="health">
+          <button type="button" class="g-open" data-full="images/hsp2.jpg">
+            <img src="images/web/thumbs/hsp2.jpg" alt="A boy walking on crutches after treatment" loading="lazy" />
+          </button>
+          <figcaption><span>Healthcare</span>A boy walking on crutches after treatment</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="home">
+          <button type="button" class="g-open" data-full="images/nam6.jpg">
+            <img src="images/web/thumbs/nam6.jpg" alt="A workshop with young people" loading="lazy" />
+          </button>
+          <figcaption><span>Life at the Home</span>A workshop with young people</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="school">
+          <button type="button" class="g-open" data-full="images/web/sch3.jpg">
+            <img src="images/web/thumbs/sch3.jpg" alt="Pupils in class during a school visit" loading="lazy" />
+          </button>
+          <figcaption><span>School Outreach</span>Pupils in class during a school visit</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="health">
+          <button type="button" class="g-open" data-full="images/aboutUs3.jpg">
+            <img src="images/web/thumbs/aboutUs3.jpg" alt="Children in wheelchairs with Namelok staff" loading="lazy" />
+          </button>
+          <figcaption><span>Healthcare</span>Children in wheelchairs with Namelok staff</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="home">
+          <button type="button" class="g-open" data-full="images/nam7.jpg">
+            <img src="images/web/thumbs/nam7.jpg" alt="Children gathered outside the home" loading="lazy" />
+          </button>
+          <figcaption><span>Life at the Home</span>Children gathered outside the home</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="school">
+          <button type="button" class="g-open" data-full="images/aboutUs2.jpg">
+            <img src="images/web/thumbs/aboutUs2.jpg" alt="Pupils with boxes of donations" loading="lazy" />
+          </button>
+          <figcaption><span>School Outreach</span>Pupils with boxes of donations</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="health">
+          <button type="button" class="g-open" data-full="images/child5.jpg">
+            <img src="images/web/thumbs/child5.jpg" alt="A caregiver doing therapy with a toddler" loading="lazy" />
+          </button>
+          <figcaption><span>Healthcare</span>A caregiver doing therapy with a toddler</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="home">
+          <button type="button" class="g-open" data-full="images/nam8.jpg">
+            <img src="images/web/thumbs/nam8.jpg" alt="Children in the compound" loading="lazy" />
+          </button>
+          <figcaption><span>Life at the Home</span>Children in the compound</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="school">
+          <button type="button" class="g-open" data-full="images/web/sch5.jpg">
+            <img src="images/web/thumbs/sch5.jpg" alt="A school assembly during an awareness programme" loading="lazy" />
+          </button>
+          <figcaption><span>School Outreach</span>A school assembly during an awareness programme</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="health">
+          <button type="button" class="g-open" data-full="images/hsp4.jpg">
+            <img src="images/web/thumbs/hsp4.jpg" alt="A child on crutches beside the Namelok vehicle" loading="lazy" />
+          </button>
+          <figcaption><span>Healthcare</span>A child on crutches beside the Namelok vehicle</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="home">
+          <button type="button" class="g-open" data-full="images/nam9.jpg">
+            <img src="images/web/thumbs/nam9.jpg" alt="Children playing football" loading="lazy" />
+          </button>
+          <figcaption><span>Life at the Home</span>Children playing football</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="school">
+          <button type="button" class="g-open" data-full="images/web/sch6.jpg">
+            <img src="images/web/thumbs/sch6.jpg" alt="Donations at a school awareness programme" loading="lazy" />
+          </button>
+          <figcaption><span>School Outreach</span>Donations at a school awareness programme</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="health">
+          <button type="button" class="g-open" data-full="images/child2.jpg">
+            <img src="images/web/thumbs/child2.jpg" alt="Two girls at school, one walking with a crutch" loading="lazy" />
+          </button>
+          <figcaption><span>Healthcare</span>Two girls at school, one walking with a crutch</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="home">
+          <button type="button" class="g-open" data-full="images/web/nam1.jpg">
+            <img src="images/web/thumbs/nam1.jpg" alt="Children at the home" loading="lazy" />
+          </button>
+          <figcaption><span>Life at the Home</span>Children at the home</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="school">
+          <button type="button" class="g-open" data-full="images/namelokBG.jpg">
+            <img src="images/web/thumbs/namelokBG.jpg" alt="Pupils holding donated pads" loading="lazy" />
+          </button>
+          <figcaption><span>School Outreach</span>Pupils holding donated pads</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="health">
+          <button type="button" class="g-open" data-full="images/child7.jpg">
+            <img src="images/web/thumbs/child7.jpg" alt="A child using a standing frame" loading="lazy" />
+          </button>
+          <figcaption><span>Healthcare</span>A child using a standing frame</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="home">
+          <button type="button" class="g-open" data-full="images/aboutUs.jpg">
+            <img src="images/web/thumbs/aboutUs.jpg" alt="A selfie with the children" loading="lazy" />
+          </button>
+          <figcaption><span>Life at the Home</span>A selfie with the children</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="school">
+          <button type="button" class="g-open" data-full="images/sch7.jpg">
+            <img src="images/web/thumbs/sch7.jpg" alt="Girls lined up at a school visit" loading="lazy" />
+          </button>
+          <figcaption><span>School Outreach</span>Girls lined up at a school visit</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="health">
+          <button type="button" class="g-open" data-full="images/child4.jpg">
+            <img src="images/web/thumbs/child4.jpg" alt="A child standing during rehabilitation" loading="lazy" />
+          </button>
+          <figcaption><span>Healthcare</span>A child standing during rehabilitation</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="home">
+          <button type="button" class="g-open" data-full="images/web/mama.jpg">
+            <img src="images/web/thumbs/mama.jpg" alt="A Maasai mother in traditional dress" loading="lazy" />
+          </button>
+          <figcaption><span>Life at the Home</span>A Maasai mother in traditional dress</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="school">
+          <button type="button" class="g-open" data-full="images/web/img.4.jpg">
+            <img src="images/web/thumbs/img.4.jpg" alt="A football match at a school visit" loading="lazy" />
+          </button>
+          <figcaption><span>School Outreach</span>A football match at a school visit</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="health">
+          <button type="button" class="g-open" data-full="images/child8.jpg">
+            <img src="images/web/thumbs/child8.jpg" alt="A toddler in recovery" loading="lazy" />
+          </button>
+          <figcaption><span>Healthcare</span>A toddler in recovery</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="home">
+          <button type="button" class="g-open" data-full="images/web/namelokBG3.jpg">
+            <img src="images/web/thumbs/namelokBG3.jpg" alt="A community gathering at Namelok" loading="lazy" />
+          </button>
+          <figcaption><span>Life at the Home</span>A community gathering at Namelok</figcaption>
+        </figure>
+        <figure class="g-item" data-cat="health">
+          <button type="button" class="g-open" data-full="images/child1.jpg">
+            <img src="images/web/thumbs/child1.jpg" alt="A child at the home" loading="lazy" />
+          </button>
+          <figcaption><span>Healthcare</span>A child at the home</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Photo viewer -->
+    <dialog class="lightbox" id="lightbox" aria-label="Photo viewer">
+      <button type="button" class="lb-close" aria-label="Close">&times;</button>
+      <button type="button" class="lb-nav lb-prev" aria-label="Previous photo">&lsaquo;</button>
+      <figure class="lb-figure">
+        <img id="lbImg" src="" alt="" />
+        <figcaption><span id="lbCaption"></span><span class="lb-count" id="lbCount"></span></figcaption>
+      </figure>
+      <button type="button" class="lb-nav lb-next" aria-label="Next photo">&rsaquo;</button>
+    </dialog>
+
     <div id="contact-section"></div>
-<script src="components/contact-section.js"></script>
+<script src="components/contact-section.js?v=2"></script>
 
     <!-- Footer -->
     <div id="footer"></div>
-<script src="components/footer.js"></script>
+<script src="components/footer.js?v=2"></script>
 
     <!-- Back to top -->
     <div class="upArrowCont" id="upArrow">
       <img src="images/upArrow.svg" alt="Back to top" class="upArrow" />
     </div>
 
-    <script src="js/index.js?v=6"></script>
+    <script src="js/index.js?v=11"></script>
   </body>
 </html>

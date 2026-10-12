@@ -4,153 +4,48 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Impact Story</title>
+    <link rel="icon" type="image/png" href="../images/logo.png" />
+    <link rel="apple-touch-icon" href="../images/logo.png" />
+    <meta name="theme-color" content="#e7972e" />
+    <meta name="description" content="Susan's story, told by Namelok Naretoi Home in Narok, Kenya." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-    <style>
-        :root {
-            --primary: #e7972e;
-            --primary-dark: #b5701a;
-            --ink: #1c1a17;
-            --ink-soft: #524d46;
-            --ink-mute: #8a8378;
-            --border-soft: rgba(28, 26, 23, 0.09);
-        }
-
-        * { box-sizing: border-box; }
-
-        body {
-            margin: 0;
-            font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background-color: #fdf8f2;
-            color: var(--ink-soft);
-            -webkit-font-smoothing: antialiased;
-        }
-
-        .story-wrapper {
-            max-width: 1000px;
-            margin: 60px auto;
-            background-color: #fff;
-            padding: 44px;
-            border: 1px solid var(--border-soft);
-            border-radius: 26px;
-            box-shadow: 0 24px 60px rgba(28, 20, 8, 0.12);
-            animation: fadeInUp 0.7s cubic-bezier(0.2, 0.7, 0.3, 1);
-        }
-
-        .story-header {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 34px;
-            align-items: flex-start;
-            margin-bottom: 34px;
-        }
-
-        .story-header img {
-            width: 100%;
-            max-width: 300px;
-            height: auto;
-            object-fit: cover;
-            border-radius: 18px;
-            box-shadow: 0 12px 30px rgba(28, 20, 8, 0.15);
-            flex-shrink: 0;
-        }
-
-        .story-info {
-            flex: 1;
-        }
-
-        .story-info h2 {
-            margin-top: 0;
-            font-family: "Fraunces", Georgia, serif;
-            font-weight: 600;
-            font-size: 1.8rem;
-            color: var(--ink);
-        }
-
-        .story-info ul {
-            list-style: none;
-            padding: 0;
-            margin: 15px 0;
-        }
-
-        .story-info ul li {
-            font-size: 1rem;
-            margin-bottom: 8px;
-            color: var(--ink-soft);
-        }
-
-        .story-info ul li strong {
-            color: var(--ink);
-        }
-
-        .story-content p {
-            font-size: 1.05rem;
-            line-height: 1.85;
-            color: var(--ink-soft);
-        }
-
-        .back-button {
-            display: inline-block;
-            margin-top: 30px;
-            padding: 14px 30px;
-            background: linear-gradient(135deg, #f4a83f 0%, #d9731c 100%);
-            color: white;
-            font-weight: 700;
-            text-decoration: none;
-            border: none;
-            border-radius: 999px;
-            box-shadow: 0 10px 30px rgba(231, 151, 46, 0.35);
-            transition: transform 0.25s ease, filter 0.25s ease;
-        }
-
-        .back-button:hover {
-            transform: translateY(-3px);
-            filter: brightness(1.05);
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(24px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @media (max-width: 768px) {
-            .story-wrapper {
-                margin: 30px auto;
-                padding: 26px;
-                border-radius: 20px;
-            }
-
-            .story-header {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-
-            .story-info {
-                text-align: left;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="../css/index.css?v=26" />
+    <title>Susan’s Story – Namelok Naretoi Home</title>
 </head>
 
 <body>
+    <div id="navbar"></div>
+    <script src="../components/navbar.js?v=7"></script>
 
-    <div class="story-wrapper">
-        <div class="story-header">
-            <img src='../images/aboutUs2.jpg' alt="Grace’s journey" />
-            <div class="story-info">
-                <h2>Susan's Profile</h2>
-                <ul>
-                    <li><strong>Name:</strong> Susan</li>
-                    <li><strong>Age:</strong> 8</li>
-                    <li><strong>Gender:</strong> Female</li>
-                    <li><strong>Status:</strong> DISABILITY.    Multiple Congenital Contractures.</li>
-                </ul>
-            </div>
+    <section class="page-hero page-hero-stories">
+      <div class="page-hero-inner">
+        <div class="page-hero-content">
+          <span class="hero-eyebrow">Impact Story</span>
+          <h1><span class="hero-accent">Susan’s</span> Story</h1>
+          <nav class="page-hero-crumbs" aria-label="Breadcrumb">
+            <a href="../index.html">Home</a><span aria-hidden="true">&rsaquo;</span><a href="../stories.html">Stories</a><span aria-hidden="true">&rsaquo;</span>Susan
+          </nav>
         </div>
+      </div>
+    </section>
 
+    <section class="story-page">
+      <aside class="story-profile">
+        <img src="../images/aboutUs2.jpg" alt="Grace’s journey" />
+        <div class="story-profile-body">
+          <h2>Susan's Profile</h2>
+          <dl>
+              <div class="sp-row"><dt>Name</dt><dd>Susan</dd></div>
+              <div class="sp-row"><dt>Age</dt><dd>8</dd></div>
+              <div class="sp-row"><dt>Gender</dt><dd>Female</dd></div>
+              <div class="sp-row"><dt>Status</dt><dd>DISABILITY. Multiple Congenital Contractures.</dd></div>
+          </dl>
+        </div>
+      </aside>
+
+      <article class="story-article">
         <div class="story-content">
             <p>
                 Susan Nenkai entered the world on October 31st, 2017, at 9:00 PM, at Entasekera Health Centre. Her
@@ -181,10 +76,43 @@
 
             </p>
         </div>
+        <a href="../stories.html" class="back-button"><svg class="arrow-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg> Back to Stories</a>
+      </article>
+    </section>
 
-        <a href="../index.html#stories" class="back-button">← Back to Stories</a>
+    <section class="more-stories">
+      <div class="programs-head">
+        <span class="programs-eyebrow">Keep Reading</span>
+        <h2>More Stories</h2>
+      </div>
+      <div class="all-stories-grid more-stories-grid">
+        <article class="story-tile">
+          <a href="story1.html" class="story-tile-img"><img src="../images/web/thumbs/sch7.jpg" alt="Girls in school uniform at a Namelok school visit" loading="lazy" /></a>
+          <div class="story-tile-body">
+            <div class="story-tile-meta"><span class="story-tag story-tag-rescue">Rescue</span><span>Jackie, 20</span></div>
+            <h3>From Risk to Resilience</h3>
+            <a href="story1.html" class="story-tile-link">Read story <svg class="arrow-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
+        </article>
+        <article class="story-tile">
+          <a href="story3.html" class="story-tile-img"><img src="../images/web/thumbs/sch4.jpg" alt="Students at a Namelok awareness programme" loading="lazy" /></a>
+          <div class="story-tile-body">
+            <div class="story-tile-meta"><span class="story-tag story-tag-rescue">Rescue</span><span>Vivian</span></div>
+            <h3>Running Toward School</h3>
+            <a href="story3.html" class="story-tile-link">Read story <svg class="arrow-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <div id="footer"></div>
+    <script src="../components/footer.js?v=2"></script>
+
+    <div class="upArrowCont" id="upArrow">
+      <img src="../images/upArrow.svg" alt="Back to top" class="upArrow" />
     </div>
 
+    <script src="../js/index.js?v=11"></script>
 </body>
 
 </html>

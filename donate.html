@@ -3,33 +3,44 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+    <meta name="description" content="Support disabled children and girls rescued from FGM and early marriage in Narok, Kenya. Every shilling goes to their care, schooling and safety." />
+    <meta property="og:title" content="Donate – Namelok Naretoi Home" />
+    <meta property="og:description" content="Support disabled children and girls rescued from FGM and early marriage in Narok, Kenya. Every shilling goes to their care, schooling and safety." />
+    <meta property="og:image" content="images/namelokBG2.jpg" />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/png" href="images/logo.png" />
+    <link rel="apple-touch-icon" href="images/logo.png" />
+    <meta name="theme-color" content="#e7972e" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="css/index.css?v=6" />
+    <link rel="stylesheet" href="css/index.css?v=26" />
     <title>Donate – Namelok Naretoi Home</title>
   </head>
 
   <body class="donate-page-v2">
 
     <div id="navbar"></div>
-    <script src="components/navbar.js?v=6"></script>
+    <script src="components/navbar.js?v=7"></script>
 
     <!-- Hero -->
-    <div class="donate-hero">
-      <div class="donate-hero-text">
-        <span>Make a Difference Today</span>
-        <h1>Support Namelok<br>Naretoi Home</h1>
-        <p>Every shilling you give goes directly to supporting disabled children and rescued girls in Narok.</p>
+    <section class="page-hero page-hero-donate">
+      <div class="page-hero-inner">
+        <div class="page-hero-content">
+          <span class="hero-eyebrow">Make a Difference Today</span>
+          <h1>Give a Child a<br /><span class="hero-accent">Brighter Future</span></h1>
+          <p>Every shilling you give goes directly to supporting disabled children and rescued girls in Narok.</p>
+          <nav class="page-hero-crumbs" aria-label="Breadcrumb">
+            <a href="index.html">Home</a><span aria-hidden="true">&rsaquo;</span>Donate
+          </nav>
+        </div>
       </div>
-    </div>
+    </section>
 
     <!-- Impact bar -->
     <div class="impact-bar">
       <div class="impact-stat">
-        <strong>34+</strong>
+        <strong data-since="1991" data-suffix="+">35+</strong>
         <span>Years of service</span>
       </div>
       <div class="impact-stat">
@@ -139,7 +150,7 @@
             </div>
           </div>
 
-          <button class="donate-submit-btn" onclick="handleDonate()">Complete Donation →</button>
+          <button class="donate-submit-btn" onclick="handleDonate()">Complete Donation <svg class="arrow-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
 
           <p style="text-align:center; font-size:0.78rem; color:#bbb; margin-top:14px">
              Your information is safe and secure
@@ -211,14 +222,14 @@
     </div>
 
     <div id="footer"></div>
-    <script src="components/footer.js"></script>
+    <script src="components/footer.js?v=2"></script>
 
     <!-- Back to top -->
     <div class="upArrowCont" id="upArrow">
       <img src="images/upArrow.svg" alt="Back to top" class="upArrow" />
     </div>
 
-    <script src="js/index.js?v=6"></script>
+    <script src="js/index.js?v=11"></script>
 
     <script>
       let selectedAmount = 1000;
@@ -235,15 +246,6 @@
           customGroup.style.display = 'none';
           selectedAmount = amount;
         }
-      }
-
-      // Preselect an amount passed from the homepage, e.g. donate.html?amount=500
-      const requestedAmount = new URLSearchParams(window.location.search).get('amount');
-      if (requestedAmount) {
-        const value = requestedAmount === 'custom' ? 0 : parseInt(requestedAmount, 10);
-        const presetBtn = [...document.querySelectorAll('.preset-btn')]
-          .find(b => b.getAttribute('onclick') === `selectAmount(${value}, this)`);
-        if (presetBtn) selectAmount(value, presetBtn);
       }
 
       function selectPayment(type, tab) {
