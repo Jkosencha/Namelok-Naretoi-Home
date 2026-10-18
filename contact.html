@@ -408,9 +408,11 @@
         if (match) reasonSelect.value = match.value;
       }
 
-      function handleContactSubmit() {
+      async function handleContactSubmit() {
         const first = document.getElementById('firstName').value.trim();
+        const last = document.getElementById('lastName').value.trim();
         const email = document.getElementById('contactEmail').value.trim();
+        const reasonEl = document.getElementById('reason');
         const message = document.getElementById('contactMessage').value.trim();
 
         if (!first || !email || !message) {
@@ -418,8 +420,23 @@
           return;
         }
 
-        // In production: replace with fetch() to your backend or a service like Formspree
-        // e.g. fetch('https://formspree.io/f/YOUR_ID', { method: 'POST', body: formData })
+        // Saved to the dashboard's Messages once Supabase is connected (js/site-data.js)
+        if (window.NamelokSite) {
+          const btn = document.querySelector('.submit-btn');
+          btn.disabled = true;
+          btn.textContent = 'Sending…';
+          try {
+            await window.NamelokSite.sendMessage({
+              first_name: first, last_name: last, email, message,
+              reason: reasonEl.selectedIndex > 0 ? reasonEl.options[reasonEl.selectedIndex].text : '',
+            });
+          } catch (err) {
+            alert('Sorry, your message could not be sent. Please call us on 0722 537 380 or email jenniferkosencha@gmail.com.');
+            btn.disabled = false;
+            btn.textContent = 'Send Message';
+            return;
+          }
+        }
 
         document.getElementById('contactFormInner').style.display = 'none';
         const msg = document.getElementById('successMsg');
