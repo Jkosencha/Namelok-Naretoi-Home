@@ -39,3 +39,55 @@ begin
   return new;
 end;
 $$;
+
+-- ─────────────────────────────────────────────────────────────
+-- Public website content
+-- ─────────────────────────────────────────────────────────────
+
+-- Key/value settings shown on the site: stats, contact details, payment details
+create table if not exists public.site_settings (
+  key        text primary key,
+  value      text not null default '',
+  label      text not null default '',
+  updated_at timestamptz not null default now()
+);
+
+create table if not exists public.stories (
+  id          uuid primary key default gen_random_uuid(),
+  slug        text not null unique check (slug ~ '^[a-z0-9-]+$'),
+  title       text not null check (char_length(title) between 1 and 200),
+  child_name  text not null default '',
+  age         text not null default '',
+  category    text not null default 'rescue' check (category in ('rescue', 'disability', 'education', 'community')),
+  summary     text not null default '',
+  body        text not null default '',
+  image_url   text not null default '',
+  featured    boolean not null default false,
+  published   boolean not null default false,
+  sort_order  integer not null default 0,
+  created_at  timestamptz not null default now(),
+  updated_at  timestamptz not null default now()
+);
+
+create table if not exists public.gallery_photos (
+  id          uuid primary key default gen_random_uuid(),
+  image_url   text not null,
+  caption     text not null default '',
+  category    text not null default 'home' check (category in ('home', 'school', 'health')),
+  published   boolean not null default true,
+  sort_order  integer not null default 0,
+  created_at  timestamptz not null default now(),
+  updated_at  timestamptz not null default now()
+);
+
+-- Messages from the website contact form
+create table if not exists public.contact_messages (
+  id          uuid primary key default gen_random_uuid(),
+  first_name  text not null check (char_length(first_name) between 1 and 100),
+  last_name   text not null default '' check (char_length(last_name) <= 100),
+  email       text not null check (char_length(email) between 3 and 200),
+  reason      text not null default '' check (char_length(reason) <= 100),
+  message     text not null check (char_length(message) between 1 and 5000),
+  status      text not null default 'new' check (status in ('new', 'read', 'replied', 'archived')),
+  created_at  timestamptz not null default now()
+);
