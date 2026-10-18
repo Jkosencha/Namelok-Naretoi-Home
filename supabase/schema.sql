@@ -240,3 +240,45 @@ begin
     execute format('create trigger audit_%1$s after insert or update or delete on public.%1$s for each row execute function public.write_audit()', t);
   end loop;
 end $$;
+
+-- ─────────────────────────────────────────────────────────────
+-- Row Level Security
+-- ─────────────────────────────────────────────────────────────
+do $$
+declare t text;
+begin
+  foreach t in array array['admins', 'site_settings', 'stories', 'gallery_photos', 'contact_messages', 'children',
+                           'child_events', 'donors', 'donations', 'volunteers', 'outreach_visits', 'distributions', 'audit_log']
+  loop
+    execute format('alter table public.%I enable row level security', t);
+    -- Admins: full access to everything (audit_log is read-only, see below)
+    execute format('drop policy if exists admin_all on public.%I', t);
+    if t = 'audit_log' then
+      execute format('create policy admin_all on public.%I for select to authenticated using (public.is_admin())', t);
+    else
+      execute format('create policy admin_all on public.%I for all to authenticated using (public.is_admin()) with check (public.is_admin())', t);
+    end if;
+  end loop;
+end $$;
+
+-- Public website: read published content
+drop policy if exists public_read on public.site_settings;
+create policy public_read on public.site_settings for select to anon, authenticated using (true);
+
+drop policy if exists public_read on public.stories;
+create policy public_read on public.stories for select to anon, authenticated using (published);
+
+drop policy if exists public_read on public.gallery_photos;
+create policy public_read on public.gallery_photos for select to anon, authenticated using (published);
+
+-- Public website: send a contact message (cannot read any back)
+drop policy if exists public_insert on public.contact_messages;
+create policy public_insert on public.contact_messages for insert to anon, authenticated
+  with check (status = 'new');
+
+-- Table privileges (RLS above decides which rows)
+grant usage on schema public to anon, authenticated;
+grant select on public.site_settings, public.stories, public.gallery_photos to anon;
+grant insert (first_name, last_name, email, reason, message) on public.contact_messages to anon;
+grant select, insert, update, delete on all tables in schema public to authenticated;
+revoke insert, update, delete on public.audit_log from authenticated;
