@@ -91,3 +91,40 @@ create table if not exists public.contact_messages (
   status      text not null default 'new' check (status in ('new', 'read', 'replied', 'archived')),
   created_at  timestamptz not null default now()
 );
+
+-- ─────────────────────────────────────────────────────────────
+-- Private: children and their care
+-- ─────────────────────────────────────────────────────────────
+create table if not exists public.children (
+  id                uuid primary key default gen_random_uuid(),
+  first_name        text not null,
+  last_name         text not null default '',
+  date_of_birth     date,
+  gender            text not null default '' check (gender in ('', 'female', 'male')),
+  category          text not null default 'disability' check (category in ('disability', 'rescued', 'vulnerable')),
+  status            text not null default 'in_care' check (status in ('in_care', 'boarding_school', 'reintegrated', 'exited')),
+  admission_date    date,
+  referral_channel  text not null default '' check (referral_channel in ('', 'chief', 'do', 'dc', 'court', 'hospital', 'school', 'family', 'self', 'other')),
+  referral_details  text not null default '',
+  guardian_name     text not null default '',
+  guardian_phone    text not null default '',
+  home_location     text not null default '',
+  school_name       text not null default '',
+  school_class      text not null default '',
+  medical_condition text not null default '',
+  notes             text not null default '',
+  photo_path        text not null default '',  -- path inside the private "child-files" bucket
+  created_at        timestamptz not null default now(),
+  updated_at        timestamptz not null default now()
+);
+
+-- Timeline for each child: surgeries, follow-ups, school reports, court dates…
+create table if not exists public.child_events (
+  id          uuid primary key default gen_random_uuid(),
+  child_id    uuid not null references public.children (id) on delete cascade,
+  event_date  date not null default current_date,
+  type        text not null default 'other' check (type in ('medical', 'school', 'case', 'follow_up', 'other')),
+  title       text not null,
+  details     text not null default '',
+  created_at  timestamptz not null default now()
+);
