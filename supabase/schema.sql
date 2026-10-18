@@ -301,3 +301,20 @@ drop policy if exists child_files_admin on storage.objects;
 create policy child_files_admin on storage.objects for all to authenticated
   using (bucket_id = 'child-files' and public.is_admin())
   with check (bucket_id = 'child-files' and public.is_admin());
+
+-- ─────────────────────────────────────────────────────────────
+-- Starting content (matches what the website shows today)
+-- ─────────────────────────────────────────────────────────────
+insert into public.site_settings (key, value, label) values
+  ('founded_year',       '1991', 'Year founded (years of service is counted from this)'),
+  ('children_supported', '350',  'Children supported'),
+  ('girls_rescued',      '50',   'Girls rescued'),
+  ('phone',              '0722 537 380', 'Phone number'),
+  ('email',              'jenniferkosencha@gmail.com', 'Email address'),
+  ('mpesa_paybill',      '', 'M-Pesa paybill number'),
+  ('mpesa_account',      '', 'M-Pesa account number'),
+  ('bank_name',          '', 'Bank name'),
+  ('bank_account_name',  '', 'Bank account name'),
+  ('bank_account_number','', 'Bank account number'),
+  ('bank_branch',        '', 'Bank branch')
+on conflict (key) do nothing;
