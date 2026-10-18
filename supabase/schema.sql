@@ -156,3 +156,43 @@ create table if not exists public.donations (
   notes        text not null default '',
   created_at   timestamptz not null default now()
 );
+
+-- ─────────────────────────────────────────────────────────────
+-- Private: volunteers and school outreach
+-- ─────────────────────────────────────────────────────────────
+create table if not exists public.volunteers (
+  id          uuid primary key default gen_random_uuid(),
+  name        text not null,
+  email       text not null default '',
+  phone       text not null default '',
+  role        text not null default 'other' check (role in ('speaker', 'mentor', 'outreach', 'donations', 'other')),
+  status      text not null default 'new' check (status in ('new', 'contacted', 'active', 'inactive')),
+  notes       text not null default '',
+  created_at  timestamptz not null default now(),
+  updated_at  timestamptz not null default now()
+);
+
+create table if not exists public.outreach_visits (
+  id               uuid primary key default gen_random_uuid(),
+  school_name      text not null,
+  location         text not null default '',
+  visit_date       date not null default current_date,
+  girls_reached    integer not null default 0 check (girls_reached >= 0),
+  boys_reached     integer not null default 0 check (boys_reached >= 0),
+  parents_reached  integer not null default 0 check (parents_reached >= 0),
+  topics           text not null default '',
+  notes            text not null default '',
+  created_at       timestamptz not null default now(),
+  updated_at       timestamptz not null default now()
+);
+
+-- Items handed out (pads, panties, boxers, balls, socks, books…), optionally tied to a visit
+create table if not exists public.distributions (
+  id              uuid primary key default gen_random_uuid(),
+  visit_id        uuid references public.outreach_visits (id) on delete set null,
+  item            text not null check (item in ('pads', 'panties', 'boxers', 'balls', 'socks', 'books', 'other')),
+  quantity        integer not null check (quantity > 0),
+  distributed_on  date not null default current_date,
+  notes           text not null default '',
+  created_at      timestamptz not null default now()
+);
