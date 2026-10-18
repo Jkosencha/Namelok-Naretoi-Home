@@ -282,3 +282,22 @@ grant select on public.site_settings, public.stories, public.gallery_photos to a
 grant insert (first_name, last_name, email, reason, message) on public.contact_messages to anon;
 grant select, insert, update, delete on all tables in schema public to authenticated;
 revoke insert, update, delete on public.audit_log from authenticated;
+
+-- ─────────────────────────────────────────────────────────────
+-- File storage
+--   site-media  : public photos used on the website (anyone can view, admins upload)
+--   child-files : private photos/documents for children's records (admins only)
+-- ─────────────────────────────────────────────────────────────
+insert into storage.buckets (id, name, public)
+values ('site-media', 'site-media', true), ('child-files', 'child-files', false)
+on conflict (id) do update set public = excluded.public;
+
+drop policy if exists site_media_admin_write on storage.objects;
+create policy site_media_admin_write on storage.objects for all to authenticated
+  using (bucket_id = 'site-media' and public.is_admin())
+  with check (bucket_id = 'site-media' and public.is_admin());
+
+drop policy if exists child_files_admin on storage.objects;
+create policy child_files_admin on storage.objects for all to authenticated
+  using (bucket_id = 'child-files' and public.is_admin())
+  with check (bucket_id = 'child-files' and public.is_admin());
