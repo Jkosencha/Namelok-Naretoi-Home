@@ -128,3 +128,31 @@ create table if not exists public.child_events (
   details     text not null default '',
   created_at  timestamptz not null default now()
 );
+
+-- ─────────────────────────────────────────────────────────────
+-- Private: donations
+-- ─────────────────────────────────────────────────────────────
+create table if not exists public.donors (
+  id            uuid primary key default gen_random_uuid(),
+  name          text not null,
+  organisation  text not null default '',
+  email         text not null default '',
+  phone         text not null default '',
+  notes         text not null default '',
+  created_at    timestamptz not null default now(),
+  updated_at    timestamptz not null default now()
+);
+
+create table if not exists public.donations (
+  id           uuid primary key default gen_random_uuid(),
+  donor_id     uuid references public.donors (id) on delete set null,
+  donor_name   text not null default '',
+  amount       numeric(12, 2) not null check (amount >= 0),
+  currency     text not null default 'KES',
+  method       text not null default 'mpesa' check (method in ('mpesa', 'bank', 'paypal', 'cash', 'in_kind')),
+  reference    text not null default '',
+  received_on  date not null default current_date,
+  purpose      text not null default '',
+  notes        text not null default '',
+  created_at   timestamptz not null default now()
+);
