@@ -168,7 +168,9 @@ if (partnerLogos) {
 // Gallery page: category filters and full-screen photo viewer
 const galleryGrid = document.querySelector(".gallery-masonry");
 if (galleryGrid) {
-  const items = [...galleryGrid.querySelectorAll(".g-item")];
+  // Items are looked up on each use, because the photos may be replaced with ones
+  // from the dashboard after the page loads (see js/site-data.js)
+  const allItems = () => [...galleryGrid.querySelectorAll(".g-item")];
   const filters = document.querySelectorAll(".g-filter");
   const lightbox = document.getElementById("lightbox");
   const lbImg = document.getElementById("lbImg");
@@ -176,7 +178,7 @@ if (galleryGrid) {
   const lbCount = document.getElementById("lbCount");
   let current = 0;
 
-  const visibleItems = () => items.filter((item) => !item.hidden);
+  const visibleItems = () => allItems().filter((item) => !item.hidden);
 
   filters.forEach((btn) => {
     btn.addEventListener("click", () => {
@@ -185,7 +187,7 @@ if (galleryGrid) {
         b.setAttribute("aria-pressed", b === btn);
       });
       const cat = btn.dataset.filter;
-      items.forEach((item) => {
+      allItems().forEach((item) => {
         item.hidden = cat !== "all" && item.dataset.cat !== cat;
       });
     });
@@ -204,11 +206,11 @@ if (galleryGrid) {
     lbImg.style.animation = "";
   };
 
-  items.forEach((item) => {
-    item.querySelector(".g-open").addEventListener("click", () => {
-      show(visibleItems().indexOf(item));
-      lightbox.showModal();
-    });
+  galleryGrid.addEventListener("click", (e) => {
+    const item = e.target.closest(".g-item");
+    if (!item) return;
+    show(visibleItems().indexOf(item));
+    lightbox.showModal();
   });
 
   lightbox.querySelector(".lb-prev").addEventListener("click", () => show(current - 1));

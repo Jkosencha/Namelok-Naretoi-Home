@@ -262,7 +262,7 @@
   <body class="contact-page">
 
     <div id="navbar"></div>
-    <script src="components/navbar.js?v=7"></script>
+    <script src="components/navbar.js?v=8"></script>
 
     <!-- Hero -->
     <section class="page-hero page-hero-contact">
@@ -355,7 +355,7 @@
           </div>
           <div class="info-text">
             <strong>Email</strong>
-            <a href="mailto:jenniferkosencha@gmail.com">jenniferkosencha@gmail.com</a>
+            <a href="mailto:jenniferkosencha@gmail.com"><span data-setting="email">jenniferkosencha@gmail.com</span></a>
           </div>
         </div>
 
@@ -365,7 +365,7 @@
           </div>
           <div class="info-text">
             <strong>Phone</strong>
-            <a href="tel:+254722537380">0722 537 380</a>
+            <a href="tel:+254722537380"><span data-setting="phone">0722 537 380</span></a>
           </div>
         </div>
 
@@ -390,14 +390,16 @@
     </div>
 
     <div id="footer"></div>
-    <script src="components/footer.js?v=2"></script>
+    <script src="components/footer.js?v=3"></script>
 
     <!-- Back to top -->
     <div class="upArrowCont" id="upArrow">
       <img src="images/upArrow.svg" alt="Back to top" class="upArrow" />
     </div>
 
-    <script src="js/index.js?v=11"></script>
+    <script src="js/supabase-config.js?v=1"></script>
+    <script src="js/site-data.js?v=2"></script>
+    <script src="js/index.js?v=12"></script>
 
     <script>
       // Preselect the reason passed in the link, e.g. contact.html?reason=volunteering
@@ -408,9 +410,11 @@
         if (match) reasonSelect.value = match.value;
       }
 
-      function handleContactSubmit() {
+      async function handleContactSubmit() {
         const first = document.getElementById('firstName').value.trim();
+        const last = document.getElementById('lastName').value.trim();
         const email = document.getElementById('contactEmail').value.trim();
+        const reasonEl = document.getElementById('reason');
         const message = document.getElementById('contactMessage').value.trim();
 
         if (!first || !email || !message) {
@@ -418,8 +422,23 @@
           return;
         }
 
-        // In production: replace with fetch() to your backend or a service like Formspree
-        // e.g. fetch('https://formspree.io/f/YOUR_ID', { method: 'POST', body: formData })
+        // Saved to the dashboard's Messages once Supabase is connected (js/site-data.js)
+        if (window.NamelokSite) {
+          const btn = document.querySelector('.submit-btn');
+          btn.disabled = true;
+          btn.textContent = 'Sending…';
+          try {
+            await window.NamelokSite.sendMessage({
+              first_name: first, last_name: last, email, message,
+              reason: reasonEl.selectedIndex > 0 ? reasonEl.options[reasonEl.selectedIndex].text : '',
+            });
+          } catch (err) {
+            alert('Sorry, your message could not be sent. Please call us on 0722 537 380 or email jenniferkosencha@gmail.com.');
+            btn.disabled = false;
+            btn.textContent = 'Send Message';
+            return;
+          }
+        }
 
         document.getElementById('contactFormInner').style.display = 'none';
         const msg = document.getElementById('successMsg');

@@ -21,7 +21,7 @@
   <body class="donate-page-v2">
 
     <div id="navbar"></div>
-    <script src="components/navbar.js?v=7"></script>
+    <script src="components/navbar.js?v=8"></script>
 
     <!-- Hero -->
     <section class="page-hero page-hero-donate">
@@ -44,11 +44,11 @@
         <span>Years of service</span>
       </div>
       <div class="impact-stat">
-        <strong>350+</strong>
+        <strong data-setting="children_supported" data-suffix="+">350+</strong>
         <span>Children supported</span>
       </div>
       <div class="impact-stat">
-        <strong>50+</strong>
+        <strong data-setting="girls_rescued" data-suffix="+">50+</strong>
         <span>Girls rescued</span>
       </div>
     </div>
@@ -118,8 +118,8 @@
             <div class="mpesa-info">
               <p>
                 <strong>M-Pesa Paybill</strong><br>
-                Business Number: <strong>247247</strong><br>
-                Account Number: <strong>0797XXXXXX</strong><br><br>
+                Business Number: <strong data-setting="mpesa_paybill">247247</strong><br>
+                Account Number: <strong data-setting="mpesa_account">0797XXXXXX</strong><br><br>
                 After sending, enter your M-Pesa transaction code below.
               </p>
             </div>
@@ -142,10 +142,10 @@
           <!-- Bank Transfer panel -->
           <div class="pay-panel" id="panel-bank">
             <div class="bank-info">
-              <p><strong>Bank:</strong> Equity Bank Kenya</p>
-              <p><strong>Account Name:</strong> Namelok Naretoi Home</p>
-              <p><strong>Account Number:</strong> 0123456789012</p>
-              <p><strong>Branch:</strong> Narok Branch</p>
+              <p><strong>Bank:</strong> <span data-setting="bank_name">Equity Bank Kenya</span></p>
+              <p><strong>Account Name:</strong> <span data-setting="bank_account_name">Namelok Naretoi Home</span></p>
+              <p><strong>Account Number:</strong> <span data-setting="bank_account_number">0123456789012</span></p>
+              <p><strong>Branch:</strong> <span data-setting="bank_branch">Narok Branch</span></p>
               <p style="margin-top:10px; color:#999; font-size:0.85rem">Please email us your transfer receipt for confirmation.</p>
             </div>
           </div>
@@ -222,14 +222,16 @@
     </div>
 
     <div id="footer"></div>
-    <script src="components/footer.js?v=2"></script>
+    <script src="components/footer.js?v=3"></script>
 
     <!-- Back to top -->
     <div class="upArrowCont" id="upArrow">
       <img src="images/upArrow.svg" alt="Back to top" class="upArrow" />
     </div>
 
-    <script src="js/index.js?v=11"></script>
+    <script src="js/supabase-config.js?v=1"></script>
+    <script src="js/site-data.js?v=2"></script>
+    <script src="js/index.js?v=12"></script>
 
     <script>
       let selectedAmount = 1000;
