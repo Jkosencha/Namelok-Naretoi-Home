@@ -196,3 +196,47 @@ create table if not exists public.distributions (
   notes           text not null default '',
   created_at      timestamptz not null default now()
 );
+
+-- ─────────────────────────────────────────────────────────────
+-- Audit trail for sensitive tables: who changed which record, and when.
+-- Stores no record contents, only the fact of the change.
+-- ─────────────────────────────────────────────────────────────
+create table if not exists public.audit_log (
+  id          bigint generated always as identity primary key,
+  table_name  text not null,
+  record_id   uuid,
+  action      text not null,
+  user_id     uuid,
+  at          timestamptz not null default now()
+);
+
+create or replace function public.write_audit()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  insert into public.audit_log (table_name, record_id, action, user_id)
+  values (tg_table_name, coalesce(new.id, old.id), tg_op, auth.uid());
+  return coalesce(new, old);
+end;
+$$;
+
+-- ─────────────────────────────────────────────────────────────
+-- Triggers
+-- ─────────────────────────────────────────────────────────────
+do $$
+declare t text;
+begin
+  foreach t in array array['site_settings', 'stories', 'gallery_photos', 'children', 'donors', 'volunteers', 'outreach_visits']
+  loop
+    execute format('drop trigger if exists touch_%1$s on public.%1$s', t);
+    execute format('create trigger touch_%1$s before update on public.%1$s for each row execute function public.touch_updated_at()', t);
+  end loop;
+  foreach t in array array['children', 'child_events', 'donations', 'donors']
+  loop
+    execute format('drop trigger if exists audit_%1$s on public.%1$s', t);
+    execute format('create trigger audit_%1$s after insert or update or delete on public.%1$s for each row execute function public.write_audit()', t);
+  end loop;
+end $$;
