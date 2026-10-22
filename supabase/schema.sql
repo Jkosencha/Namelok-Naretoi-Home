@@ -117,7 +117,9 @@ create table if not exists public.children (
   class_year        integer,
   medical_condition text not null default '',
   notes             text not null default '',
-  photo_path        text not null default '',  -- path inside the private "child-files" bucket
+  photo_path        text not null default '',  -- how the child looks now (private "child-files" bucket)
+  arrival_photo_path text not null default '', -- how the child looked when they came
+  about             text not null default '',  -- a short description
   created_at        timestamptz not null default now(),
   updated_at        timestamptz not null default now()
 );
@@ -159,6 +161,17 @@ create table if not exists public.child_events (
   details     text not null default '',
   created_at  timestamptz not null default now()
 );
+
+-- A small photo gallery for each child (private "child-files" bucket)
+create table if not exists public.child_photos (
+  id          uuid primary key default gen_random_uuid(),
+  child_id    uuid not null references public.children (id) on delete cascade,
+  path        text not null,
+  caption     text not null default '' check (char_length(caption) <= 300),
+  taken_on    date,
+  created_at  timestamptz not null default now()
+);
+create index if not exists child_photos_child on public.child_photos (child_id, taken_on);
 
 -- ─────────────────────────────────────────────────────────────
 -- Private: donations
@@ -265,7 +278,7 @@ begin
     execute format('drop trigger if exists touch_%1$s on public.%1$s', t);
     execute format('create trigger touch_%1$s before update on public.%1$s for each row execute function public.touch_updated_at()', t);
   end loop;
-  foreach t in array array['children', 'child_events', 'donations', 'donors']
+  foreach t in array array['children', 'child_events', 'child_photos', 'donations', 'donors']
   loop
     execute format('drop trigger if exists audit_%1$s on public.%1$s', t);
     execute format('create trigger audit_%1$s after insert or update or delete on public.%1$s for each row execute function public.write_audit()', t);
@@ -279,7 +292,7 @@ do $$
 declare t text;
 begin
   foreach t in array array['admins', 'site_settings', 'stories', 'gallery_photos', 'contact_messages', 'children',
-                           'child_events', 'donors', 'donations', 'volunteers', 'outreach_visits', 'distributions', 'audit_log']
+                           'child_events', 'child_photos', 'donors', 'donations', 'volunteers', 'outreach_visits', 'distributions', 'audit_log']
   loop
     execute format('alter table public.%I enable row level security', t);
     -- Admins: full access to everything (audit_log is read-only, see below)
