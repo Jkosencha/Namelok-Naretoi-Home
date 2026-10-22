@@ -1,6 +1,7 @@
-import { isConfigured, createSupabaseBackend, createDemoBackend } from "./data.js?v=5";
-import { sparkline, donut, columns, lineChart, dataTable } from "./charts.js?v=2";
-import { createReports } from "./reports.js?v=1";
+import { isConfigured, createSupabaseBackend, createDemoBackend } from "./data.js?v=6";
+import { donut, barChart, dataTable } from "./charts.js?v=3";
+import { createCalendar } from "./calendar.js?v=2";
+import { createReports } from "./reports.js?v=2";
 
 // ─────────────────────────────────────────────────────────────
 // Small helpers
@@ -65,6 +66,7 @@ const ICONS = {
   sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
   moon: '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>',
   chevron: '<path d="M9 6l6 6-6 6"/>',
+  "chevron-left": '<path d="M15 6l-6 6 6 6"/>',
   external: '<path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',
   calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/>',
   database: '<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>',
@@ -259,8 +261,8 @@ let user = null;
 const app = $("#app");
 
 const NAV = [
-  ["Overview", [["overview", "Overview", "overview"]]],
-  ["Website", [["settings", "Stats & details", "website"], ["stories", "Stories", "stories"], ["gallery_photos", "Gallery", "gallery"]]],
+  ["", [["overview", "Dashboard", "overview"], ["calendar", "Calendar", "calendar"]]],
+  ["Website", [["stories", "Stories", "stories"], ["gallery_photos", "Gallery", "gallery"], ["settings", "Stats & details", "website"]]],
   ["The Home", [["children", "Children", "children"]]],
   ["Giving", [["donations", "Donations", "donations"], ["donors", "Donors", "donors"]]],
   ["People", [["messages", "Messages", "messages"], ["volunteers", "Volunteers", "volunteers"]]],
@@ -386,22 +388,16 @@ const displayName = () => {
 function renderShell() {
   const nav = h("nav", { class: "side-nav", "aria-label": "Dashboard" },
     NAV.map(([group, items]) => h("div", { class: "nav-group" },
-      h("span", { class: "nav-group-label" }, group),
-      items.map(([route, text, ic]) => h("a", { href: "#" + route, "data-route": route }, icon(ic), h("span", {}, text), h("span", { class: "nav-chevron" }, icon("chevron", 14))))
-    )),
-    h("div", { class: "nav-group" },
-      h("span", { class: "nav-group-label" }, "Quick links"),
-      h("a", { href: "../index.html", target: "_blank", rel: "noopener" }, icon("website"), h("span", {}, "Namelok website"), h("span", { class: "nav-chevron" }, icon("external", 14))),
-      h("a", { href: "https://supabase.com/dashboard", target: "_blank", rel: "noopener" }, icon("database"), h("span", {}, "Database"), h("span", { class: "nav-chevron" }, icon("external", 14))),
-      h("button", { class: "nav-button", onclick: async () => { await db.signOut(); location.href = location.pathname; } }, icon("logout"), h("span", {}, "Sign out"))
-    )
+      group ? h("span", { class: "nav-group-label" }, group) : "",
+      items.map(([route, text, ic]) => h("a", { href: "#" + route, "data-route": route }, icon(ic), h("span", {}, text)))
+    ))
   );
   const sidebar = h("aside", { class: "sidebar" },
+    h("a", { class: "brand", href: "#overview" }, h("img", { src: "../images/logo.png", alt: "" }), h("span", {}, "NAMELOK")),
     nav,
-    h("div", { class: "side-brand" },
-      h("img", { src: "../images/logo.png", alt: "" }),
-      h("strong", {}, "Namelok Naretoi"),
-      h("span", {}, "Healing · Education · Protection")
+    h("div", { class: "side-foot" },
+      h("a", { href: "../index.html", target: "_blank", rel: "noopener" }, icon("website"), h("span", {}, "View website")),
+      h("button", { class: "nav-button", onclick: async () => { await db.signOut(); location.href = location.pathname; } }, icon("logout"), h("span", {}, "Log out"))
     )
   );
 
@@ -429,36 +425,28 @@ function renderShell() {
     results.hidden = false;
   });
   search.addEventListener("keydown", (e) => { if (e.key === "Escape") { results.hidden = true; search.blur(); } if (e.key === "Enter") results.querySelector("a")?.click(); });
-  document.addEventListener("click", (e) => { if (!e.target.closest(".appbar-search")) results.hidden = true; });
+  document.addEventListener("click", (e) => { if (!e.target.closest(".header-search")) results.hidden = true; });
 
-  const bellCount = h("span", { class: "bell-count", hidden: true });
+  const bellCount = h("span", { class: "bell-dot", hidden: true });
   db.list("contact_messages").then((m) => {
     const n = m.filter((x) => x.status === "new").length;
-    bellCount.textContent = n > 9 ? "9+" : n;
     bellCount.hidden = !n;
+    bellCount.title = `${n} new message${n === 1 ? "" : "s"}`;
   }).catch(() => {});
 
-  const appbar = h("header", { class: "appbar" },
+  const header = h("header", { class: "header card" },
     h("button", { class: "icon-btn menu-btn", "aria-label": "Menu", onclick: () => document.body.classList.toggle("nav-open") }, icon("menu", 20)),
-    h("a", { class: "brand", href: "#overview" },
-      h("img", { src: "../images/logo.png", alt: "" }),
-      h("span", {}, h("strong", {}, "Namelok Naretoi"), h("small", {}, "Care & Management Dashboard"))
-    ),
-    h("p", { class: "appbar-tagline" }, "Every child seen, valued and supported"),
-    h("div", { class: "appbar-search" }, icon("search", 16), search, results),
-    h("button", { id: "themeToggle", class: "icon-btn", onclick: () => applyTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark") }),
-    h("a", { class: "icon-btn bell", href: "#messages", "aria-label": "New messages" }, icon("bell", 18), bellCount),
-    h("div", { class: "user-chip" },
-      h("span", { class: "user-avatar" }, displayName().slice(0, 1)),
-      h("span", { class: "user-text" }, h("strong", {}, displayName()), h("small", {}, "Administrator"))
-    )
+    h("h1", { id: "pageTitle" }, ""),
+    h("div", { class: "header-search" }, icon("search", 16), search, results),
+    h("div", { class: "header-tools" },
+      h("button", { id: "themeToggle", class: "icon-btn ghost", onclick: () => applyTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark") }),
+      h("a", { class: "icon-btn ghost bell", href: "#messages", "aria-label": "Messages" }, icon("bell", 18), bellCount),
+      h("span", { class: "avatar-sm", title: `${displayName()} · Administrator` }, displayName().slice(0, 1)))
   );
 
   const banner = db.demo ? h("div", { class: "demo-banner" }, "Demo mode: invented sample data, nothing is saved. ", isConfigured() ? h("a", { href: location.pathname }, "Open the real dashboard") : "Connect Supabase to use the dashboard for real.") : null;
-  app.replaceChildren(banner || "", appbar, h("div", { class: "shell" }, sidebar,
-    h("div", { class: "main" },
-      h("div", { class: "page-head" }, h("h1", { id: "pageTitle" }, ""), h("div", { id: "pageActions", class: "page-actions" })),
-      h("main", { id: "view", class: "view" }))));
+  app.replaceChildren(banner || "", h("div", { class: "frame" }, sidebar,
+    h("div", { class: "main" }, header, h("div", { id: "pageActions", class: "page-actions" }), h("main", { id: "view", class: "view" }))));
   applyTheme(document.documentElement.dataset.theme);
   nav.addEventListener("click", () => document.body.classList.remove("nav-open"));
   addEventListener("hashchange", route);
@@ -468,17 +456,18 @@ function renderShell() {
 function setPage(title, actions = []) {
   $("#pageTitle").textContent = title;
   $("#pageActions").replaceChildren(...actions);
+  $("#pageActions").hidden = !actions.length;
   document.title = `${title} – Namelok Dashboard`;
 }
 
 async function route() {
   const [name, id, sub] = (location.hash.slice(1) || "overview").split("/");
   document.querySelectorAll(".side-nav a").forEach((a) => a.classList.toggle("active", a.dataset.route === name));
-  document.body.classList.toggle("is-overview", name === "overview");
   const view = $("#view");
   view.replaceChildren(h("div", { class: "loading" }, "Loading…"));
   try {
     if (name === "overview") await viewOverview(view);
+    else if (name === "calendar") await calendar().route(view);
     else if (name === "settings") await viewSettings(view);
     else if (name === "messages") await viewMessages(view);
     else if (name === "children" && id) await viewChild(view, id);
@@ -491,173 +480,83 @@ async function route() {
   }
 }
 
-let reportsModule;
+let reportsModule, calendarModule;
 const reports = () => (reportsModule ||= createReports({ h, icon, money, fmtDate, toast, setPage, db: () => db, CHILD_CATEGORY, classAt, friendly }));
+const calendar = () => (calendarModule ||= createCalendar({ h, icon, fmtDate, toast, setPage, db: () => db, openForm }));
 
 // ─────────────────────────────────────────────────────────────
 // Overview
 // ─────────────────────────────────────────────────────────────
-// The last n calendar months, oldest first: [{ key: "2026-05", label: "May" }, …]
-function lastMonths(n) {
-  const out = [], d = new Date();
-  d.setDate(1);
-  for (let i = n - 1; i >= 0; i--) {
-    const m = new Date(d.getFullYear(), d.getMonth() - i, 1);
-    out.push({ key: `${m.getFullYear()}-${String(m.getMonth() + 1).padStart(2, "0")}`, label: m.toLocaleDateString("en-GB", { month: "short" }) });
-  }
-  return out;
-}
-const monthly = (rows, dateKey, valueOf = () => 1, n = 6) =>
-  lastMonths(n).map((m) => rows.filter((r) => (r[dateKey] || "").slice(0, 7) === m.key).reduce((s, r) => s + valueOf(r), 0));
-const timeAgo = (iso) => {
-  const mins = Math.round((Date.now() - new Date(iso)) / 60000);
-  if (mins < 60) return `${Math.max(mins, 1)} min ago`;
-  if (mins < 1440) return `${Math.round(mins / 60)} h ago`;
-  return fmtDate(iso);
-};
-
 async function viewOverview(view) {
-  setPage("Overview");
-  const [children, events, donations, messages, volunteers, visits, items, stories] = await Promise.all(
-    ["children", "child_events", "donations", "contact_messages", "volunteers", "outreach_visits", "distributions", "stories"].map((t) => db.list(t))
-  );
-  const today = new Date().toISOString().slice(0, 10);
+  setPage("Dashboard");
+  const [children, donations, visits, volunteers] = await Promise.all(["children", "donations", "outreach_visits", "volunteers"].map((t) => db.list(t)));
+  const year = new Date().getFullYear();
   const inCare = children.filter((c) => c.status === "in_care" || c.status === "boarding_school");
   const sum = (rows, f) => rows.reduce((s, r) => s + f(r), 0);
+  const card = (title, body, cls = "", extra = "") => h("section", { class: "card " + cls }, h("header", { class: "card-head" }, h("h3", {}, title), extra), body);
 
-  // ── Latest updates strip ──
-  const updates = [
-    ...messages.filter((m) => m.status === "new").slice(0, 3).map((m) => [`New message from ${m.first_name}`, m.reason || "General", "#messages"]),
-    ...donations.slice(0, 2).map((d) => [`${money(d.amount)} received`, d.donor_name || "Anonymous", "#donations"]),
-    ...visits.filter((v) => v.visit_date >= today).slice(0, 2).map((v) => [`School visit: ${v.school_name}`, fmtDate(v.visit_date), "#outreach_visits"]),
-    ...stories.filter((s) => !s.published).slice(0, 1).map((s) => [`Draft story waiting: ${s.title}`, "Not yet published", "#stories"]),
-  ];
-  const ticker = h("div", { class: "ticker" },
-    h("span", { class: "ticker-label" }, icon("bell", 16), "Latest"),
-    h("div", { class: "ticker-track" }, updates.length
-      ? updates.map(([t, sub, href]) => h("a", { href, class: "ticker-item" }, h("span", {}, t), h("small", {}, sub)))
-      : h("span", { class: "ticker-item muted" }, "Nothing new right now."))
-  );
+  // ── Four simple figures ──
+  const stat = (tone, ic, labelText, value, href) => h("a", { class: "stat card", href },
+    h("span", { class: `stat-icon tone-${tone}` }, icon(ic, 22)),
+    h("span", { class: "stat-text" }, h("small", {}, labelText), h("strong", {}, value)));
+  const reachedThisYear = sum(visits.filter((v) => thisYear(v.visit_date)), (v) => v.girls_reached + v.boys_reached);
+  const stats = h("div", { class: "stats" },
+    stat(1, "children", "Children in care", inCare.length.toLocaleString(), "#children"),
+    stat(2, "outreach", `Pupils reached ${year}`, reachedThisYear.toLocaleString(), "#outreach_visits"),
+    stat(3, "volunteers", "Active volunteers", volunteers.filter((v) => v.status === "active").length.toLocaleString(), "#volunteers"),
+    stat(4, "donations", `Donations ${year}`, money(sum(donations.filter((d) => thisYear(d.received_on)), (d) => Number(d.amount))), "#donations"));
 
-  // ── Hero + greeting ──
-  const hour = new Date().getHours();
-  const greeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
-  const hero = h("section", { class: "hero-card" },
-    h("div", { class: "hero-text" },
-      h("h2", {}, "Namelok Naretoi Home"),
-      h("p", { class: "hero-sub" }, "Care & Management Dashboard"),
-      h("p", { class: "hero-tags" }, h("span", {}, "Healing"), h("span", {}, "Education"), h("span", {}, "Protection"))
-    )
-  );
-  const greet = h("section", { class: "greet-card" },
-    h("p", { class: "greet-date" }, icon("calendar", 16), new Date().toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", year: "numeric" })),
-    h("p", { class: "greet-hello" }, greeting + ","),
-    h("h2", {}, displayName()),
-    h("p", { class: "muted" }, "Administrator · Namelok Naretoi Home"),
-    h("p", { class: "greet-since" }, `Caring since 1991 · ${new Date().getFullYear() - 1991} years`)
-  );
-
-  // ── Stat cards with change vs last month and a 6-month trend ──
-  // Change vs last month: a percentage for amounts, a plain count for people and messages
-  const statCard = ({ tone, ic, title, value, series, href, counts = false, what = "" }) => {
-    const [prev, cur] = series.slice(-2);
-    const diff = cur - prev;
-    const pct = prev ? Math.round((diff / prev) * 100) : null;
-    const amount = counts || pct === null ? Math.abs(diff).toLocaleString() : Math.abs(pct) + "%";
-    const deltaText = diff === 0 ? "Same as last month" : `${diff > 0 ? "▲" : "▼"} ${amount} ${what ? what + " " : ""}vs last month`;
-    return h("a", { class: `stat-card tone-${tone}`, href },
-      h("div", { class: "stat-top" }, h("span", { class: "stat-icon" }, icon(ic, 20)), h("span", { class: "stat-title" }, title)),
-      h("strong", { class: "stat-value" }, value),
-      h("div", { class: "stat-foot" },
-        h("span", { class: `stat-delta ${diff > 0 ? "up" : diff < 0 ? "down" : ""}` }, deltaText),
-        sparkline(series, `var(--series-${tone})`))
-    );
+  // ── Donations per month, with a year picker and a table view ──
+  const years = [...new Set([year, ...donations.map((d) => Number((d.received_on || "").slice(0, 4))).filter(Boolean)])].sort((a, b) => b - a);
+  const yearSel = h("select", { class: "select-sm", "aria-label": "Year" }, years.map((y) => h("option", { value: y }, y)));
+  const chartBox = h("div", { class: "chart-box" });
+  let asTable = false;
+  const drawChart = () => {
+    const y = Number(yearSel.value);
+    const points = Array.from({ length: 12 }, (_, m) => {
+      const key = `${y}-${String(m + 1).padStart(2, "0")}`;
+      const d = new Date(y, m, 1);
+      return { label: d.toLocaleDateString("en-GB", { month: "short" }), full: d.toLocaleDateString("en-GB", { month: "long", year: "numeric" }), value: sum(donations.filter((x) => (x.received_on || "").startsWith(key)), (x) => Number(x.amount)) };
+    });
+    const total = sum(points, (p) => p.value);
+    chartBox.replaceChildren(
+      h("p", { class: "chart-total" }, h("strong", {}, money(total)), ` received in ${y}`),
+      asTable ? dataTable(points.map((p) => [p.full, money(p.value)]), ["Month", "Donations"]) : barChart(points, { color: "var(--series-1)", format: money }));
   };
-  const stats = h("div", { class: "stat-grid" },
-    statCard({ tone: 1, ic: "children", title: "Children in care", value: inCare.length, series: monthly(children, "admission_date"), href: "#children", counts: true, what: "admitted" }),
-    statCard({ tone: 2, ic: "donations", title: `Donations ${new Date().getFullYear()}`, value: money(sum(donations.filter((d) => thisYear(d.received_on)), (d) => Number(d.amount))), series: monthly(donations, "received_on", (d) => Number(d.amount)), href: "#donations" }),
-    statCard({ tone: 3, ic: "outreach", title: "Pupils reached", value: sum(visits.filter((v) => thisYear(v.visit_date)), (v) => v.girls_reached + v.boys_reached).toLocaleString(), series: monthly(visits, "visit_date", (v) => v.girls_reached + v.boys_reached), href: "#outreach_visits" }),
-    statCard({ tone: 4, ic: "messages", title: "New messages", value: messages.filter((m) => m.status === "new").length, series: monthly(messages, "created_at"), href: "#messages", counts: true, what: "received" })
-  );
+  yearSel.addEventListener("change", drawChart);
+  const tableBtn = h("button", { class: "btn btn-sm btn-ghost", onclick: () => { asTable = !asTable; tableBtn.textContent = asTable ? "Chart" : "Table"; drawChart(); } }, "Table");
+  drawChart();
 
-  // ── Children by category (donut) and by status (columns) ──
-  // Ring order keeps neighbouring colours far apart for colour-blind readers
-  const catColor = { rescued_girl: "var(--series-1)", rescued_boy: "var(--series-4)", disability: "var(--series-2)", vulnerable: "var(--series-3)" };
+  // ── Recently admitted ──
+  const recent = [...children].filter((c) => c.admission_date).sort((a, b) => (a.admission_date < b.admission_date ? 1 : -1)).slice(0, 5);
+  const recentTable = recent.length ? h("table", { class: "simple-table" },
+    h("thead", {}, h("tr", {}, ["Name", "Category", "Class", "Admitted"].map((t) => h("th", {}, t)))),
+    h("tbody", {}, recent.map((c) => h("tr", { onclick: () => (location.hash = "#children/" + c.id), tabindex: 0 },
+      h("td", {}, h("span", { class: "name-cell" }, h("span", { class: "avatar-xs" }, (c.first_name[0] || "?") + (c.last_name[0] || "")), `${c.first_name} ${c.last_name}`.trim())),
+      h("td", {}, h("span", { class: `badge badge-${c.category}` }, label(CHILD_CATEGORY, c.category))),
+      h("td", {}, currentClass(c)?.name || "—"),
+      h("td", {}, new Date(c.admission_date + "T00:00:00").toLocaleDateString("en-GB", { day: "numeric", month: "short" }))))))
+    : h("p", { class: "muted" }, "No admissions recorded yet.");
+
+  // ── Children in care by category ──
+  const catColor = { rescued_girl: "var(--series-3)", rescued_boy: "var(--series-4)", disability: "var(--series-1)", vulnerable: "var(--series-2)" };
   const catShort = { rescued_girl: "Rescued girls", rescued_boy: "Rescued boys", disability: "Disability", vulnerable: "Vulnerable" };
-  const byCategory = ["rescued_girl", "rescued_boy", "disability", "vulnerable"].map((v) => CHILD_CATEGORY.find((o) => o.value === v)).map((o) => ({ label: catShort[o.value], value: inCare.filter((c) => c.category === o.value).length, color: catColor[o.value] }));
-  const stageShort = { "Pre-primary": "Pre-prim.", Primary: "Primary", "Junior school": "Junior", "Senior school": "Senior", Secondary: "Form 1–4", College: "College" };
-  const byStage = Object.keys(stageShort).map((st) => ({ label: st, short: stageShort[st], value: inCare.filter((c) => currentClass(c)?.stage === st).length }));
-  const noClass = inCare.filter((c) => !currentClass(c) || !stageShort[currentClass(c).stage]).length;
-  const card = (title, body, extra = "") => h("section", { class: "dash-card" }, h("header", { class: "dash-card-head" }, h("h3", {}, title), extra), body);
+  const byCategory = ["rescued_girl", "rescued_boy", "disability", "vulnerable"].map((v) => ({ label: catShort[v], value: inCare.filter((c) => c.category === v).length, color: catColor[v] }));
 
-  // ── Recent activity across the dashboard ──
-  const activity = [
-    ...children.map((c) => ({ at: c.created_at, ic: "children", tone: 1, title: "Child record added", sub: `${c.first_name} ${c.last_name}`.trim(), href: "#children/" + c.id })),
-    ...donations.map((d) => ({ at: d.created_at, ic: "donations", tone: 2, title: "Donation recorded", sub: `${d.donor_name || "Anonymous"} · ${money(d.amount)}`, href: "#donations" })),
-    ...visits.map((v) => ({ at: v.created_at, ic: "outreach", tone: 3, title: "School visit logged", sub: v.school_name, href: "#outreach_visits" })),
-    ...messages.map((m) => ({ at: m.created_at, ic: "messages", tone: 4, title: "Message received", sub: `${m.first_name} · ${m.reason || "General"}`, href: "#messages" })),
-    ...events.map((e) => ({ at: e.created_at, ic: "calendar", tone: 1, title: "Timeline updated", sub: e.title, href: "#children/" + e.child_id })),
-  ].filter((a) => a.at).sort((a, b) => (a.at < b.at ? 1 : -1)).slice(0, 6);
-  const activityList = activity.length
-    ? h("ul", { class: "activity" }, activity.map((a) => h("li", {}, h("a", { href: a.href },
-        h("span", { class: `act-icon tone-${a.tone}` }, icon(a.ic, 16)),
-        h("span", { class: "act-text" }, h("strong", {}, a.title), h("small", {}, a.sub)),
-        h("time", {}, timeAgo(a.at))))))
-    : h("p", { class: "muted" }, "Activity will appear here as records are added.");
-
-  // ── Upcoming: future visits and timeline entries ──
-  const childName = Object.fromEntries(children.map((c) => [c.id, c.first_name]));
-  const upcoming = [
-    ...visits.filter((v) => v.visit_date >= today).map((v) => ({ date: v.visit_date, title: `School visit: ${v.school_name}`, sub: v.location || "Outreach", tag: "Outreach", tone: 3, href: "#outreach_visits" })),
-    ...events.filter((e) => e.event_date >= today).map((e) => ({ date: e.event_date, title: e.title, sub: childName[e.child_id] || "Child", tag: label(RESOURCES.child_events.fields[1].options, e.type), tone: 1, href: "#children/" + e.child_id })),
-  ].sort((a, b) => (a.date > b.date ? 1 : -1)).slice(0, 4);
-  const upcomingList = upcoming.length
-    ? h("ul", { class: "upcoming" }, upcoming.map((u) => {
-        const d = new Date(u.date + "T00:00:00");
-        return h("li", {}, h("a", { href: u.href },
-          h("span", { class: "date-block" }, h("strong", {}, d.getDate()), h("small", {}, d.toLocaleDateString("en-GB", { month: "short" }))),
-          h("span", { class: "act-text" }, h("strong", {}, u.title), h("small", {}, u.sub)),
-          h("span", { class: `chip tone-${u.tone}` }, u.tag)));
-      }))
-    : h("p", { class: "muted" }, "Nothing scheduled. Add future school visits or child follow-ups to see them here.");
-
-  // ── Quick actions ──
-  const action = (ic, text, onclick, tone) => h("button", { class: `quick-action tone-${tone}`, onclick }, h("span", { class: "qa-icon" }, icon(ic, 20)), h("span", {}, text));
-  const quick = h("div", { class: "quick-grid" },
-    action("children", "Add child", () => openForm(RESOURCES.children, null, (s) => (location.hash = "#children/" + s.id)), 1),
-    action("donations", "Record donation", () => openForm(RESOURCES.donations, null, () => route()), 2),
-    action("outreach", "Log school visit", () => openForm(RESOURCES.outreach_visits, null, () => route()), 3),
-    action("stories", "Add story", () => { location.hash = "#stories"; }, 4),
-    action("messages", "Messages", () => { location.hash = "#messages"; }, 1),
-    action("website", "Website details", () => { location.hash = "#settings"; }, 2)
-  );
-
-  // ── Donations trend (with a table view) ──
-  const months = lastMonths(6);
-  const donationSeries = monthly(donations, "received_on", (d) => Number(d.amount));
-  const trendPoints = months.map((m, i) => ({ label: m.label, value: donationSeries[i] }));
-  const trendBody = h("div", { class: "trend-body" }, lineChart(trendPoints, { color: "var(--series-2)", format: money }));
-  let showingTable = false;
-  const tableBtn = h("button", { class: "btn btn-sm btn-ghost", onclick: () => {
-    showingTable = !showingTable;
-    trendBody.replaceChildren(showingTable ? dataTable(trendPoints.map((p) => [p.label, money(p.value)]), ["Month", "Donations"]) : lineChart(trendPoints, { color: "var(--series-2)", format: money }));
-    tableBtn.textContent = showingTable ? "Show chart" : "Show table";
-  } }, "Show table");
+  // ── Website card ──
+  const promo = h("section", { class: "promo card" },
+    h("h3", {}, "See what visitors see on the Namelok website"),
+    h("a", { class: "btn btn-light", href: "../index.html", target: "_blank", rel: "noopener" }, "Open website"),
+    h("span", { class: "promo-ring", "aria-hidden": "true" }));
 
   view.replaceChildren(
-    ticker,
-    h("div", { class: "hero-row" }, hero, greet),
     stats,
-    h("div", { class: "dash-row three" },
-      card("Children in care", inCare.length ? donut(byCategory, { centerLabel: "In care" }) : h("p", { class: "muted" }, "No children in care recorded yet."), h("span", { class: "card-note" }, "By category")),
-      card("School stage", h("div", {}, columns(byStage, { color: "var(--series-2)" }), noClass ? h("p", { class: "card-sub chart-foot" }, `${noClass} in care with no class, a special unit or not in school`) : ""), h("span", { class: "card-note" }, "Children in care")),
-      card("Recent activity", activityList)
-    ),
-    h("div", { class: "dash-row three" },
-      card("Upcoming", upcomingList),
-      card("Quick actions", quick),
-      card("Donations", h("div", {}, h("p", { class: "card-sub" }, "Last 6 months"), trendBody), tableBtn)
-    )
+    h("div", { class: "dash-grid" },
+      card("Donations", chartBox, "area-chart", h("div", { class: "card-tools" }, yearSel, tableBtn)),
+      card("Calendar", await calendar().widget(), "area-cal", h("a", { class: "link-sm", href: "#calendar" }, "Open")),
+      card("Recently admitted", recentTable, "area-table", h("a", { class: "link-sm", href: "#children" }, "All children")),
+      card("Children in care", inCare.length ? donut(byCategory, { centerLabel: "In care" }) : h("p", { class: "muted" }, "No children in care recorded yet."), "area-donut"),
+      h("div", { class: "area-promo" }, promo))
   );
 }
 

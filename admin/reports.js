@@ -1,7 +1,7 @@
 // Reports: monthly / quarterly / annual / custom reports built from the dashboard's
 // records, saved with their figures, printable to PDF. Old reports can be uploaded.
 // Donor reports only ever show totals, never a child's name.
-import { donut, columns, lineChart, dataTable } from "./charts.js?v=2";
+import { donut, columns, lineChart, dataTable } from "./charts.js?v=3";
 
 export function createReports(ctx) {
   const { h, icon, money, fmtDate, toast, setPage, db, CHILD_CATEGORY, classAt, friendly } = ctx;
