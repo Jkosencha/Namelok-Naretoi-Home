@@ -243,3 +243,38 @@ export function dataTable(rows, headers) {
   t.append(thead, tbody);
   return t;
 }
+
+// ── Bars over time with a value axis (e.g. donations per month) ──
+// Thin bars, rounded top, square at the baseline; hover or focus a bar for its value.
+export function barChart(points, { color = "var(--series-1)", format = String } = {}) {
+  const w = 640, h = 230, left = 44, right = 8, top = 14, bottom = 26;
+  const max = Math.max(...points.map((p) => p.value), 1);
+  const step = niceStep(max / 4);
+  const yMax = step * Math.ceil(max / step);
+  const band = (w - left - right) / points.length;
+  const barW = Math.min(14, band * 0.45);
+  const y = (v) => top + (1 - v / yMax) * (h - top - bottom);
+  const s = svg("svg", { viewBox: `0 0 ${w} ${h}`, class: "bar-chart", role: "img", "aria-label": points.map((p) => `${p.label} ${format(p.value)}`).join(", ") });
+  for (let v = 0; v <= yMax + 1e-9; v += step) {
+    s.append(svg("line", { x1: left, x2: w - right, y1: y(v), y2: y(v), class: v === 0 ? "axis-line" : "grid-line" }));
+    const t = svg("text", { x: left - 10, y: y(v) + 4, "text-anchor": "end", class: "tick" });
+    t.textContent = compact(v);
+    s.append(t);
+  }
+  points.forEach((p, i) => {
+    const cx = left + band * i + band / 2;
+    const bh = p.value ? Math.max(y(0) - y(p.value), 3) : 0;
+    const x = cx - barW / 2, top0 = y(0) - bh, rr = Math.min(4, bh, barW / 2);
+    const g = svg("g", { class: "col" });
+    if (bh) g.append(svg("path", { d: `M${x},${y(0)} V${top0 + rr} Q${x},${top0} ${x + rr},${top0} H${x + barW - rr} Q${x + barW},${top0} ${x + barW},${top0 + rr} V${y(0)} Z`, fill: color, class: "col-bar" }));
+    const lab = svg("text", { x: cx, y: h - 8, "text-anchor": "middle", class: "tick" });
+    lab.textContent = p.label;
+    const hit = svg("rect", { x: cx - band / 2, y: top, width: band, height: y(0) - top, fill: "transparent", class: "col-hit" });
+    hoverable(hit, () => [[format(p.value), p.full || p.label, color]]);
+    hit.addEventListener("pointerenter", () => g.classList.add("hover"));
+    hit.addEventListener("pointerleave", () => g.classList.remove("hover"));
+    g.append(lab, hit);
+    s.append(g);
+  });
+  return s;
+}
