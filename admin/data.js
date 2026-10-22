@@ -76,6 +76,17 @@ export async function createSupabaseBackend() {
       const data = check(await sb.storage.from("child-files").createSignedUrl(path, 300));
       return data.signedUrl;
     },
+    // Private documents (reports, proposals, contracts): short-lived download links only
+    async uploadDocument(file, folder = "reports") {
+      const path = `${folder}/${Date.now()}-${safeName(file.name)}`;
+      check(await sb.storage.from("documents").upload(path, file, { upsert: false }));
+      return path;
+    },
+    async documentUrl(path, downloadName) {
+      if (!path) return "";
+      const data = check(await sb.storage.from("documents").createSignedUrl(path, 300, downloadName ? { download: downloadName } : undefined));
+      return data.signedUrl;
+    },
   };
 }
 
@@ -147,6 +158,7 @@ export function createDemoBackend() {
     outreach_visits: [{ id: uid(), school_name: "Demo Girls Secondary", location: "Narok South", visit_date: day(-9), girls_reached: 0, boys_reached: 0, parents_reached: 0, topics: "Planned: hygiene and staying in school", notes: "", created_at: stamp(2) },
       { id: uid(), school_name: "Demo Mixed Day School", location: "Ololulung'a", visit_date: day(40), girls_reached: 140, boys_reached: 120, parents_reached: 25, topics: "Children's rights", notes: "", created_at: stamp(40) },
       { id: visit1, school_name: "Demo Primary School", location: "Narok", visit_date: day(10), girls_reached: 120, boys_reached: 95, parents_reached: 30, topics: "Menstrual hygiene, staying in school", notes: "", created_at: stamp(10) }],
+    reports: [],
     distributions: [
       { id: uid(), visit_id: visit1, item: "pads", quantity: 240, distributed_on: day(10), notes: "", created_at: stamp(10) },
       { id: uid(), visit_id: visit1, item: "books", quantity: 60, distributed_on: day(10), notes: "", created_at: stamp(10) },
@@ -242,6 +254,17 @@ export function createDemoBackend() {
   }
   for (let i = 0; i < 9; i++) tables.volunteers.push({ id: uid(), name: pick([...girls, ...boys]) + " Demo", email: "", phone: "", role: pick(["speaker", "mentor", "outreach", "donations"]), status: pick(["active", "active", "contacted", "new", "inactive"]), notes: "", created_at: stamp(between(10, 400)) });
 
+  // Two saved reports so the Reports page has something to show
+  const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const lmEnd = new Date(now.getFullYear(), now.getMonth(), 0);
+  const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  tables.reports.push(
+    { id: uid(), title: `Monthly report – ${lastMonth.toLocaleDateString("en-GB", { month: "long", year: "numeric" })}`, kind: "monthly", period_start: iso(lastMonth), period_end: iso(lmEnd), donor_id: null, donor_name: "", status: "final",
+      summary: "An invented demo summary: a steady month at the home with new admissions and three school visits.", highlights: "Demo highlight: two children moved up to secondary school.", challenges: "Demo challenge: school fees for the new term.", next_steps: "Demo next step: plan the December holiday programme.", figures: null, file_path: "", file_name: "", created_at: stamp(15) },
+    { id: uid(), title: "Annual report 2025 (uploaded)", kind: "annual", period_start: `${now.getFullYear() - 1}-01-01`, period_end: `${now.getFullYear() - 1}-12-31`, donor_id: null, donor_name: "Wellspring International", status: "final",
+      summary: "", highlights: "", challenges: "", next_steps: "", figures: null, file_path: "", file_name: "annual-report-2025.pdf", created_at: stamp(280) }
+  );
+
   const copy = (x) => JSON.parse(JSON.stringify(x));
   const delay = () => new Promise((r) => setTimeout(r, 120));
 
@@ -282,6 +305,8 @@ export function createDemoBackend() {
     },
     async uploadPublic(file) { return URL.createObjectURL(file); },
     async uploadPrivate(file) { return URL.createObjectURL(file); },
+    async uploadDocument(file) { return URL.createObjectURL(file); },
+    async documentUrl(path) { return path; },
     async privateUrl(path) { return path; },
   };
 }

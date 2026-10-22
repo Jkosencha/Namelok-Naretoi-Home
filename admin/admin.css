@@ -606,3 +606,75 @@ input[type="file"] { padding: 8px; min-height: 0; }
 .class-picker:has(select[hidden]) { grid-template-columns: 1fr; }
 .chart-foot { margin: 10px 0 0; }
 
+/* ── Reports ── */
+.report-title-cell { display: inline-flex; align-items: center; gap: 10px; font-weight: 500; }
+.report-title-cell .icon { color: var(--ink-3); }
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 8px; }
+.report-form .field { margin-top: 0; }
+.draft-note { display: inline-block; padding: 8px 14px; border-radius: 10px; background: color-mix(in srgb, var(--series-1) 14%, transparent); color: var(--accent-ink); font-weight: 500; }
+.file-card { display: flex; align-items: center; gap: 18px; max-width: 720px; }
+.file-card h2 { font-size: 1.1rem; word-break: break-word; }
+.file-card p { margin: 4px 0 0; }
+.file-icon { display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; flex-shrink: 0; border-radius: 16px; background: var(--card-2); color: var(--accent-ink); }
+
+/* The report itself always looks like paper, in either theme */
+.report-doc {
+  --card: #ffffff; --card-2: #f8f5f0; --line: #e6dfd4; --line-strong: #d6ccbe;
+  --ink: #1d1712; --ink-2: #4a4038; --ink-3: #7d7266; --track: #eee7dc;
+  --series-1: #c46a1b; --series-2: #2f6bb5; --series-3: #2e8a58; --series-4: #a33a6b;
+  color-scheme: light;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 48px 52px 40px;
+  background: #fff;
+  color: var(--ink-2);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06), 0 18px 40px rgba(0, 0, 0, 0.08);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+.report-doc h1, .report-doc h2, .report-doc h3 { color: var(--ink); }
+.rd-head { display: flex; align-items: center; gap: 20px; padding-bottom: 22px; border-bottom: 3px solid var(--series-1); }
+.rd-head img { width: 76px; height: 76px; }
+.rd-org { margin: 0; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--series-1); }
+.rd-head h1 { margin: 4px 0 2px; font-size: 1.65rem; line-height: 1.2; }
+.rd-period { margin: 0; color: var(--ink-3); }
+.rd-tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 24px 0 8px; }
+.rd-tile { padding: 14px 16px; border-radius: 10px; background: var(--card-2); border-top: 3px solid var(--series-1); }
+.rd-tile:nth-child(2) { border-top-color: var(--series-4); }
+.rd-tile:nth-child(3) { border-top-color: var(--series-2); }
+.rd-tile:nth-child(4) { border-top-color: var(--series-3); }
+.rd-tile strong { display: block; font-size: 1.45rem; font-weight: 700; color: var(--ink); line-height: 1.2; }
+.rd-tile span { font-size: 0.78rem; color: var(--ink-3); }
+.rd-section { margin-top: 26px; break-inside: avoid-page; }
+.rd-section h2 { margin-bottom: 10px; padding-bottom: 6px; font-size: 1.15rem; border-bottom: 1px solid var(--line); }
+.rd-section h3 { margin: 16px 0 6px; font-size: 0.92rem; }
+.rd-section p { margin: 0 0 10px; }
+.rd-two { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; align-items: start; }
+.rd-muted { color: var(--ink-3); font-style: italic; }
+.report-doc .chart-table { font-size: 0.84rem; }
+.report-doc .chart-table td:last-child { text-align: right; }
+.report-doc .line-chart { max-width: 560px; margin: 4px 0 8px; }
+.rd-foot { margin-top: 32px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 0.76rem; color: var(--ink-3); }
+.rd-foot p { margin: 0; }
+
+@media (max-width: 760px) {
+  .report-doc { padding: 26px 18px; }
+  .rd-tiles, .rd-two { grid-template-columns: 1fr 1fr; }
+  .rd-two { grid-template-columns: 1fr; }
+  .rd-head img { width: 54px; height: 54px; }
+  .rd-head h1 { font-size: 1.3rem; }
+}
+
+/* Printing a report: only the document, on plain paper */
+@media print {
+  @page { size: A4; margin: 14mm; }
+  body { background: #fff !important; }
+  body * { visibility: hidden; }
+  .report-doc, .report-doc * { visibility: visible; }
+  .report-doc { position: absolute; left: 0; top: 0; width: 100%; max-width: none; margin: 0; padding: 0; border: none; box-shadow: none; }
+  .chart-tip, .toast { display: none !important; }
+}
+.report-doc .chart-table th:last-child { text-align: right; }

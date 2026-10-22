@@ -1,5 +1,6 @@
 import { isConfigured, createSupabaseBackend, createDemoBackend } from "./data.js?v=5";
-import { sparkline, donut, columns, lineChart, dataTable } from "./charts.js?v=1";
+import { sparkline, donut, columns, lineChart, dataTable } from "./charts.js?v=2";
+import { createReports } from "./reports.js?v=1";
 
 // ─────────────────────────────────────────────────────────────
 // Small helpers
@@ -54,6 +55,11 @@ const ICONS = {
   logout: '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>',
   plus: '<path d="M12 5v14M5 12h14"/>',
   menu: '<path d="M3 6h18M3 12h18M3 18h18"/>',
+  report: '<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 17v-3M12 17v-6M16 17v-4"/>',
+  file: '<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/>',
+  upload: '<path d="M12 16V4M7 9l5-5 5 5M4 20h16"/>',
+  download: '<path d="M12 4v12M7 11l5 5 5-5M4 20h16"/>',
+  print: '<path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-2"/><rect x="6" y="14" width="12" height="7" rx="1"/>',
   search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
   bell: '<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 0 0 3.4 0"/>',
   sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
@@ -92,12 +98,14 @@ function stageOf(track, name) {
   return g <= 6 ? "Primary" : g <= 9 ? "Junior school" : "Senior school";
 }
 // The child's class this year, or null if not recorded
-function currentClass(c) {
+const currentClass = (c) => classAt(c, new Date().getFullYear());
+// The child's class in a given school year (used by reports for past periods)
+function classAt(c, year) {
   const track = CLASS_TRACKS[c.class_track];
   if (!track) return null;
   if (!track.classes.length) return { name: c.class_track === "special" ? (c.school_class || "Special needs unit") : "Not in school", stage: stageOf(c.class_track, ""), auto: false };
   if (c.class_level == null || c.class_year == null) return null;
-  const n = c.class_level + Math.max(new Date().getFullYear() - c.class_year, 0);
+  const n = c.class_level + Math.max(year - c.class_year, 0);
   const last = track.classes[track.classes.length - 1];
   if (n >= track.classes.length) return { name: "Finished " + last, stage: c.class_track === "tertiary" ? "Finished school" : "Finished school", level: track.classes.length, auto: true, finished: true };
   const name = track.classes[n];
@@ -257,6 +265,7 @@ const NAV = [
   ["Giving", [["donations", "Donations", "donations"], ["donors", "Donors", "donors"]]],
   ["People", [["messages", "Messages", "messages"], ["volunteers", "Volunteers", "volunteers"]]],
   ["Outreach", [["outreach_visits", "School visits", "outreach"], ["distributions", "Items handed out", "items"]]],
+  ["Reports", [["reports", "Reports", "report"]]],
 ];
 
 // ─────────────────────────────────────────────────────────────
@@ -463,7 +472,7 @@ function setPage(title, actions = []) {
 }
 
 async function route() {
-  const [name, id] = (location.hash.slice(1) || "overview").split("/");
+  const [name, id, sub] = (location.hash.slice(1) || "overview").split("/");
   document.querySelectorAll(".side-nav a").forEach((a) => a.classList.toggle("active", a.dataset.route === name));
   document.body.classList.toggle("is-overview", name === "overview");
   const view = $("#view");
@@ -474,12 +483,16 @@ async function route() {
     else if (name === "messages") await viewMessages(view);
     else if (name === "children" && id) await viewChild(view, id);
     else if (name === "children") await viewChildren(view);
+    else if (name === "reports") await reports().route(view, id, sub);
     else if (RESOURCES[name]) await viewResource(view, name);
     else location.hash = "#overview";
   } catch (e) {
     view.replaceChildren(h("div", { class: "empty error" }, "Something went wrong: " + e.message));
   }
 }
+
+let reportsModule;
+const reports = () => (reportsModule ||= createReports({ h, icon, money, fmtDate, toast, setPage, db: () => db, CHILD_CATEGORY, classAt, friendly }));
 
 // ─────────────────────────────────────────────────────────────
 // Overview
