@@ -154,6 +154,94 @@ export function createDemoBackend() {
   };
 
 
+  // ── A fuller year of invented activity so the charts have something to show ──
+  // Fixed seed: the demo looks the same every time. Every surname is "Demo".
+  let seed = 20261019;
+  const rand = () => ((seed = (seed * 1664525 + 1013904223) % 4294967296) / 4294967296);
+  const pick = (list) => list[Math.floor(rand() * list.length)];
+  const between = (a, b) => Math.floor(a + rand() * (b - a + 1));
+  const thisYear = now.getFullYear();
+  const girls = ["Naserian", "Nashipai", "Sein", "Nkoitiko", "Resiato", "Silantoi", "Naisula", "Kasaine", "Nalangu", "Simaloi", "Faith", "Mercy", "Joy", "Grace", "Esther", "Lucy"];
+  const boys = ["Lemayian", "Saitoti", "Kiprono", "Parsanka", "Olekina", "Tajeu", "Ntimama", "Sankale", "Brian", "Kevin", "Dennis", "Peter", "Moses", "Daniel"];
+  const areas = ["Narok", "Narok South", "Narok North", "Ololulung'a", "Ntulele", "Suswa", "Mulot", "Nairage Ngare"];
+  const schools = ["Ilmashariani Primary", "Ololulung'a Primary", "Narok Township Primary", "Maasai Girls Secondary", "Narok Boys High", "Ntulele Mixed Secondary", "Narok Special Unit", "Mulot Junior School"];
+  const plan = [["rescued_girl", 14], ["rescued_boy", 6], ["disability", 12], ["vulnerable", 6]];
+  for (const [category, count] of plan) {
+    for (let i = 0; i < count; i++) {
+      const female = category === "rescued_girl" ? true : category === "rescued_boy" ? false : rand() < 0.55;
+      const id = uid();
+      const admittedDaysAgo = between(5, 1100);
+      const ageYears = category === "disability" ? between(4, 15) : between(9, 17);
+      const r = rand();
+      const status = r < 0.55 ? "in_care" : r < 0.82 ? "boarding_school" : r < 0.95 ? "reintegrated" : "exited";
+      // School class for this year, chosen to fit the child's age
+      let track = "cbc", level = Math.max(0, Math.min(13, ageYears - 4));
+      if (category === "disability" && rand() < 0.3) { track = "special"; level = null; }
+      else if (ageYears >= 16 && rand() < 0.5) { track = "844"; level = Math.min(3, ageYears - 16 + between(0, 1)); }
+      const recordedYearsAgo = level == null ? 0 : Math.min(between(0, 2), level);
+      tables.children.push({
+        id, first_name: female ? pick(girls) : pick(boys), last_name: "Demo",
+        date_of_birth: `${thisYear - ageYears}-${String(between(1, 12)).padStart(2, "0")}-${String(between(1, 28)).padStart(2, "0")}`,
+        gender: female ? "female" : "male", category, status, admission_date: day(admittedDaysAgo),
+        referral_channel: category.startsWith("rescued") ? pick(["chief", "chief", "do", "court", "school", "self"]) : pick(["hospital", "family", "chief", "school"]),
+        referral_details: "", guardian_name: "", guardian_phone: "", home_location: pick(areas),
+        school_name: track === "special" ? "Narok Special Unit" : pick(schools),
+        school_class: track === "special" ? pick(["Unit A", "Unit B, level 2", "Vocational skills"]) : "",
+        class_track: track, class_level: level == null ? null : level - recordedYearsAgo, class_year: level == null ? null : thisYear - recordedYearsAgo,
+        medical_condition: category === "disability" ? pick(["Club foot, post-surgery", "Cerebral palsy", "Hearing impairment", "Spina bifida", "Contractures, in rehabilitation"]) : "",
+        notes: "", photo_path: "", created_at: stamp(admittedDaysAgo),
+      });
+      // A few timeline entries each, some of them in the coming weeks
+      for (let e = 0; e < between(1, 3); e++) {
+        const daysAgo = between(-45, admittedDaysAgo);
+        const type = category === "disability" ? pick(["medical", "follow_up", "school"]) : pick(["case", "school", "follow_up"]);
+        const titles = { medical: "Hospital review", follow_up: "Follow-up visit", school: "School report", case: "Case update with the chief" };
+        tables.child_events.push({ id: uid(), child_id: id, event_date: day(daysAgo), type, title: titles[type], details: "", created_at: stamp(daysAgo > 0 ? daysAgo : between(3, 40)) });
+      }
+    }
+  }
+
+  // Donors and a year of donations (school-fee season in January and May is busier)
+  const donorNames = [["Wellspring International", "Wellspring International"], ["Narok Town Church", ""], ["Hands of Namelok Initiative", "Hands of Namelok Initiative"], ["Third Ladder", "Third Ladder"], ["Amina K.", ""], ["John M.", ""], ["Rotary Club of Narok", "Rotary"], ["Anonymous", ""]];
+  for (const [name, organisation] of donorNames.slice(0, 7)) tables.donors.push({ id: uid(), name, organisation, email: "", phone: "", notes: "", created_at: stamp(between(100, 600)) });
+  for (let m = 0; m < 12; m++) {
+    const monthStart = new Date(now.getFullYear(), now.getMonth() - m, 1);
+    const busy = [0, 4].includes(monthStart.getMonth()) ? 2 : 1;
+    for (let k = 0; k < between(2, 4) * busy; k++) {
+      const [name] = pick(donorNames);
+      const d = new Date(monthStart.getFullYear(), monthStart.getMonth(), between(1, 27));
+      if (d > now) continue;
+      const big = rand() < 0.15;
+      tables.donations.push({ id: uid(), donor_id: null, donor_name: name, amount: big ? between(20, 80) * 1000 : between(5, 60) * 100,
+        currency: "KES", method: big ? "bank" : pick(["mpesa", "mpesa", "mpesa", "cash", "paypal"]), reference: "DEMO" + between(1000, 9999),
+        received_on: d.toISOString().slice(0, 10), purpose: pick(["School fees", "Medical", "General", "Sanitary pads", "Food"]), notes: "", created_at: d.toISOString() });
+    }
+  }
+
+  // School visits through the year, a few planned ahead, with items handed out
+  for (let v = 0; v < 18; v++) {
+    const daysAgo = v < 3 ? -between(5, 50) : between(3, 360);
+    const planned = daysAgo < 0;
+    const id = uid();
+    const girlsReached = planned ? 0 : between(40, 220), boysReached = planned ? 0 : between(30, 180);
+    tables.outreach_visits.push({ id, school_name: pick(schools.filter((x) => !x.includes("Special"))), location: pick(areas), visit_date: day(daysAgo),
+      girls_reached: girlsReached, boys_reached: boysReached, parents_reached: planned ? 0 : between(0, 60),
+      topics: pick(["Menstrual hygiene", "Staying in school", "Children's rights", "FGM and early marriage", "Body safety and abstinence"]), notes: planned ? "Planned" : "", created_at: stamp(planned ? between(2, 30) : daysAgo + 2) });
+    if (!planned) {
+      tables.distributions.push({ id: uid(), visit_id: id, item: "pads", quantity: girlsReached * 2, distributed_on: day(daysAgo), notes: "", created_at: stamp(daysAgo) });
+      for (const item of ["panties", "boxers", "books", "balls", "socks"]) if (rand() < 0.45) tables.distributions.push({ id: uid(), visit_id: id, item, quantity: item === "balls" ? between(2, 10) : between(20, 120), distributed_on: day(daysAgo), notes: "", created_at: stamp(daysAgo) });
+    }
+  }
+
+  // Messages from the website and volunteers
+  const reasons = ["General Inquiry", "Partnership / Sponsorship", "Volunteering", "Donation Question", "Media / Press"];
+  for (let i = 0; i < 16; i++) {
+    const daysAgo = between(0, 200);
+    tables.contact_messages.push({ id: uid(), first_name: pick([...girls, ...boys]), last_name: "Demo", email: "visitor@example.com", reason: pick(reasons),
+      message: "This is an invented demo message.", status: daysAgo < 20 ? pick(["new", "new", "read"]) : pick(["read", "replied", "archived"]), created_at: stamp(daysAgo) });
+  }
+  for (let i = 0; i < 9; i++) tables.volunteers.push({ id: uid(), name: pick([...girls, ...boys]) + " Demo", email: "", phone: "", role: pick(["speaker", "mentor", "outreach", "donations"]), status: pick(["active", "active", "contacted", "new", "inactive"]), notes: "", created_at: stamp(between(10, 400)) });
+
   const copy = (x) => JSON.parse(JSON.stringify(x));
   const delay = () => new Promise((r) => setTimeout(r, 120));
 

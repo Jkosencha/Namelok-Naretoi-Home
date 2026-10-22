@@ -188,6 +188,7 @@ input[type="file"] { padding: 8px; min-height: 0; }
 .auth-card .btn-primary { margin-top: 24px; }
 
 /* ── Top bar ── */
+.demo-banner a { color: #f0b46a; font-weight: 600; }
 .demo-banner { padding: 7px 16px; background: #2b2118; color: #f6e2c8; font-size: 0.8rem; font-weight: 500; text-align: center; }
 .appbar {
   position: sticky;

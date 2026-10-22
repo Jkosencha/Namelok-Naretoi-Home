@@ -1,4 +1,4 @@
-import { isConfigured, createSupabaseBackend, createDemoBackend } from "./data.js?v=3";
+import { isConfigured, createSupabaseBackend, createDemoBackend } from "./data.js?v=5";
 import { sparkline, donut, columns, lineChart, dataTable } from "./charts.js?v=1";
 
 // ─────────────────────────────────────────────────────────────
@@ -264,14 +264,13 @@ const NAV = [
 // ─────────────────────────────────────────────────────────────
 async function start() {
   const params = new URLSearchParams(location.search);
-  if (!isConfigured()) {
-    if (params.has("demo")) {
-      db = createDemoBackend();
-      user = await db.currentUser();
-      return renderShell();
-    }
-    return renderSetup();
+  // ?demo always opens the invented sample data, even when the real database is connected
+  if (params.has("demo")) {
+    db = createDemoBackend();
+    user = await db.currentUser();
+    return renderShell();
   }
+  if (!isConfigured()) return renderSetup();
   try {
     db = await createSupabaseBackend();
   } catch (e) {
@@ -446,7 +445,7 @@ function renderShell() {
     )
   );
 
-  const banner = db.demo ? h("div", { class: "demo-banner" }, "Demo mode: sample data only, nothing is saved. Connect Supabase to start using the dashboard for real.") : null;
+  const banner = db.demo ? h("div", { class: "demo-banner" }, "Demo mode: invented sample data, nothing is saved. ", isConfigured() ? h("a", { href: location.pathname }, "Open the real dashboard") : "Connect Supabase to use the dashboard for real.") : null;
   app.replaceChildren(banner || "", appbar, h("div", { class: "shell" }, sidebar,
     h("div", { class: "main" },
       h("div", { class: "page-head" }, h("h1", { id: "pageTitle" }, ""), h("div", { id: "pageActions", class: "page-actions" })),
