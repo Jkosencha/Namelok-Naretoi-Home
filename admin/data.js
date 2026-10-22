@@ -132,19 +132,26 @@ export function createDemoBackend() {
       { id: uid(), child_id: childA, event_date: day(380), type: "medical", title: "Surgery", details: "Corrective surgery completed.", created_at: stamp(380) },
       { id: uid(), child_id: childA, event_date: day(20), type: "follow_up", title: "Physiotherapy check", details: "Walking unaided.", created_at: stamp(20) },
       { id: uid(), child_id: childB, event_date: day(190), type: "case", title: "Case reported to chief", details: "", created_at: stamp(190) },
+      { id: uid(), child_id: childA, event_date: day(-4), type: "follow_up", title: "Physiotherapy review", details: "", created_at: stamp(1) },
+      { id: uid(), child_id: childB, event_date: day(-15), type: "school", title: "Term report collection", details: "", created_at: stamp(3) },
     ],
     donors: [{ id: uid(), name: "Demo Donor", organisation: "Example Trust", email: "donor@example.com", phone: "", notes: "", created_at: stamp(90) }],
     donations: [
       { id: uid(), donor_id: null, donor_name: "Demo Donor", amount: 5000, currency: "KES", method: "mpesa", reference: "DEMO123", received_on: day(4), purpose: "School fees", notes: "", created_at: stamp(4) },
+      { id: uid(), donor_id: null, donor_name: "Sample Church Group", amount: 12000, currency: "KES", method: "bank", reference: "DEMO789", received_on: day(70), purpose: "Medical", notes: "", created_at: stamp(70) },
+      { id: uid(), donor_id: null, donor_name: "Demo Friends", amount: 8000, currency: "KES", method: "mpesa", reference: "DEMO321", received_on: day(100), purpose: "General", notes: "", created_at: stamp(100) },
       { id: uid(), donor_id: null, donor_name: "Anonymous", amount: 1000, currency: "KES", method: "mpesa", reference: "DEMO456", received_on: day(35), purpose: "", notes: "", created_at: stamp(35) },
     ],
     volunteers: [{ id: uid(), name: "Demo Volunteer", email: "vol@example.com", phone: "", role: "speaker", status: "active", notes: "", created_at: stamp(50) }],
-    outreach_visits: [{ id: visit1, school_name: "Demo Primary School", location: "Narok", visit_date: day(10), girls_reached: 120, boys_reached: 95, parents_reached: 30, topics: "Menstrual hygiene, staying in school", notes: "", created_at: stamp(10) }],
+    outreach_visits: [{ id: uid(), school_name: "Demo Girls Secondary", location: "Narok South", visit_date: day(-9), girls_reached: 0, boys_reached: 0, parents_reached: 0, topics: "Planned: hygiene and staying in school", notes: "", created_at: stamp(2) },
+      { id: uid(), school_name: "Demo Mixed Day School", location: "Ololulung'a", visit_date: day(40), girls_reached: 140, boys_reached: 120, parents_reached: 25, topics: "Children's rights", notes: "", created_at: stamp(40) },
+      { id: visit1, school_name: "Demo Primary School", location: "Narok", visit_date: day(10), girls_reached: 120, boys_reached: 95, parents_reached: 30, topics: "Menstrual hygiene, staying in school", notes: "", created_at: stamp(10) }],
     distributions: [
       { id: uid(), visit_id: visit1, item: "pads", quantity: 240, distributed_on: day(10), notes: "", created_at: stamp(10) },
       { id: uid(), visit_id: visit1, item: "books", quantity: 60, distributed_on: day(10), notes: "", created_at: stamp(10) },
     ],
   };
+
 
   const copy = (x) => JSON.parse(JSON.stringify(x));
   const delay = () => new Promise((r) => setTimeout(r, 120));
