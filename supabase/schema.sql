@@ -186,6 +186,9 @@ create table if not exists public.donors (
   email         text not null default '',
   phone         text not null default '',
   notes         text not null default '',
+  giving_pattern text not null default '' constraint donors_giving_pattern_check
+                   check (giving_pattern in ('', 'one_off', 'monthly', 'quarterly', 'twice_yearly', 'annual')),
+  currency      text not null default 'KES',   -- the currency they usually give in
   created_at    timestamptz not null default now(),
   updated_at    timestamptz not null default now()
 );
@@ -194,14 +197,50 @@ create table if not exists public.donations (
   id           uuid primary key default gen_random_uuid(),
   donor_id     uuid references public.donors (id) on delete set null,
   donor_name   text not null default '',
-  amount       numeric(12, 2) not null check (amount >= 0),
-  currency     text not null default 'KES',
+  amount       numeric(12, 2) not null check (amount >= 0),   -- received, in KES
+  currency     text not null default 'KES' constraint donations_currency_check check (currency in ('KES', 'USD', 'GBP', 'EUR')),
+  original_amount numeric(12, 2) check (original_amount is null or original_amount >= 0),  -- e.g. 1000 (USD)
+  exchange_rate   numeric(12, 4) check (exchange_rate is null or exchange_rate > 0),       -- e.g. 129.50
   method       text not null default 'mpesa' check (method in ('mpesa', 'bank', 'paypal', 'cash', 'in_kind')),
   reference    text not null default '',
   received_on  date not null default current_date,
   purpose      text not null default '',
   notes        text not null default '',
   created_at   timestamptz not null default now()
+);
+
+-- Money spent, optionally from one donor's funds, with a scanned receipt ("documents" folder)
+create table if not exists public.expenses (
+  id            uuid primary key default gen_random_uuid(),
+  spent_on      date not null default current_date,
+  description   text not null check (char_length(description) between 1 and 300),
+  category      text not null default 'other' check (category in ('school_fees', 'school_items', 'medical', 'food', 'clothing',
+                    'hygiene', 'transport', 'utilities', 'building', 'outreach', 'admin', 'other')),
+  amount        numeric(12, 2) not null check (amount >= 0),          -- KES
+  donor_id      uuid references public.donors (id) on delete set null, -- null = general funds
+  child_id      uuid references public.children (id) on delete set null,
+  vendor        text not null default '',
+  receipt_path  text not null default '',
+  receipt_name  text not null default '',
+  notes         text not null default '',
+  created_at    timestamptz not null default now(),
+  updated_at    timestamptz not null default now()
+);
+create index if not exists expenses_donor on public.expenses (donor_id, spent_on);
+
+-- A donor supporting a specific child
+create table if not exists public.sponsorships (
+  id          uuid primary key default gen_random_uuid(),
+  donor_id    uuid not null references public.donors (id) on delete cascade,
+  child_id    uuid not null references public.children (id) on delete cascade,
+  started_on  date,
+  ended_on    date,
+  amount      numeric(12, 2) check (amount is null or amount >= 0),
+  currency    text not null default 'KES' check (currency in ('KES', 'USD', 'GBP', 'EUR')),
+  frequency   text not null default '' check (frequency in ('', 'one_off', 'monthly', 'quarterly', 'twice_yearly', 'annual')),
+  notes       text not null default '',
+  created_at  timestamptz not null default now(),
+  check (ended_on is null or started_on is null or ended_on >= started_on)
 );
 
 -- ─────────────────────────────────────────────────────────────
@@ -276,12 +315,12 @@ $$;
 do $$
 declare t text;
 begin
-  foreach t in array array['site_settings', 'stories', 'gallery_photos', 'children', 'donors', 'volunteers', 'outreach_visits']
+  foreach t in array array['site_settings', 'stories', 'gallery_photos', 'children', 'donors', 'volunteers', 'outreach_visits', 'expenses']
   loop
     execute format('drop trigger if exists touch_%1$s on public.%1$s', t);
     execute format('create trigger touch_%1$s before update on public.%1$s for each row execute function public.touch_updated_at()', t);
   end loop;
-  foreach t in array array['children', 'child_events', 'child_photos', 'donations', 'donors']
+  foreach t in array array['children', 'child_events', 'child_photos', 'donations', 'donors', 'expenses', 'sponsorships']
   loop
     execute format('drop trigger if exists audit_%1$s on public.%1$s', t);
     execute format('create trigger audit_%1$s after insert or update or delete on public.%1$s for each row execute function public.write_audit()', t);
@@ -295,7 +334,7 @@ do $$
 declare t text;
 begin
   foreach t in array array['admins', 'site_settings', 'stories', 'gallery_photos', 'contact_messages', 'children',
-                           'child_events', 'child_photos', 'donors', 'donations', 'volunteers', 'outreach_visits', 'distributions', 'audit_log']
+                           'child_events', 'child_photos', 'donors', 'donations', 'expenses', 'sponsorships', 'volunteers', 'outreach_visits', 'distributions', 'audit_log']
   loop
     execute format('alter table public.%I enable row level security', t);
     -- Admins: full access to everything (audit_log is read-only, see below)
