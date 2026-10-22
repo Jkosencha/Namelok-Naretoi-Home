@@ -17,7 +17,6 @@
   --side-bg: #ffffff;
   --hover: rgba(29, 23, 18, 0.05);
   --shadow: 0 1px 2px rgba(29, 23, 18, 0.05), 0 8px 24px rgba(29, 23, 18, 0.05);
-  --glow-strength: 0;
 
   --series-1: #c46a1b; /* ochre */
   --series-2: #2f6bb5; /* bead blue */
@@ -49,7 +48,6 @@
   --side-bg: #15110e;
   --hover: rgba(255, 255, 255, 0.05);
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-  --glow-strength: 1;
   --accent-ink: #f0a75c;
   --good: #4cc27a;
   --bad: #f07a72;
@@ -66,13 +64,6 @@ body {
   background: var(--page);
   -webkit-font-smoothing: antialiased;
   transition: background 0.25s, color 0.25s;
-}
-:root[data-theme="dark"] body {
-  background:
-    radial-gradient(1100px 600px at 85% -10%, rgba(196, 106, 27, 0.14), transparent 60%),
-    radial-gradient(900px 500px at -10% 110%, rgba(47, 107, 181, 0.12), transparent 60%),
-    var(--page);
-  background-attachment: fixed;
 }
 
 h1, h2, h3 { margin: 0; color: var(--ink); font-weight: 600; letter-spacing: -0.01em; }
@@ -107,7 +98,6 @@ a { color: var(--accent-ink); }
   border: none;
   background: linear-gradient(135deg, #d9822e, #b85d12);
   color: #fff;
-  box-shadow: 0 6px 18px rgba(196, 106, 27, calc(0.18 + 0.2 * var(--glow-strength)));
 }
 .btn-primary:hover { background: linear-gradient(135deg, #e08b37, #a85310); }
 .btn-danger { color: var(--bad); border-color: color-mix(in srgb, var(--bad) 35%, transparent); background: transparent; }
@@ -272,7 +262,6 @@ input[type="file"] { padding: 8px; min-height: 0; }
 .side-nav a.active {
   background: linear-gradient(135deg, #d9822e, #b85d12);
   color: #fff;
-  box-shadow: 0 8px 22px rgba(196, 106, 27, calc(0.2 + 0.25 * var(--glow-strength)));
 }
 .side-nav a.active .nav-chevron { opacity: 0.85; }
 .side-brand { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 18px 16px 22px; border-top: 1px solid var(--line); text-align: center; }
@@ -349,17 +338,12 @@ input[type="file"] { padding: 8px; min-height: 0; }
   transition: transform 0.2s, box-shadow 0.2s;
 }
 .stat-card:hover { transform: translateY(-3px); }
-:root[data-theme="dark"] .stat-card {
-  background: linear-gradient(160deg, color-mix(in srgb, var(--tone) 22%, transparent), rgba(255, 255, 255, 0.02) 70%);
-  border: 1px solid color-mix(in srgb, var(--tone) 55%, transparent);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--tone) 12%, transparent), 0 12px 34px color-mix(in srgb, var(--tone) 22%, transparent);
-}
 .tone-1 { --tone: var(--series-1); }
 .tone-2 { --tone: var(--series-2); }
 .tone-3 { --tone: var(--series-3); }
 .tone-4 { --tone: var(--series-4); }
 .stat-top { display: flex; align-items: center; gap: 12px; }
-.stat-icon { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; background: var(--tone); color: #fff; box-shadow: 0 6px 16px color-mix(in srgb, var(--tone) 40%, transparent); }
+.stat-icon { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; background: var(--tone); color: #fff; }
 .stat-title { font-weight: 500; color: var(--ink-2); }
 .stat-value { margin-top: 4px; font-size: 2rem; font-weight: 700; color: var(--ink); line-height: 1.1; letter-spacing: -0.02em; }
 .stat-foot { display: flex; align-items: flex-end; justify-content: space-between; gap: 10px; }
@@ -447,7 +431,7 @@ input[type="file"] { padding: 8px; min-height: 0; }
   transition: transform 0.15s, border-color 0.15s, background 0.15s;
 }
 .quick-action:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--tone) 55%, transparent); background: color-mix(in srgb, var(--tone) 8%, var(--card-2)); }
-.qa-icon { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: var(--tone); color: #fff; box-shadow: 0 6px 16px color-mix(in srgb, var(--tone) 35%, transparent); }
+.qa-icon { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 50%; background: var(--tone); color: #fff; }
 
 /* ── Tables (list pages) ── */
 .toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 16px; }
