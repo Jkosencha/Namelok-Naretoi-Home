@@ -159,6 +159,7 @@ export function createDemoBackend() {
       { id: uid(), school_name: "Demo Mixed Day School", location: "Ololulung'a", visit_date: day(40), girls_reached: 140, boys_reached: 120, parents_reached: 25, topics: "Children's rights", notes: "", created_at: stamp(40) },
       { id: visit1, school_name: "Demo Primary School", location: "Narok", visit_date: day(10), girls_reached: 120, boys_reached: 95, parents_reached: 30, topics: "Menstrual hygiene, staying in school", notes: "", created_at: stamp(10) }],
     reports: [],
+    calendar_events: [],
     distributions: [
       { id: uid(), visit_id: visit1, item: "pads", quantity: 240, distributed_on: day(10), notes: "", created_at: stamp(10) },
       { id: uid(), visit_id: visit1, item: "books", quantity: 60, distributed_on: day(10), notes: "", created_at: stamp(10) },
@@ -264,6 +265,20 @@ export function createDemoBackend() {
     { id: uid(), title: "Annual report 2025 (uploaded)", kind: "annual", period_start: `${now.getFullYear() - 1}-01-01`, period_end: `${now.getFullYear() - 1}-12-31`, donor_id: null, donor_name: "Wellspring International", status: "final",
       summary: "", highlights: "", challenges: "", next_steps: "", figures: null, file_path: "", file_name: "annual-report-2025.pdf", created_at: stamp(280) }
   );
+
+  // Calendar: meetings, board meetings, donor visits and holidays around this month
+  const onDay = (d) => iso(new Date(now.getFullYear(), now.getMonth(), d));
+  [
+    [3, "Staff meeting", "meeting", "09:00", "Namelok office"],
+    [7, "Board meeting", "board", "10:00", "Narok Town Hall"],
+    [12, "Wellspring International visit", "donor", "11:30", "Namelok Naretoi Home"],
+    [18, "Staff meeting", "meeting", "09:00", "Namelok office"],
+    [21, "Community forum on girls' education", "event", "14:00", "Ntulele"],
+    [26, "Rotary Club of Narok lunch", "donor", "13:00", "Narok"],
+    [31, "Staff meeting", "meeting", "09:00", "Namelok office"],
+    [38, "Board meeting", "board", "10:00", "Narok Town Hall"],
+    [45, "Christmas holiday", "holiday", "", ""],
+  ].forEach(([d, title, kind, start_time, location]) => tables.calendar_events.push({ id: uid(), title, kind, starts_on: onDay(d), ends_on: kind === "holiday" ? onDay(d + 6) : null, start_time, location, notes: "", created_at: stamp(20) }));
 
   const copy = (x) => JSON.parse(JSON.stringify(x));
   const delay = () => new Promise((r) => setTimeout(r, 120));
