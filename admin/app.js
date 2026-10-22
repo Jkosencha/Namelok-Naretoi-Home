@@ -1,4 +1,4 @@
-import { isConfigured, createSupabaseBackend, createDemoBackend } from "./data.js?v=2";
+import { isConfigured, createSupabaseBackend, createDemoBackend } from "./data.js?v=3";
 import { sparkline, donut, columns, lineChart, dataTable } from "./charts.js?v=1";
 
 // ─────────────────────────────────────────────────────────────
@@ -69,7 +69,40 @@ const icon = (name, size = 18) => h("span", { class: "icon", "aria-hidden": "tru
 // What each section stores and shows
 // ─────────────────────────────────────────────────────────────
 const opt = (pairs) => pairs.map(([value, label]) => ({ value, label }));
-const CHILD_CATEGORY = opt([["disability", "Disability"], ["rescued", "Rescued girl"], ["vulnerable", "Vulnerable home"]]);
+const CHILD_CATEGORY = opt([["disability", "Disability"], ["rescued_girl", "Rescued girl"], ["rescued_boy", "Rescued boy"], ["vulnerable", "Vulnerable home"]]);
+
+// ── School classes that move up automatically every January ──
+// Stored: class_track (school system), class_level (position on its ladder) and
+// class_year (the year that class was set). Current class = level + years since then.
+const CLASS_TRACKS = {
+  cbc: { label: "CBC (PP1 to Grade 12)", classes: ["PP1", "PP2", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5", "Grade 6", "Grade 7", "Grade 8", "Grade 9", "Grade 10", "Grade 11", "Grade 12"] },
+  "844": { label: "8-4-4 secondary (Form 1 to 4)", classes: ["Form 1", "Form 2", "Form 3", "Form 4"] },
+  tertiary: { label: "College, TVET or university", classes: ["Year 1", "Year 2", "Year 3", "Year 4"] },
+  special: { label: "Special needs unit (set by hand)", classes: [] },
+  none: { label: "Not in school", classes: [] },
+};
+const CLASS_STAGES = ["Pre-primary", "Primary", "Junior school", "Senior school", "Secondary", "College", "Special needs unit", "Not in school", "Finished school"];
+function stageOf(track, name) {
+  if (track === "special") return "Special needs unit";
+  if (track === "none") return "Not in school";
+  if (track === "844") return "Secondary";
+  if (track === "tertiary") return "College";
+  if (/^PP/.test(name)) return "Pre-primary";
+  const g = Number((name.match(/Grade (\d+)/) || [])[1]);
+  return g <= 6 ? "Primary" : g <= 9 ? "Junior school" : "Senior school";
+}
+// The child's class this year, or null if not recorded
+function currentClass(c) {
+  const track = CLASS_TRACKS[c.class_track];
+  if (!track) return null;
+  if (!track.classes.length) return { name: c.class_track === "special" ? (c.school_class || "Special needs unit") : "Not in school", stage: stageOf(c.class_track, ""), auto: false };
+  if (c.class_level == null || c.class_year == null) return null;
+  const n = c.class_level + Math.max(new Date().getFullYear() - c.class_year, 0);
+  const last = track.classes[track.classes.length - 1];
+  if (n >= track.classes.length) return { name: "Finished " + last, stage: c.class_track === "tertiary" ? "Finished school" : "Finished school", level: track.classes.length, auto: true, finished: true };
+  const name = track.classes[n];
+  return { name, stage: stageOf(c.class_track, name), level: n, auto: true };
+}
 const CHILD_STATUS = opt([["in_care", "In care at the home"], ["boarding_school", "At boarding school"], ["reintegrated", "Back with family"], ["exited", "Left the programme"]]);
 const REFERRAL = opt([["", "—"], ["chief", "Chief"], ["do", "District Officer"], ["dc", "District Commissioner"], ["court", "Court"], ["hospital", "Hospital"], ["school", "School"], ["family", "Family"], ["self", "Came on their own"], ["other", "Other"]]);
 const label = (options, value) => (options.find((o) => o.value === value) || {}).label || value || "";
@@ -189,7 +222,8 @@ const RESOURCES = {
       { name: "medical_condition", label: "Medical condition", type: "textarea", rows: 2 },
       { section: "School" },
       { name: "school_name", label: "School" },
-      { name: "school_class", label: "Class / grade" },
+      { name: "class", label: "School system and class", type: "class" },
+      { name: "school_class", label: "Class details (optional)", help: "e.g. the unit or level for a special needs class" },
       { section: "Family" },
       { name: "guardian_name", label: "Guardian" },
       { name: "guardian_phone", label: "Guardian's phone" },
@@ -535,11 +569,13 @@ async function viewOverview(view) {
   );
 
   // ── Children by category (donut) and by status (columns) ──
-  const catColor = { disability: "var(--series-2)", rescued: "var(--series-1)", vulnerable: "var(--series-3)" };
-  const catShort = { disability: "Disability", rescued: "Rescued", vulnerable: "Vulnerable" };
-  const byCategory = CHILD_CATEGORY.map((o) => ({ label: catShort[o.value], value: inCare.filter((c) => c.category === o.value).length, color: catColor[o.value] }));
-  const statusShort = { in_care: "At home", boarding_school: "Boarding", reintegrated: "With family", exited: "Left" };
-  const byStatus = CHILD_STATUS.map((o) => ({ label: o.label, short: statusShort[o.value], value: children.filter((c) => c.status === o.value).length }));
+  // Ring order keeps neighbouring colours far apart for colour-blind readers
+  const catColor = { rescued_girl: "var(--series-1)", rescued_boy: "var(--series-4)", disability: "var(--series-2)", vulnerable: "var(--series-3)" };
+  const catShort = { rescued_girl: "Rescued girls", rescued_boy: "Rescued boys", disability: "Disability", vulnerable: "Vulnerable" };
+  const byCategory = ["rescued_girl", "rescued_boy", "disability", "vulnerable"].map((v) => CHILD_CATEGORY.find((o) => o.value === v)).map((o) => ({ label: catShort[o.value], value: inCare.filter((c) => c.category === o.value).length, color: catColor[o.value] }));
+  const stageShort = { "Pre-primary": "Pre-prim.", Primary: "Primary", "Junior school": "Junior", "Senior school": "Senior", Secondary: "Form 1–4", College: "College" };
+  const byStage = Object.keys(stageShort).map((st) => ({ label: st, short: stageShort[st], value: inCare.filter((c) => currentClass(c)?.stage === st).length }));
+  const noClass = inCare.filter((c) => !currentClass(c) || !stageShort[currentClass(c).stage]).length;
   const card = (title, body, extra = "") => h("section", { class: "dash-card" }, h("header", { class: "dash-card-head" }, h("h3", {}, title), extra), body);
 
   // ── Recent activity across the dashboard ──
@@ -602,7 +638,7 @@ async function viewOverview(view) {
     stats,
     h("div", { class: "dash-row three" },
       card("Children in care", inCare.length ? donut(byCategory, { centerLabel: "In care" }) : h("p", { class: "muted" }, "No children in care recorded yet."), h("span", { class: "card-note" }, "By category")),
-      card("Children by status", columns(byStatus, { color: "var(--series-1)" }), h("span", { class: "card-note" }, `${children.length} records`)),
+      card("School stage", h("div", {}, columns(byStage, { color: "var(--series-2)" }), noClass ? h("p", { class: "card-sub chart-foot" }, `${noClass} in care with no class, a special unit or not in school`) : ""), h("span", { class: "card-note" }, "Children in care")),
       card("Recent activity", activityList)
     ),
     h("div", { class: "dash-row three" },
@@ -702,7 +738,32 @@ async function viewResource(view, name) {
 }
 
 // Build an input for one field
+function classInput(row) {
+  const now = new Date().getFullYear();
+  const cur = row ? currentClass(row) : null;
+  const trackSel = h("select", { id: "f_class_track", name: "class_track" },
+    h("option", { value: "" }, "— Not recorded —"),
+    Object.entries(CLASS_TRACKS).map(([k, t]) => h("option", { value: k, selected: row?.class_track === k }, t.label)));
+  const classSel = h("select", { id: "f_class_level", name: "class_level", "aria-label": "Class this year" });
+  const hint = h("small", {});
+  const fill = () => {
+    const t = CLASS_TRACKS[trackSel.value];
+    const list = t ? t.classes : [];
+    classSel.replaceChildren(...list.map((name, i) => h("option", { value: i }, name)),
+      ...(list.length ? [h("option", { value: list.length }, "Finished " + list[list.length - 1])] : []));
+    classSel.disabled = !list.length;
+    classSel.hidden = !list.length;
+    if (row && trackSel.value === row.class_track && cur && cur.auto) classSel.value = cur.level;
+    hint.textContent = list.length ? `Class in ${now}. It moves up automatically every January; change it here if the child repeats or skips a year.` : "";
+  };
+  trackSel.addEventListener("change", fill);
+  fill();
+  const wrap = h("div", { class: "class-picker", "data-orig-track": row?.class_track ?? "", "data-orig-level": cur && cur.auto ? cur.level : "", "data-stored-level": row?.class_level ?? "", "data-stored-year": row?.class_year ?? "" }, trackSel, classSel);
+  return h("div", { class: "field field-wide" }, h("label", { for: "f_class_track" }, "School system and class"), wrap, hint);
+}
+
 function fieldInput(f, value, extras = {}) {
+  if (f.type === "class") return classInput(extras.row);
   const id = "f_" + f.name;
   const common = { id, name: f.name, required: f.required };
   let input;
@@ -736,6 +797,23 @@ function readForm(form, fields) {
   const row = {};
   for (const f of fields) {
     if (!f.name) continue;
+    if (f.type === "class") {
+      const wrap = form.querySelector(".class-picker");
+      const track = form.elements.class_track.value;
+      const hasLadder = (CLASS_TRACKS[track]?.classes || []).length > 0;
+      const level = hasLadder ? Number(form.elements.class_level.value) : null;
+      const unchanged = track === wrap.dataset.origTrack && String(level) === wrap.dataset.origLevel;
+      row.class_track = track;
+      if (unchanged && wrap.dataset.storedYear !== "") {
+        // Keep the stored class and year so the automatic yearly move-up continues
+        row.class_level = Number(wrap.dataset.storedLevel);
+        row.class_year = Number(wrap.dataset.storedYear);
+      } else {
+        row.class_level = level;
+        row.class_year = hasLadder ? new Date().getFullYear() : null;
+      }
+      continue;
+    }
     const el = form.elements[f.name];
     if (!el) continue;
     if (f.type === "checkbox") row[f.name] = el.checked;
@@ -755,7 +833,7 @@ function openForm(res, row, onDone, extra = {}) {
   const body = h("div", { class: "modal-body" });
   for (const f of res.fields) {
     if (f.section) body.append(h("h3", { class: "form-section" }, f.section));
-    else body.append(fieldInput(f, row ? row[f.name] : f.default, { folder: extra.folder }));
+    else body.append(fieldInput(f, row ? row[f.name] : f.default, { folder: extra.folder, row }));
   }
   const form = h("form", { method: "dialog", onsubmit: async (e) => {
       e.preventDefault();
@@ -858,27 +936,29 @@ async function viewChildren(view) {
 
   const search = h("input", { type: "search", placeholder: "Search by name, school, area…", class: "search" });
   const catSel = h("select", { "aria-label": "Category" }, h("option", { value: "" }, "All categories"), CHILD_CATEGORY.map((o) => h("option", { value: o.value }, o.label)));
+  const stageSel = h("select", { "aria-label": "School stage" }, h("option", { value: "" }, "All school stages"), CLASS_STAGES.map((st) => h("option", { value: st }, st)));
   const statusSel = h("select", { "aria-label": "Status" }, h("option", { value: "current" }, "Currently supported"), h("option", { value: "" }, "All statuses"), CHILD_STATUS.map((o) => h("option", { value: o.value }, o.label)));
   const grid = h("div", { class: "child-grid" });
   const draw = () => {
     const q = search.value.toLowerCase();
     const shown = rows.filter((c) =>
-      (!q || [c.first_name, c.last_name, c.school_name, c.home_location, c.guardian_name].join(" ").toLowerCase().includes(q)) &&
+      (!q || [c.first_name, c.last_name, c.school_name, c.home_location, c.guardian_name, currentClass(c)?.name].join(" ").toLowerCase().includes(q)) &&
       (!catSel.value || c.category === catSel.value) &&
+      (!stageSel.value || currentClass(c)?.stage === stageSel.value) &&
       (statusSel.value === "" || (statusSel.value === "current" ? ["in_care", "boarding_school"].includes(c.status) : c.status === statusSel.value)));
     grid.replaceChildren(...(shown.length ? shown.map((c) => h("a", { class: "child-card", href: "#children/" + c.id },
       h("div", { class: "avatar" }, (c.first_name[0] || "?") + (c.last_name[0] || "")),
       h("div", {},
         h("strong", {}, `${c.first_name} ${c.last_name}`.trim()),
-        h("span", {}, [age(c.date_of_birth) !== "" ? `${age(c.date_of_birth)} yrs` : "", c.school_class].filter(Boolean).join(" · ")),
+        h("span", {}, [age(c.date_of_birth) !== "" ? `${age(c.date_of_birth)} yrs` : "", currentClass(c) ? `${currentClass(c).name} · ${currentClass(c).stage}` : ""].filter(Boolean).join(" · ")),
         h("div", { class: "chips" }, h("span", { class: `badge badge-${c.category}` }, label(CHILD_CATEGORY, c.category)), h("span", { class: "badge" }, label(CHILD_STATUS, c.status)))
       )
     )) : [h("div", { class: "empty" }, rows.length ? "No children match these filters." : "No children recorded yet. Use “Add child” to create the first record.")]));
   };
-  [search, catSel, statusSel].forEach((el) => el.addEventListener("input", draw));
+  [search, catSel, stageSel, statusSel].forEach((el) => el.addEventListener("input", draw));
   view.replaceChildren(
     h("p", { class: "intro private-note" }, "Private records. Never share these details outside the team."),
-    h("div", { class: "toolbar" }, search, catSel, statusSel),
+    h("div", { class: "toolbar" }, search, catSel, stageSel, statusSel),
     grid
   );
   draw();
@@ -914,7 +994,15 @@ async function viewChild(view, id) {
           row("Came through", label(REFERRAL, child.referral_channel)),
           row("Referral details", child.referral_details),
           row("Medical", child.medical_condition),
-          row("School", [child.school_name, child.school_class].filter(Boolean).join(", ")),
+          row("School", child.school_name),
+          row("Class", (() => {
+            const cc = currentClass(child);
+            if (!cc) return "";
+            if (!cc.auto) return cc.name;
+            const setAs = CLASS_TRACKS[child.class_track].classes[child.class_level] || "Finished";
+            return `${cc.name} · ${cc.stage}` + (child.class_year < new Date().getFullYear() ? `\n(recorded as ${setAs} in ${child.class_year}, moved up automatically)` : "");
+          })()),
+          row("Class details", child.school_class),
           row("Guardian", [child.guardian_name, child.guardian_phone].filter(Boolean).join(" · ")),
           row("Home area", child.home_location),
           row("Notes", child.notes)
