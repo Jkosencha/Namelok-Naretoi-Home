@@ -1,4 +1,6 @@
-import { isConfigured, createSupabaseBackend, createDemoBackend } from "./data.js?v=2";
+import { isConfigured, createSupabaseBackend, createDemoBackend } from "./data.js?v=5";
+import { sparkline, donut, columns, lineChart, dataTable } from "./charts.js?v=2";
+import { createReports } from "./reports.js?v=1";
 
 // ─────────────────────────────────────────────────────────────
 // Small helpers
@@ -53,6 +55,19 @@ const ICONS = {
   logout: '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/>',
   plus: '<path d="M12 5v14M5 12h14"/>',
   menu: '<path d="M3 6h18M3 12h18M3 18h18"/>',
+  report: '<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8 17v-3M12 17v-6M16 17v-4"/>',
+  file: '<path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/>',
+  upload: '<path d="M12 16V4M7 9l5-5 5 5M4 20h16"/>',
+  download: '<path d="M12 4v12M7 11l5 5 5-5M4 20h16"/>',
+  print: '<path d="M6 9V3h12v6M6 18H4a1 1 0 0 1-1-1v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a1 1 0 0 1-1 1h-2"/><rect x="6" y="14" width="12" height="7" rx="1"/>',
+  search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+  bell: '<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.9 1.9 0 0 0 3.4 0"/>',
+  sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>',
+  moon: '<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>',
+  chevron: '<path d="M9 6l6 6-6 6"/>',
+  external: '<path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',
+  calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/>',
+  database: '<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>',
 };
 const icon = (name, size = 18) => h("span", { class: "icon", "aria-hidden": "true", html: `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICONS[name]}</svg>` });
 
@@ -60,7 +75,42 @@ const icon = (name, size = 18) => h("span", { class: "icon", "aria-hidden": "tru
 // What each section stores and shows
 // ─────────────────────────────────────────────────────────────
 const opt = (pairs) => pairs.map(([value, label]) => ({ value, label }));
-const CHILD_CATEGORY = opt([["disability", "Disability"], ["rescued", "Rescued girl"], ["vulnerable", "Vulnerable home"]]);
+const CHILD_CATEGORY = opt([["disability", "Disability"], ["rescued_girl", "Rescued girl"], ["rescued_boy", "Rescued boy"], ["vulnerable", "Vulnerable home"]]);
+
+// ── School classes that move up automatically every January ──
+// Stored: class_track (school system), class_level (position on its ladder) and
+// class_year (the year that class was set). Current class = level + years since then.
+const CLASS_TRACKS = {
+  cbc: { label: "CBC (PP1 to Grade 12)", classes: ["PP1", "PP2", "Grade 1", "Grade 2", "Grade 3", "Grade 4", "Grade 5", "Grade 6", "Grade 7", "Grade 8", "Grade 9", "Grade 10", "Grade 11", "Grade 12"] },
+  "844": { label: "8-4-4 secondary (Form 1 to 4)", classes: ["Form 1", "Form 2", "Form 3", "Form 4"] },
+  tertiary: { label: "College, TVET or university", classes: ["Year 1", "Year 2", "Year 3", "Year 4"] },
+  special: { label: "Special needs unit (set by hand)", classes: [] },
+  none: { label: "Not in school", classes: [] },
+};
+const CLASS_STAGES = ["Pre-primary", "Primary", "Junior school", "Senior school", "Secondary", "College", "Special needs unit", "Not in school", "Finished school"];
+function stageOf(track, name) {
+  if (track === "special") return "Special needs unit";
+  if (track === "none") return "Not in school";
+  if (track === "844") return "Secondary";
+  if (track === "tertiary") return "College";
+  if (/^PP/.test(name)) return "Pre-primary";
+  const g = Number((name.match(/Grade (\d+)/) || [])[1]);
+  return g <= 6 ? "Primary" : g <= 9 ? "Junior school" : "Senior school";
+}
+// The child's class this year, or null if not recorded
+const currentClass = (c) => classAt(c, new Date().getFullYear());
+// The child's class in a given school year (used by reports for past periods)
+function classAt(c, year) {
+  const track = CLASS_TRACKS[c.class_track];
+  if (!track) return null;
+  if (!track.classes.length) return { name: c.class_track === "special" ? (c.school_class || "Special needs unit") : "Not in school", stage: stageOf(c.class_track, ""), auto: false };
+  if (c.class_level == null || c.class_year == null) return null;
+  const n = c.class_level + Math.max(year - c.class_year, 0);
+  const last = track.classes[track.classes.length - 1];
+  if (n >= track.classes.length) return { name: "Finished " + last, stage: c.class_track === "tertiary" ? "Finished school" : "Finished school", level: track.classes.length, auto: true, finished: true };
+  const name = track.classes[n];
+  return { name, stage: stageOf(c.class_track, name), level: n, auto: true };
+}
 const CHILD_STATUS = opt([["in_care", "In care at the home"], ["boarding_school", "At boarding school"], ["reintegrated", "Back with family"], ["exited", "Left the programme"]]);
 const REFERRAL = opt([["", "—"], ["chief", "Chief"], ["do", "District Officer"], ["dc", "District Commissioner"], ["court", "Court"], ["hospital", "Hospital"], ["school", "School"], ["family", "Family"], ["self", "Came on their own"], ["other", "Other"]]);
 const label = (options, value) => (options.find((o) => o.value === value) || {}).label || value || "";
@@ -180,7 +230,8 @@ const RESOURCES = {
       { name: "medical_condition", label: "Medical condition", type: "textarea", rows: 2 },
       { section: "School" },
       { name: "school_name", label: "School" },
-      { name: "school_class", label: "Class / grade" },
+      { name: "class", label: "School system and class", type: "class" },
+      { name: "school_class", label: "Class details (optional)", help: "e.g. the unit or level for a special needs class" },
       { section: "Family" },
       { name: "guardian_name", label: "Guardian" },
       { name: "guardian_phone", label: "Guardian's phone" },
@@ -214,6 +265,7 @@ const NAV = [
   ["Giving", [["donations", "Donations", "donations"], ["donors", "Donors", "donors"]]],
   ["People", [["messages", "Messages", "messages"], ["volunteers", "Volunteers", "volunteers"]]],
   ["Outreach", [["outreach_visits", "School visits", "outreach"], ["distributions", "Items handed out", "items"]]],
+  ["Reports", [["reports", "Reports", "report"]]],
 ];
 
 // ─────────────────────────────────────────────────────────────
@@ -221,14 +273,13 @@ const NAV = [
 // ─────────────────────────────────────────────────────────────
 async function start() {
   const params = new URLSearchParams(location.search);
-  if (!isConfigured()) {
-    if (params.has("demo")) {
-      db = createDemoBackend();
-      user = await db.currentUser();
-      return renderShell();
-    }
-    return renderSetup();
+  // ?demo always opens the invented sample data, even when the real database is connected
+  if (params.has("demo")) {
+    db = createDemoBackend();
+    user = await db.currentUser();
+    return renderShell();
   }
+  if (!isConfigured()) return renderSetup();
   try {
     db = await createSupabaseBackend();
   } catch (e) {
@@ -307,31 +358,108 @@ function startIdleTimer() {
 }
 
 // ─────────────────────────────────────────────────────────────
+// Light / dark theme (remembered on this device only)
+// ─────────────────────────────────────────────────────────────
+function savedTheme() {
+  try { return localStorage.getItem("namelok-theme"); } catch { return null; }
+}
+function applyTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  try { localStorage.setItem("namelok-theme", theme); } catch {}
+  const btn = document.getElementById("themeToggle");
+  if (btn) {
+    btn.replaceChildren(icon(theme === "dark" ? "sun" : "moon", 18));
+    btn.setAttribute("aria-label", theme === "dark" ? "Switch to light theme" : "Switch to dark theme");
+    btn.title = btn.getAttribute("aria-label");
+  }
+}
+applyTheme(savedTheme() || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"));
+
+// ─────────────────────────────────────────────────────────────
 // Layout
 // ─────────────────────────────────────────────────────────────
+const displayName = () => {
+  const part = (user.email || "Admin").split("@")[0].replace(/[._-]+/g, " ");
+  return part.replace(/\b\w/g, (c) => c.toUpperCase());
+};
+
 function renderShell() {
   const nav = h("nav", { class: "side-nav", "aria-label": "Dashboard" },
     NAV.map(([group, items]) => h("div", { class: "nav-group" },
       h("span", { class: "nav-group-label" }, group),
-      items.map(([route, text, ic]) => h("a", { href: "#" + route, "data-route": route }, icon(ic), h("span", {}, text)))
-    ))
-  );
-  const sidebar = h("aside", { class: "sidebar" },
-    h("a", { class: "brand", href: "#overview" }, h("img", { src: "../images/logo.png", alt: "" }), h("span", {}, "Namelok", h("small", {}, "Dashboard"))),
-    nav,
-    h("div", { class: "side-foot" },
-      h("a", { href: "../index.html", target: "_blank", rel: "noopener" }, "View website ↗"),
-      h("span", { class: "who" }, user.email),
-      h("button", { class: "btn btn-ghost btn-sm", onclick: async () => { await db.signOut(); location.href = location.pathname; } }, icon("logout", 16), "Sign out")
+      items.map(([route, text, ic]) => h("a", { href: "#" + route, "data-route": route }, icon(ic), h("span", {}, text), h("span", { class: "nav-chevron" }, icon("chevron", 14))))
+    )),
+    h("div", { class: "nav-group" },
+      h("span", { class: "nav-group-label" }, "Quick links"),
+      h("a", { href: "../index.html", target: "_blank", rel: "noopener" }, icon("website"), h("span", {}, "Namelok website"), h("span", { class: "nav-chevron" }, icon("external", 14))),
+      h("a", { href: "https://supabase.com/dashboard", target: "_blank", rel: "noopener" }, icon("database"), h("span", {}, "Database"), h("span", { class: "nav-chevron" }, icon("external", 14))),
+      h("button", { class: "nav-button", onclick: async () => { await db.signOut(); location.href = location.pathname; } }, icon("logout"), h("span", {}, "Sign out"))
     )
   );
-  const top = h("header", { class: "topbar" },
-    h("button", { class: "btn btn-ghost menu-btn", "aria-label": "Menu", onclick: () => document.body.classList.toggle("nav-open") }, icon("menu", 22)),
-    h("h1", { id: "pageTitle" }, ""),
-    h("div", { id: "pageActions", class: "page-actions" })
+  const sidebar = h("aside", { class: "sidebar" },
+    nav,
+    h("div", { class: "side-brand" },
+      h("img", { src: "../images/logo.png", alt: "" }),
+      h("strong", {}, "Namelok Naretoi"),
+      h("span", {}, "Healing · Education · Protection")
+    )
   );
-  const banner = db.demo ? h("div", { class: "demo-banner" }, "Demo mode: sample data only, nothing is saved. Connect Supabase to start using the dashboard for real.") : null;
-  app.replaceChildren(banner || "", h("div", { class: "shell" }, sidebar, h("div", { class: "main" }, top, h("main", { id: "view", class: "view" }))));
+
+  // Search across children, donors, volunteers, messages and stories
+  const results = h("div", { class: "search-results", role: "listbox", hidden: true });
+  let index = null;
+  const buildIndex = async () => {
+    const [children, donors, volunteers, messages, stories] = await Promise.all(["children", "donors", "volunteers", "contact_messages", "stories"].map((t) => db.list(t)));
+    return [
+      ...children.map((c) => ({ text: `${c.first_name} ${c.last_name}`.trim(), sub: "Child · " + label(CHILD_CATEGORY, c.category), href: "#children/" + c.id, ic: "children" })),
+      ...donors.map((d) => ({ text: d.name, sub: "Donor" + (d.organisation ? " · " + d.organisation : ""), href: "#donors", ic: "donors" })),
+      ...volunteers.map((v) => ({ text: v.name, sub: "Volunteer", href: "#volunteers", ic: "volunteers" })),
+      ...messages.map((m) => ({ text: `${m.first_name} ${m.last_name}`.trim(), sub: "Message · " + (m.reason || "General"), href: "#messages", ic: "messages" })),
+      ...stories.map((s) => ({ text: s.title, sub: "Story", href: "#stories", ic: "stories" })),
+    ];
+  };
+  const search = h("input", { type: "search", placeholder: "Search children, donors, volunteers…", "aria-label": "Search", autocomplete: "off" });
+  search.addEventListener("focus", async () => { if (!index) index = await buildIndex(); });
+  search.addEventListener("input", async () => {
+    if (!index) index = await buildIndex();
+    const q = search.value.trim().toLowerCase();
+    if (!q) { results.hidden = true; return; }
+    const hits = index.filter((r) => (r.text + " " + r.sub).toLowerCase().includes(q)).slice(0, 8);
+    results.replaceChildren(...(hits.length ? hits.map((r) => h("a", { href: r.href, class: "search-hit", onclick: () => { results.hidden = true; search.value = ""; } }, icon(r.ic, 16), h("span", {}, h("strong", {}, r.text), h("small", {}, r.sub)))) : [h("p", { class: "search-empty" }, "No matches")]));
+    results.hidden = false;
+  });
+  search.addEventListener("keydown", (e) => { if (e.key === "Escape") { results.hidden = true; search.blur(); } if (e.key === "Enter") results.querySelector("a")?.click(); });
+  document.addEventListener("click", (e) => { if (!e.target.closest(".appbar-search")) results.hidden = true; });
+
+  const bellCount = h("span", { class: "bell-count", hidden: true });
+  db.list("contact_messages").then((m) => {
+    const n = m.filter((x) => x.status === "new").length;
+    bellCount.textContent = n > 9 ? "9+" : n;
+    bellCount.hidden = !n;
+  }).catch(() => {});
+
+  const appbar = h("header", { class: "appbar" },
+    h("button", { class: "icon-btn menu-btn", "aria-label": "Menu", onclick: () => document.body.classList.toggle("nav-open") }, icon("menu", 20)),
+    h("a", { class: "brand", href: "#overview" },
+      h("img", { src: "../images/logo.png", alt: "" }),
+      h("span", {}, h("strong", {}, "Namelok Naretoi"), h("small", {}, "Care & Management Dashboard"))
+    ),
+    h("p", { class: "appbar-tagline" }, "Every child seen, valued and supported"),
+    h("div", { class: "appbar-search" }, icon("search", 16), search, results),
+    h("button", { id: "themeToggle", class: "icon-btn", onclick: () => applyTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark") }),
+    h("a", { class: "icon-btn bell", href: "#messages", "aria-label": "New messages" }, icon("bell", 18), bellCount),
+    h("div", { class: "user-chip" },
+      h("span", { class: "user-avatar" }, displayName().slice(0, 1)),
+      h("span", { class: "user-text" }, h("strong", {}, displayName()), h("small", {}, "Administrator"))
+    )
+  );
+
+  const banner = db.demo ? h("div", { class: "demo-banner" }, "Demo mode: invented sample data, nothing is saved. ", isConfigured() ? h("a", { href: location.pathname }, "Open the real dashboard") : "Connect Supabase to use the dashboard for real.") : null;
+  app.replaceChildren(banner || "", appbar, h("div", { class: "shell" }, sidebar,
+    h("div", { class: "main" },
+      h("div", { class: "page-head" }, h("h1", { id: "pageTitle" }, ""), h("div", { id: "pageActions", class: "page-actions" })),
+      h("main", { id: "view", class: "view" }))));
+  applyTheme(document.documentElement.dataset.theme);
   nav.addEventListener("click", () => document.body.classList.remove("nav-open"));
   addEventListener("hashchange", route);
   route();
@@ -344,8 +472,9 @@ function setPage(title, actions = []) {
 }
 
 async function route() {
-  const [name, id] = (location.hash.slice(1) || "overview").split("/");
+  const [name, id, sub] = (location.hash.slice(1) || "overview").split("/");
   document.querySelectorAll(".side-nav a").forEach((a) => a.classList.toggle("active", a.dataset.route === name));
+  document.body.classList.toggle("is-overview", name === "overview");
   const view = $("#view");
   view.replaceChildren(h("div", { class: "loading" }, "Loading…"));
   try {
@@ -354,6 +483,7 @@ async function route() {
     else if (name === "messages") await viewMessages(view);
     else if (name === "children" && id) await viewChild(view, id);
     else if (name === "children") await viewChildren(view);
+    else if (name === "reports") await reports().route(view, id, sub);
     else if (RESOURCES[name]) await viewResource(view, name);
     else location.hash = "#overview";
   } catch (e) {
@@ -361,56 +491,172 @@ async function route() {
   }
 }
 
+let reportsModule;
+const reports = () => (reportsModule ||= createReports({ h, icon, money, fmtDate, toast, setPage, db: () => db, CHILD_CATEGORY, classAt, friendly }));
+
 // ─────────────────────────────────────────────────────────────
 // Overview
 // ─────────────────────────────────────────────────────────────
+// The last n calendar months, oldest first: [{ key: "2026-05", label: "May" }, …]
+function lastMonths(n) {
+  const out = [], d = new Date();
+  d.setDate(1);
+  for (let i = n - 1; i >= 0; i--) {
+    const m = new Date(d.getFullYear(), d.getMonth() - i, 1);
+    out.push({ key: `${m.getFullYear()}-${String(m.getMonth() + 1).padStart(2, "0")}`, label: m.toLocaleDateString("en-GB", { month: "short" }) });
+  }
+  return out;
+}
+const monthly = (rows, dateKey, valueOf = () => 1, n = 6) =>
+  lastMonths(n).map((m) => rows.filter((r) => (r[dateKey] || "").slice(0, 7) === m.key).reduce((s, r) => s + valueOf(r), 0));
+const timeAgo = (iso) => {
+  const mins = Math.round((Date.now() - new Date(iso)) / 60000);
+  if (mins < 60) return `${Math.max(mins, 1)} min ago`;
+  if (mins < 1440) return `${Math.round(mins / 60)} h ago`;
+  return fmtDate(iso);
+};
+
 async function viewOverview(view) {
   setPage("Overview");
-  const [children, donations, messages, volunteers, visits, items] = await Promise.all([
-    db.list("children"), db.list("donations"), db.list("contact_messages"), db.list("volunteers"), db.list("outreach_visits"), db.list("distributions"),
-  ]);
+  const [children, events, donations, messages, volunteers, visits, items, stories] = await Promise.all(
+    ["children", "child_events", "donations", "contact_messages", "volunteers", "outreach_visits", "distributions", "stories"].map((t) => db.list(t))
+  );
+  const today = new Date().toISOString().slice(0, 10);
   const inCare = children.filter((c) => c.status === "in_care" || c.status === "boarding_school");
-  const ytd = donations.filter((d) => thisYear(d.received_on));
-  const month = new Date().toISOString().slice(0, 7);
-  const monthTotal = donations.filter((d) => (d.received_on || "").startsWith(month)).reduce((s, d) => s + Number(d.amount), 0);
-  const visitsYtd = visits.filter((v) => thisYear(v.visit_date));
-  const reached = visitsYtd.reduce((s, v) => s + v.girls_reached + v.boys_reached, 0);
-  const newMsgs = messages.filter((m) => m.status === "new").length;
+  const sum = (rows, f) => rows.reduce((s, r) => s + f(r), 0);
 
-  const stat = (value, text, href, sub, ic, tone) => h("a", { class: `stat-card tone-${tone}`, href },
-    h("span", { class: "stat-icon" }, icon(ic, 20)),
-    h("strong", {}, value), h("span", { class: "stat-label" }, text), sub ? h("small", {}, sub) : "");
-  const byCat = (cat) => inCare.filter((c) => c.category === cat).length;
-  const itemTotals = {};
-  items.filter((i) => thisYear(i.distributed_on)).forEach((i) => (itemTotals[i.item] = (itemTotals[i.item] || 0) + i.quantity));
+  // ── Latest updates strip ──
+  const updates = [
+    ...messages.filter((m) => m.status === "new").slice(0, 3).map((m) => [`New message from ${m.first_name}`, m.reason || "General", "#messages"]),
+    ...donations.slice(0, 2).map((d) => [`${money(d.amount)} received`, d.donor_name || "Anonymous", "#donations"]),
+    ...visits.filter((v) => v.visit_date >= today).slice(0, 2).map((v) => [`School visit: ${v.school_name}`, fmtDate(v.visit_date), "#outreach_visits"]),
+    ...stories.filter((s) => !s.published).slice(0, 1).map((s) => [`Draft story waiting: ${s.title}`, "Not yet published", "#stories"]),
+  ];
+  const ticker = h("div", { class: "ticker" },
+    h("span", { class: "ticker-label" }, icon("bell", 16), "Latest"),
+    h("div", { class: "ticker-track" }, updates.length
+      ? updates.map(([t, sub, href]) => h("a", { href, class: "ticker-item" }, h("span", {}, t), h("small", {}, sub)))
+      : h("span", { class: "ticker-item muted" }, "Nothing new right now."))
+  );
 
+  // ── Hero + greeting ──
   const hour = new Date().getHours();
   const greeting = hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
+  const hero = h("section", { class: "hero-card" },
+    h("div", { class: "hero-text" },
+      h("h2", {}, "Namelok Naretoi Home"),
+      h("p", { class: "hero-sub" }, "Care & Management Dashboard"),
+      h("p", { class: "hero-tags" }, h("span", {}, "Healing"), h("span", {}, "Education"), h("span", {}, "Protection"))
+    )
+  );
+  const greet = h("section", { class: "greet-card" },
+    h("p", { class: "greet-date" }, icon("calendar", 16), new Date().toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short", year: "numeric" })),
+    h("p", { class: "greet-hello" }, greeting + ","),
+    h("h2", {}, displayName()),
+    h("p", { class: "muted" }, "Administrator · Namelok Naretoi Home"),
+    h("p", { class: "greet-since" }, `Caring since 1991 · ${new Date().getFullYear() - 1991} years`)
+  );
+
+  // ── Stat cards with change vs last month and a 6-month trend ──
+  // Change vs last month: a percentage for amounts, a plain count for people and messages
+  const statCard = ({ tone, ic, title, value, series, href, counts = false, what = "" }) => {
+    const [prev, cur] = series.slice(-2);
+    const diff = cur - prev;
+    const pct = prev ? Math.round((diff / prev) * 100) : null;
+    const amount = counts || pct === null ? Math.abs(diff).toLocaleString() : Math.abs(pct) + "%";
+    const deltaText = diff === 0 ? "Same as last month" : `${diff > 0 ? "▲" : "▼"} ${amount} ${what ? what + " " : ""}vs last month`;
+    return h("a", { class: `stat-card tone-${tone}`, href },
+      h("div", { class: "stat-top" }, h("span", { class: "stat-icon" }, icon(ic, 20)), h("span", { class: "stat-title" }, title)),
+      h("strong", { class: "stat-value" }, value),
+      h("div", { class: "stat-foot" },
+        h("span", { class: `stat-delta ${diff > 0 ? "up" : diff < 0 ? "down" : ""}` }, deltaText),
+        sparkline(series, `var(--series-${tone})`))
+    );
+  };
+  const stats = h("div", { class: "stat-grid" },
+    statCard({ tone: 1, ic: "children", title: "Children in care", value: inCare.length, series: monthly(children, "admission_date"), href: "#children", counts: true, what: "admitted" }),
+    statCard({ tone: 2, ic: "donations", title: `Donations ${new Date().getFullYear()}`, value: money(sum(donations.filter((d) => thisYear(d.received_on)), (d) => Number(d.amount))), series: monthly(donations, "received_on", (d) => Number(d.amount)), href: "#donations" }),
+    statCard({ tone: 3, ic: "outreach", title: "Pupils reached", value: sum(visits.filter((v) => thisYear(v.visit_date)), (v) => v.girls_reached + v.boys_reached).toLocaleString(), series: monthly(visits, "visit_date", (v) => v.girls_reached + v.boys_reached), href: "#outreach_visits" }),
+    statCard({ tone: 4, ic: "messages", title: "New messages", value: messages.filter((m) => m.status === "new").length, series: monthly(messages, "created_at"), href: "#messages", counts: true, what: "received" })
+  );
+
+  // ── Children by category (donut) and by status (columns) ──
+  // Ring order keeps neighbouring colours far apart for colour-blind readers
+  const catColor = { rescued_girl: "var(--series-1)", rescued_boy: "var(--series-4)", disability: "var(--series-2)", vulnerable: "var(--series-3)" };
+  const catShort = { rescued_girl: "Rescued girls", rescued_boy: "Rescued boys", disability: "Disability", vulnerable: "Vulnerable" };
+  const byCategory = ["rescued_girl", "rescued_boy", "disability", "vulnerable"].map((v) => CHILD_CATEGORY.find((o) => o.value === v)).map((o) => ({ label: catShort[o.value], value: inCare.filter((c) => c.category === o.value).length, color: catColor[o.value] }));
+  const stageShort = { "Pre-primary": "Pre-prim.", Primary: "Primary", "Junior school": "Junior", "Senior school": "Senior", Secondary: "Form 1–4", College: "College" };
+  const byStage = Object.keys(stageShort).map((st) => ({ label: st, short: stageShort[st], value: inCare.filter((c) => currentClass(c)?.stage === st).length }));
+  const noClass = inCare.filter((c) => !currentClass(c) || !stageShort[currentClass(c).stage]).length;
+  const card = (title, body, extra = "") => h("section", { class: "dash-card" }, h("header", { class: "dash-card-head" }, h("h3", {}, title), extra), body);
+
+  // ── Recent activity across the dashboard ──
+  const activity = [
+    ...children.map((c) => ({ at: c.created_at, ic: "children", tone: 1, title: "Child record added", sub: `${c.first_name} ${c.last_name}`.trim(), href: "#children/" + c.id })),
+    ...donations.map((d) => ({ at: d.created_at, ic: "donations", tone: 2, title: "Donation recorded", sub: `${d.donor_name || "Anonymous"} · ${money(d.amount)}`, href: "#donations" })),
+    ...visits.map((v) => ({ at: v.created_at, ic: "outreach", tone: 3, title: "School visit logged", sub: v.school_name, href: "#outreach_visits" })),
+    ...messages.map((m) => ({ at: m.created_at, ic: "messages", tone: 4, title: "Message received", sub: `${m.first_name} · ${m.reason || "General"}`, href: "#messages" })),
+    ...events.map((e) => ({ at: e.created_at, ic: "calendar", tone: 1, title: "Timeline updated", sub: e.title, href: "#children/" + e.child_id })),
+  ].filter((a) => a.at).sort((a, b) => (a.at < b.at ? 1 : -1)).slice(0, 6);
+  const activityList = activity.length
+    ? h("ul", { class: "activity" }, activity.map((a) => h("li", {}, h("a", { href: a.href },
+        h("span", { class: `act-icon tone-${a.tone}` }, icon(a.ic, 16)),
+        h("span", { class: "act-text" }, h("strong", {}, a.title), h("small", {}, a.sub)),
+        h("time", {}, timeAgo(a.at))))))
+    : h("p", { class: "muted" }, "Activity will appear here as records are added.");
+
+  // ── Upcoming: future visits and timeline entries ──
+  const childName = Object.fromEntries(children.map((c) => [c.id, c.first_name]));
+  const upcoming = [
+    ...visits.filter((v) => v.visit_date >= today).map((v) => ({ date: v.visit_date, title: `School visit: ${v.school_name}`, sub: v.location || "Outreach", tag: "Outreach", tone: 3, href: "#outreach_visits" })),
+    ...events.filter((e) => e.event_date >= today).map((e) => ({ date: e.event_date, title: e.title, sub: childName[e.child_id] || "Child", tag: label(RESOURCES.child_events.fields[1].options, e.type), tone: 1, href: "#children/" + e.child_id })),
+  ].sort((a, b) => (a.date > b.date ? 1 : -1)).slice(0, 4);
+  const upcomingList = upcoming.length
+    ? h("ul", { class: "upcoming" }, upcoming.map((u) => {
+        const d = new Date(u.date + "T00:00:00");
+        return h("li", {}, h("a", { href: u.href },
+          h("span", { class: "date-block" }, h("strong", {}, d.getDate()), h("small", {}, d.toLocaleDateString("en-GB", { month: "short" }))),
+          h("span", { class: "act-text" }, h("strong", {}, u.title), h("small", {}, u.sub)),
+          h("span", { class: `chip tone-${u.tone}` }, u.tag)));
+      }))
+    : h("p", { class: "muted" }, "Nothing scheduled. Add future school visits or child follow-ups to see them here.");
+
+  // ── Quick actions ──
+  const action = (ic, text, onclick, tone) => h("button", { class: `quick-action tone-${tone}`, onclick }, h("span", { class: "qa-icon" }, icon(ic, 20)), h("span", {}, text));
+  const quick = h("div", { class: "quick-grid" },
+    action("children", "Add child", () => openForm(RESOURCES.children, null, (s) => (location.hash = "#children/" + s.id)), 1),
+    action("donations", "Record donation", () => openForm(RESOURCES.donations, null, () => route()), 2),
+    action("outreach", "Log school visit", () => openForm(RESOURCES.outreach_visits, null, () => route()), 3),
+    action("stories", "Add story", () => { location.hash = "#stories"; }, 4),
+    action("messages", "Messages", () => { location.hash = "#messages"; }, 1),
+    action("website", "Website details", () => { location.hash = "#settings"; }, 2)
+  );
+
+  // ── Donations trend (with a table view) ──
+  const months = lastMonths(6);
+  const donationSeries = monthly(donations, "received_on", (d) => Number(d.amount));
+  const trendPoints = months.map((m, i) => ({ label: m.label, value: donationSeries[i] }));
+  const trendBody = h("div", { class: "trend-body" }, lineChart(trendPoints, { color: "var(--series-2)", format: money }));
+  let showingTable = false;
+  const tableBtn = h("button", { class: "btn btn-sm btn-ghost", onclick: () => {
+    showingTable = !showingTable;
+    trendBody.replaceChildren(showingTable ? dataTable(trendPoints.map((p) => [p.label, money(p.value)]), ["Month", "Donations"]) : lineChart(trendPoints, { color: "var(--series-2)", format: money }));
+    tableBtn.textContent = showingTable ? "Show chart" : "Show table";
+  } }, "Show table");
+
   view.replaceChildren(
-    h("div", { class: "greeting" },
-      h("p", { class: "greeting-date" }, new Date().toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric" })),
-      h("h2", {}, `${greeting}.`),
-      h("p", {}, "Here is what is happening at Namelok Naretoi Home.")
+    ticker,
+    h("div", { class: "hero-row" }, hero, greet),
+    stats,
+    h("div", { class: "dash-row three" },
+      card("Children in care", inCare.length ? donut(byCategory, { centerLabel: "In care" }) : h("p", { class: "muted" }, "No children in care recorded yet."), h("span", { class: "card-note" }, "By category")),
+      card("School stage", h("div", {}, columns(byStage, { color: "var(--series-2)" }), noClass ? h("p", { class: "card-sub chart-foot" }, `${noClass} in care with no class, a special unit or not in school`) : ""), h("span", { class: "card-note" }, "Children in care")),
+      card("Recent activity", activityList)
     ),
-    h("div", { class: "stat-grid" },
-      stat(inCare.length, "Children in care", "#children", `${byCat("disability")} disability · ${byCat("rescued")} rescued · ${byCat("vulnerable")} vulnerable`, "children", "earth"),
-      stat(money(ytd.reduce((s, d) => s + Number(d.amount), 0)), `Donations in ${new Date().getFullYear()}`, "#donations", `${money(monthTotal)} this month`, "donations", "ochre"),
-      stat(reached.toLocaleString(), "Pupils reached this year", "#outreach_visits", `${visitsYtd.length} school visits`, "outreach", "green"),
-      stat(newMsgs, newMsgs === 1 ? "New message" : "New messages", "#messages", `${volunteers.filter((v) => v.status === "active").length} active volunteers`, "messages", "blue")
-    ),
-    h("div", { class: "panel-grid" },
-      h("section", { class: "panel" },
-        h("h2", {}, "Recent donations"),
-        donations.length ? h("ul", { class: "mini-list" }, donations.slice(0, 5).map((d) => h("li", {}, h("span", {}, d.donor_name || "Anonymous", h("small", {}, fmtDate(d.received_on))), h("b", {}, money(d.amount))))) : h("p", { class: "muted" }, "No donations recorded yet.")
-      ),
-      h("section", { class: "panel" },
-        h("h2", {}, "Items handed out this year"),
-        Object.keys(itemTotals).length ? h("ul", { class: "mini-list" }, Object.entries(itemTotals).map(([k, v]) => h("li", {}, h("span", {}, label(RESOURCES.distributions.fields[0].options, k)), h("b", {}, v.toLocaleString())))) : h("p", { class: "muted" }, "Nothing recorded yet.")
-      ),
-      h("section", { class: "panel" },
-        h("h2", {}, "Latest messages"),
-        messages.length ? h("ul", { class: "mini-list" }, messages.slice(0, 5).map((m) => h("li", {}, h("span", {}, `${m.first_name} ${m.last_name}`.trim(), h("small", {}, m.reason || "General")), m.status === "new" ? h("span", { class: "badge badge-new" }, "New") : ""))) : h("p", { class: "muted" }, "No messages yet.")
-      )
+    h("div", { class: "dash-row three" },
+      card("Upcoming", upcomingList),
+      card("Quick actions", quick),
+      card("Donations", h("div", {}, h("p", { class: "card-sub" }, "Last 6 months"), trendBody), tableBtn)
     )
   );
 }
@@ -504,7 +750,32 @@ async function viewResource(view, name) {
 }
 
 // Build an input for one field
+function classInput(row) {
+  const now = new Date().getFullYear();
+  const cur = row ? currentClass(row) : null;
+  const trackSel = h("select", { id: "f_class_track", name: "class_track" },
+    h("option", { value: "" }, "— Not recorded —"),
+    Object.entries(CLASS_TRACKS).map(([k, t]) => h("option", { value: k, selected: row?.class_track === k }, t.label)));
+  const classSel = h("select", { id: "f_class_level", name: "class_level", "aria-label": "Class this year" });
+  const hint = h("small", {});
+  const fill = () => {
+    const t = CLASS_TRACKS[trackSel.value];
+    const list = t ? t.classes : [];
+    classSel.replaceChildren(...list.map((name, i) => h("option", { value: i }, name)),
+      ...(list.length ? [h("option", { value: list.length }, "Finished " + list[list.length - 1])] : []));
+    classSel.disabled = !list.length;
+    classSel.hidden = !list.length;
+    if (row && trackSel.value === row.class_track && cur && cur.auto) classSel.value = cur.level;
+    hint.textContent = list.length ? `Class in ${now}. It moves up automatically every January; change it here if the child repeats or skips a year.` : "";
+  };
+  trackSel.addEventListener("change", fill);
+  fill();
+  const wrap = h("div", { class: "class-picker", "data-orig-track": row?.class_track ?? "", "data-orig-level": cur && cur.auto ? cur.level : "", "data-stored-level": row?.class_level ?? "", "data-stored-year": row?.class_year ?? "" }, trackSel, classSel);
+  return h("div", { class: "field field-wide" }, h("label", { for: "f_class_track" }, "School system and class"), wrap, hint);
+}
+
 function fieldInput(f, value, extras = {}) {
+  if (f.type === "class") return classInput(extras.row);
   const id = "f_" + f.name;
   const common = { id, name: f.name, required: f.required };
   let input;
@@ -538,6 +809,23 @@ function readForm(form, fields) {
   const row = {};
   for (const f of fields) {
     if (!f.name) continue;
+    if (f.type === "class") {
+      const wrap = form.querySelector(".class-picker");
+      const track = form.elements.class_track.value;
+      const hasLadder = (CLASS_TRACKS[track]?.classes || []).length > 0;
+      const level = hasLadder ? Number(form.elements.class_level.value) : null;
+      const unchanged = track === wrap.dataset.origTrack && String(level) === wrap.dataset.origLevel;
+      row.class_track = track;
+      if (unchanged && wrap.dataset.storedYear !== "") {
+        // Keep the stored class and year so the automatic yearly move-up continues
+        row.class_level = Number(wrap.dataset.storedLevel);
+        row.class_year = Number(wrap.dataset.storedYear);
+      } else {
+        row.class_level = level;
+        row.class_year = hasLadder ? new Date().getFullYear() : null;
+      }
+      continue;
+    }
     const el = form.elements[f.name];
     if (!el) continue;
     if (f.type === "checkbox") row[f.name] = el.checked;
@@ -557,7 +845,7 @@ function openForm(res, row, onDone, extra = {}) {
   const body = h("div", { class: "modal-body" });
   for (const f of res.fields) {
     if (f.section) body.append(h("h3", { class: "form-section" }, f.section));
-    else body.append(fieldInput(f, row ? row[f.name] : f.default, { folder: extra.folder }));
+    else body.append(fieldInput(f, row ? row[f.name] : f.default, { folder: extra.folder, row }));
   }
   const form = h("form", { method: "dialog", onsubmit: async (e) => {
       e.preventDefault();
@@ -660,27 +948,29 @@ async function viewChildren(view) {
 
   const search = h("input", { type: "search", placeholder: "Search by name, school, area…", class: "search" });
   const catSel = h("select", { "aria-label": "Category" }, h("option", { value: "" }, "All categories"), CHILD_CATEGORY.map((o) => h("option", { value: o.value }, o.label)));
+  const stageSel = h("select", { "aria-label": "School stage" }, h("option", { value: "" }, "All school stages"), CLASS_STAGES.map((st) => h("option", { value: st }, st)));
   const statusSel = h("select", { "aria-label": "Status" }, h("option", { value: "current" }, "Currently supported"), h("option", { value: "" }, "All statuses"), CHILD_STATUS.map((o) => h("option", { value: o.value }, o.label)));
   const grid = h("div", { class: "child-grid" });
   const draw = () => {
     const q = search.value.toLowerCase();
     const shown = rows.filter((c) =>
-      (!q || [c.first_name, c.last_name, c.school_name, c.home_location, c.guardian_name].join(" ").toLowerCase().includes(q)) &&
+      (!q || [c.first_name, c.last_name, c.school_name, c.home_location, c.guardian_name, currentClass(c)?.name].join(" ").toLowerCase().includes(q)) &&
       (!catSel.value || c.category === catSel.value) &&
+      (!stageSel.value || currentClass(c)?.stage === stageSel.value) &&
       (statusSel.value === "" || (statusSel.value === "current" ? ["in_care", "boarding_school"].includes(c.status) : c.status === statusSel.value)));
     grid.replaceChildren(...(shown.length ? shown.map((c) => h("a", { class: "child-card", href: "#children/" + c.id },
       h("div", { class: "avatar" }, (c.first_name[0] || "?") + (c.last_name[0] || "")),
       h("div", {},
         h("strong", {}, `${c.first_name} ${c.last_name}`.trim()),
-        h("span", {}, [age(c.date_of_birth) !== "" ? `${age(c.date_of_birth)} yrs` : "", c.school_class].filter(Boolean).join(" · ")),
+        h("span", {}, [age(c.date_of_birth) !== "" ? `${age(c.date_of_birth)} yrs` : "", currentClass(c) ? `${currentClass(c).name} · ${currentClass(c).stage}` : ""].filter(Boolean).join(" · ")),
         h("div", { class: "chips" }, h("span", { class: `badge badge-${c.category}` }, label(CHILD_CATEGORY, c.category)), h("span", { class: "badge" }, label(CHILD_STATUS, c.status)))
       )
     )) : [h("div", { class: "empty" }, rows.length ? "No children match these filters." : "No children recorded yet. Use “Add child” to create the first record.")]));
   };
-  [search, catSel, statusSel].forEach((el) => el.addEventListener("input", draw));
+  [search, catSel, stageSel, statusSel].forEach((el) => el.addEventListener("input", draw));
   view.replaceChildren(
     h("p", { class: "intro private-note" }, "Private records. Never share these details outside the team."),
-    h("div", { class: "toolbar" }, search, catSel, statusSel),
+    h("div", { class: "toolbar" }, search, catSel, stageSel, statusSel),
     grid
   );
   draw();
@@ -716,7 +1006,15 @@ async function viewChild(view, id) {
           row("Came through", label(REFERRAL, child.referral_channel)),
           row("Referral details", child.referral_details),
           row("Medical", child.medical_condition),
-          row("School", [child.school_name, child.school_class].filter(Boolean).join(", ")),
+          row("School", child.school_name),
+          row("Class", (() => {
+            const cc = currentClass(child);
+            if (!cc) return "";
+            if (!cc.auto) return cc.name;
+            const setAs = CLASS_TRACKS[child.class_track].classes[child.class_level] || "Finished";
+            return `${cc.name} · ${cc.stage}` + (child.class_year < new Date().getFullYear() ? `\n(recorded as ${setAs} in ${child.class_year}, moved up automatically)` : "");
+          })()),
+          row("Class details", child.school_class),
           row("Guardian", [child.guardian_name, child.guardian_phone].filter(Boolean).join(" · ")),
           row("Home area", child.home_location),
           row("Notes", child.notes)
