@@ -1,9 +1,9 @@
 :root {
-  --primary: #e7972e;
-  --primary-dark: #b5701a;
-  --primary-light: #ffb864;
-  --primary-tint: #fef3e4;
-  --gradient: linear-gradient(135deg, #f4a83f 0%, #d9731c 100%);
+  --primary: #c98d4b;
+  --primary-dark: #9c6a33;
+  --primary-light: #e3b47c;
+  --primary-tint: #f6ede1;
+  --gradient: linear-gradient(135deg, #cf9654 0%, #b97c3b 100%);
   --dark: #000;
   --light: #fff;
   --ink: #1c1a17;
@@ -1166,7 +1166,7 @@ select:focus-visible {
 .service-card:hover {
   transform: translateY(-8px);
   box-shadow: var(--shadow-lg);
-  border-color: rgba(231, 151, 46, 0.35);
+  border-color: rgba(201, 141, 75, 0.35);
 }
 
 .service-card h3 {
@@ -1391,7 +1391,7 @@ select:focus-visible {
 }
 
 .donate-amount-btn:hover {
-  background: rgba(231, 151, 46, 0.2);
+  background: rgba(201, 141, 75, 0.2);
   border-color: var(--primary);
   color: var(--primary);
   transform: translateY(-2px);
@@ -1855,7 +1855,7 @@ select:focus-visible {
   top: -10px;
   left: 18px;
   font-size: 7rem;
-  color: rgba(231, 151, 46, 0.22);
+  color: rgba(201, 141, 75, 0.22);
   font-family: var(--font-display);
   line-height: 1;
 }
@@ -2191,7 +2191,7 @@ select:focus-visible {
   width: 70%;
   height: 70%;
   border-radius: 50%;
-  background-image: radial-gradient(rgba(181, 112, 26, 0.3) 2px, transparent 2.5px);
+  background-image: radial-gradient(rgba(156, 106, 51, 0.3) 2px, transparent 2.5px);
   background-size: 14px 14px;
 }
 
@@ -2701,10 +2701,7 @@ select:focus-visible {
 }
 
 .hero-accent {
-  background: linear-gradient(90deg, #ffb864 0%, #f08a24 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: #e6bd88;
 }
 
 .mainText a {
