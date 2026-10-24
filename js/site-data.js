@@ -29,6 +29,8 @@
   // ── Settings: numbers, phone, email, payment details ──
   function applySettings(rows) {
     const set = Object.fromEntries(rows.map((r) => [r.key, r.value]));
+    // Pages can react to the settings too (the Donate page shows only methods with real details)
+    setTimeout(() => document.dispatchEvent(new CustomEvent("namelok:settings", { detail: set })));
     if (set.founded_year) {
       const years = new Date().getFullYear() - Number(set.founded_year);
       document.querySelectorAll("[data-since]").forEach((el) => {
