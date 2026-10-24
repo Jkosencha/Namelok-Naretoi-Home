@@ -402,7 +402,9 @@ insert into public.site_settings (key, value, label) values
   ('bank_name',          '', 'Bank name'),
   ('bank_account_name',  '', 'Bank account name'),
   ('bank_account_number','', 'Bank account number'),
-  ('bank_branch',        '', 'Bank branch')
+  ('bank_branch',        '', 'Bank branch'),
+  ('bank_swift',         '', 'Bank SWIFT code (for donors abroad)'),
+  ('paypal_email',       '', 'PayPal email')
 on conflict (key) do nothing;
 
 -- ─────────────────────────────────────────────────────────────

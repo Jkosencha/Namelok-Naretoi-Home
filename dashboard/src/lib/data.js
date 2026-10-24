@@ -127,6 +127,8 @@ export function createDemoBackend() {
       ["bank_account_name", "", "Bank account name"],
       ["bank_account_number", "", "Bank account number"],
       ["bank_branch", "", "Bank branch"],
+      ["bank_swift", "", "Bank SWIFT code (for donors abroad)"],
+      ["paypal_email", "", "PayPal email"],
     ].map(([key, value, label]) => ({ key, value, label, updated_at: stamp(3) })),
     stories: [
       { id: uid(), slug: "from-risk-to-resilience", title: "From Risk to Resilience", child_name: "Jackie", age: "20", category: "rescue", summary: "Rescued at 13 and kept in school, Jackie went on to graduate from university.", body: "", image_url: "images/web/thumbs/sch7.jpg", featured: false, published: true, sort_order: 1, created_at: stamp(40) },

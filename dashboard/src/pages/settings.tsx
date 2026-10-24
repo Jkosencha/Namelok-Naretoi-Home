@@ -10,7 +10,8 @@ import { useDb, useTables } from "@/lib/backend"
 const GROUPS: [string, string, string[]][] = [
   ["Numbers on the website", "Years of service are worked out from the year founded.", ["founded_year", "children_supported", "girls_rescued"]],
   ["Contact details", "Shown in the website's header, footer and Contact page.", ["phone", "email"]],
-  ["Donation details", "Shown on the Donate page. Until these are filled in, the page keeps its placeholder details.", ["mpesa_paybill", "mpesa_account", "bank_name", "bank_account_name", "bank_account_number", "bank_branch"]],
+  ["Donation details", "Shown on the Donate page. Each way of giving appears there only once its details are filled in; until then the page asks donors to call. Type the account name exactly as the bank has it.",
+    ["mpesa_paybill", "mpesa_account", "paypal_email", "bank_name", "bank_account_name", "bank_account_number", "bank_branch", "bank_swift"]],
 ]
 
 export function SettingsPage() {
