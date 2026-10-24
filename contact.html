@@ -10,249 +10,140 @@
     <meta property="og:type" content="website" />
     <link rel="icon" type="image/png" href="images/logo.png" />
     <link rel="apple-touch-icon" href="images/logo.png" />
-    <meta name="theme-color" content="#e7972e" />
+    <meta name="theme-color" content="#c98d4b" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="css/index.css?v=27" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Figtree:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/index.css?v=30" />
     <title>Contact Us – Namelok Naretoi Home</title>
     <style>
-      /* ── Page-specific styles ── */
-      .contact-page {
-        background-color: #fdf8f2;
-        min-height: 100vh;
-      }
+      /* ── Contact: photo hero with a card that overlaps it ── */
+      .contact-page { background: var(--paper); }
 
-      /* Main layout */
-      .contact-body {
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 70px 24px 100px;
-        display: grid;
-        grid-template-columns: 1.1fr 1fr;
-        gap: 60px;
-        align-items: start;
-      }
-
-      /* Right info panel */
-      .contact-info-panel {
-        position: sticky;
-        top: 40px;
-      }
-      .contact-info-panel h2 {
-        font-family: "Fraunces", Georgia, serif;
-        font-weight: 600;
-        font-size: 1.9rem;
-        color: #1a1a1a;
-        margin-bottom: 10px;
-      }
-      .contact-info-panel > p {
-        font-size: 0.97rem;
-        color: #666;
-        line-height: 1.8;
-        margin-bottom: 40px;
-      }
-
-      .info-block {
-        display: flex;
-        align-items: flex-start;
-        gap: 16px;
-        margin-bottom: 28px;
-      }
-      .info-icon {
-        width: 46px;
-        height: 46px;
-        border-radius: 14px;
-        background: linear-gradient(135deg, #f4a83f 0%, #d9731c 100%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-      }
-      .info-icon svg {
-        width: 20px;
-        height: 20px;
-        fill: white;
-      }
-      .info-text strong {
-        display: block;
-        font-size: 0.8rem;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color: #aaa;
-        margin-bottom: 4px;
-      }
-      .info-text p, .info-text a {
-        font-size: 0.97rem;
-        color: #222;
-        margin: 0;
-        text-decoration: none;
-        line-height: 1.6;
-      }
-      .info-text a:hover { color: #e7972e; }
-
-      /* Social links */
-      .social-row {
-        display: flex;
-        gap: 12px;
-        margin-top: 36px;
-      }
-      .social-btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 10px 20px;
-        border-radius: 999px;
-        border: none;
-        font-size: 0.82rem;
-        font-weight: 700;
-        text-decoration: none;
-        letter-spacing: 0.04em;
-        transition: transform 0.25s ease;
-      }
-      .social-btn:hover { transform: translateY(-2px); }
-      .social-btn.facebook { background: #1877f2; color: #fff; }
-      .social-btn.twitter  { background: #000; color: #fff; }
-
-      /* Left: form */
-      .contact-form-wrap {
-        background: #fff;
-        border: 1px solid rgba(28, 26, 23, 0.09);
-        border-radius: 26px;
-        box-shadow: 0 12px 30px rgba(28, 20, 8, 0.1);
-        padding: 48px 40px;
-        box-sizing: border-box;
-      }
-      .contact-form-wrap h3 {
-        font-family: "Fraunces", Georgia, serif;
-        font-weight: 600;
-        font-size: 1.5rem;
-        color: #1a1a1a;
-        margin-bottom: 6px;
-      }
-      .contact-form-wrap p {
-        font-size: 0.9rem;
-        color: #888;
-        margin-bottom: 32px;
-      }
-
-      .form-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 16px;
-        margin-bottom: 16px;
-      }
-
-      .form-group {
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 16px;
-      }
-      .form-group label {
-        font-size: 0.78rem;
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color: #888;
-        margin-bottom: 8px;
-        font-weight: bold;
-      }
-      .form-group input,
-      .form-group textarea,
-      .form-group select {
-        padding: 13px 16px;
-        border: 1.5px solid rgba(28, 26, 23, 0.12);
-        border-radius: 10px;
-        font-family: "Inter", sans-serif;
-        font-size: 0.95rem;
-        color: #222;
-        background: #fafafa;
-        transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
-        outline: none;
-        width: 100%;
-        box-sizing: border-box;
-      }
-      .form-group input:focus,
-      .form-group textarea:focus,
-      .form-group select:focus {
-        border-color: #e7972e;
-        background: #fff;
-        box-shadow: 0 0 0 4px #fef3e4;
-      }
-      .form-group textarea {
-        resize: vertical;
-        min-height: 130px;
-      }
-
-      .submit-btn {
-        width: 100%;
-        padding: 18px;
-        background: linear-gradient(135deg, #f4a83f 0%, #d9731c 100%);
+      .ct-hero {
+        position: relative;
+        padding: 170px 0 250px;
+        background: url("images/namelokBG3.jpg") center 35% / cover no-repeat;
         color: #fff;
-        border: none;
-        border-radius: 999px;
-        font-family: "Inter", sans-serif;
-        font-size: 1rem;
-        font-weight: 700;
-        cursor: pointer;
-        letter-spacing: 0.03em;
-        margin-top: 8px;
-        transition: transform 0.25s ease, filter 0.25s ease;
       }
-      .submit-btn:hover {
-        transform: translateY(-2px);
-        filter: brightness(1.05);
+      .ct-hero::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(105deg, rgba(20, 16, 12, 0.94) 0%, rgba(20, 16, 12, 0.7) 50%, rgba(96, 70, 42, 0.62) 100%);
+      }
+      .ct-hero-inner { position: relative; width: 92%; max-width: 960px; margin: 0 auto; }
+      .ct-hero h1 { font-family: var(--font-display); font-weight: 400; font-size: clamp(2.4rem, 5vw, 3.4rem); line-height: 1.1; margin: 10px 0 14px; color: #fff; }
+      .ct-hero p { max-width: 460px; font-size: 1.02rem; line-height: 1.75; color: rgba(255, 255, 255, 0.82); margin: 0; }
+
+      .ct-wrap { position: relative; width: 92%; max-width: 960px; margin: -190px auto 0; padding-bottom: 90px; }
+      .ct-card {
+        display: grid;
+        grid-template-columns: 1.55fr 1fr;
+        border-radius: var(--radius-md);
+        overflow: hidden;
+        box-shadow: var(--shadow-lg);
+        background: var(--surface);
       }
 
-      /* Success message */
-      .success-msg {
-        display: none;
-        text-align: center;
-        padding: 30px;
-        animation: fadeInUp 0.5s ease;
+      /* Left: the form */
+      .ct-form { padding: 38px 40px 36px; }
+      .ct-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 26px; }
+      .ct-head h2 { font-family: var(--font-display); font-weight: 400; font-size: 1.45rem; color: var(--ink); margin: 0; }
+      .ct-head svg { width: 22px; height: 22px; color: var(--primary-dark); }
+      .ct-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 28px; }
+      .ct-field { display: flex; flex-direction: column; gap: 4px; }
+      .ct-field.full { grid-column: 1 / -1; }
+      .ct-field label { font-size: 0.74rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-mute); }
+      .ct-field input, .ct-field select, .ct-field textarea {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 9px 0 10px;
+        border: 0;
+        border-bottom: 1.5px solid rgba(28, 26, 23, 0.16);
+        border-radius: 0;
+        background: transparent;
+        font: 400 0.98rem var(--font-body);
+        color: var(--ink);
+        outline: none;
+        transition: border-color 0.2s;
       }
-      .success-msg .checkmark {
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #f4a83f 0%, #d9731c 100%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 16px;
+      /* Reason: a styled list in place of the browser's plain dropdown */
+      .ct-select { position: relative; }
+      .ct-select-btn {
+        width: 100%; display: flex; align-items: center; gap: 10px;
+        padding: 9px 0 10px; border: 0; border-bottom: 1.5px solid rgba(28, 26, 23, 0.16); background: transparent;
+        font: 400 0.98rem var(--font-body); color: var(--ink); text-align: left; cursor: pointer; outline: none;
       }
-      .success-msg .checkmark svg {
-        width: 28px;
-        height: 28px;
-        fill: white;
+      .ct-select-btn .placeholder { color: #b9b2a7; }
+      .ct-select-btn .chev { margin-left: auto; width: 16px; height: 16px; color: var(--ink-mute); transition: transform 0.2s; }
+      .ct-select.open .ct-select-btn, .ct-select-btn:focus-visible { border-bottom-color: var(--primary); }
+      .ct-select.open .chev { transform: rotate(180deg); }
+      .ct-select-list {
+        position: absolute; z-index: 20; top: calc(100% + 8px); left: 0; right: 0;
+        margin: 0; padding: 6px; list-style: none;
+        background: #fff; border: 1px solid var(--border-soft); border-radius: 14px; box-shadow: var(--shadow-md);
+        opacity: 0; transform: translateY(-4px); pointer-events: none; transition: opacity 0.15s, transform 0.15s;
       }
-      .success-msg h4 {
-        font-family: "Fraunces", Georgia, serif;
-        font-weight: 600;
-        font-size: 1.5rem;
-        color: #1a1a1a;
+      .ct-select.open .ct-select-list { opacity: 1; transform: none; pointer-events: auto; }
+      .ct-select-list li { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: 10px; cursor: pointer; font-size: 0.94rem; color: var(--ink); }
+      .ct-select-list li .ic { width: 30px; height: 30px; flex-shrink: 0; border-radius: 9px; background: var(--primary-tint); color: var(--primary-dark); display: flex; align-items: center; justify-content: center; }
+      .ct-select-list li .ic svg { width: 15px; height: 15px; }
+      .ct-select-list li .tick { margin-left: auto; width: 16px; height: 16px; color: var(--primary-dark); opacity: 0; }
+      .ct-select-list li:hover, .ct-select-list li.hl { background: #f7f3ee; }
+      .ct-select-list li[aria-selected="true"] .tick { opacity: 1; }
+      .ct-select-list li[aria-selected="true"] { font-weight: 600; }
+      .ct-select select { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
+      .ct-field select { appearance: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a8378' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 2px center no-repeat; cursor: pointer; }
+      .ct-field textarea { resize: vertical; min-height: 96px; line-height: 1.6; }
+      .ct-field input::placeholder, .ct-field textarea::placeholder { color: #b9b2a7; }
+      .ct-field input:focus, .ct-field select:focus, .ct-field textarea:focus { border-bottom-color: var(--primary); }
+      .ct-foot { display: flex; justify-content: flex-end; margin-top: 30px; }
+      .ct-submit {
+        display: inline-flex; align-items: center; gap: 10px;
+        padding: 14px 28px;
+        border: 0; border-radius: var(--radius-pill);
+        background: var(--gradient); color: #fff;
+        font: 700 0.86rem var(--font-body); letter-spacing: 0.1em; text-transform: uppercase;
+        cursor: pointer; transition: transform 0.2s ease, filter 0.2s ease;
       }
-      .success-msg p {
-        color: #666;
-        font-size: 0.95rem;
-        margin-bottom: 0;
-      }
+      .ct-submit svg { width: 16px; height: 16px; }
+      .ct-submit:hover { transform: translateY(-1px); filter: brightness(1.04); }
+      .ct-submit:disabled { opacity: 0.6; cursor: wait; transform: none; }
+      .ct-error { margin: 14px 0 0; color: #b42318; font-size: 0.88rem; }
 
-      /* Responsive */
+      .ct-success { display: none; padding: 40px 10px; text-align: center; }
+      .ct-success .tick { width: 56px; height: 56px; margin: 0 auto 16px; border-radius: 50%; background: var(--primary-tint); color: var(--primary-dark); display: flex; align-items: center; justify-content: center; }
+      .ct-success .tick svg { width: 26px; height: 26px; }
+      .ct-success h3 { font-family: var(--font-display); font-weight: 400; font-size: 1.45rem; color: var(--ink); margin: 0 0 8px; }
+      .ct-success p { color: var(--ink-soft); margin: 0; }
+
+      /* Right: contact details on dark, with a faint logo */
+      .ct-info { position: relative; overflow: hidden; padding: 38px 34px; background: #23201c; color: #fff; }
+      .ct-info h2 { font-family: var(--font-display); font-weight: 400; font-size: 1.45rem; margin: 0 0 8px; color: #fff; }
+      .ct-info > p { margin: 0 0 28px; font-size: 0.9rem; line-height: 1.7; color: rgba(255, 255, 255, 0.66); }
+      .ct-row { position: relative; z-index: 1; display: flex; align-items: center; gap: 14px; margin-bottom: 20px; color: #fff; text-decoration: none; }
+      .ct-row .ico { width: 40px; height: 40px; flex-shrink: 0; border-radius: 12px; background: rgba(255, 255, 255, 0.07); display: flex; align-items: center; justify-content: center; color: var(--primary-light); }
+      .ct-row .ico svg { width: 18px; height: 18px; }
+      .ct-row small { display: block; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255, 255, 255, 0.5); }
+      .ct-row span { font-size: 0.95rem; word-break: break-word; }
+      a.ct-row:hover span { color: var(--primary-light); }
+
+      /* Like the reference: square card with only a soft shadow */
+      .ct-card { border-radius: 0; box-shadow: 0 24px 60px rgba(28, 20, 8, 0.14); }
+      .ct-select-list { border: 0; border-radius: 0; box-shadow: 0 16px 40px rgba(28, 20, 8, 0.16); }
+      .ct-select-list li { border-radius: 0; }
+      .ct-row .ico, .ct-select-list li .ic { border-radius: 0; }
+
       @media (max-width: 860px) {
-        .contact-body {
-          grid-template-columns: 1fr;
-          gap: 40px;
-          padding: 50px 20px 80px;
-        }
-        .contact-info-panel {
-          position: static;
-        }
-        .contact-form-wrap {
-          padding: 32px 24px;
-        }
-        .form-row {
-          grid-template-columns: 1fr;
-        }
+        .ct-hero { padding: 130px 0 200px; }
+        .ct-wrap { margin-top: -150px; padding-bottom: 60px; }
+        .ct-card { grid-template-columns: 1fr; }
+        .ct-form { padding: 30px 22px 28px; }
+        .ct-info { padding: 30px 22px; }
+        .ct-grid { grid-template-columns: 1fr; gap: 20px; }
+        .ct-foot { flex-direction: column-reverse; align-items: stretch; }
+        .ct-submit { justify-content: center; }
       }
     </style>
   </head>
@@ -263,120 +154,79 @@
     <script src="components/navbar.js?v=8"></script>
 
     <!-- Hero -->
-    <section class="page-hero page-hero-contact">
-      <div class="page-hero-inner">
-        <div class="page-hero-content">
-          <span class="hero-eyebrow">Contact Us</span>
-          <h1>Get in <span class="hero-accent">Touch</span></h1>
-          <p>Partnerships, volunteering or questions about our programmes, we'd love to hear from you.</p>
-          <nav class="page-hero-crumbs" aria-label="Breadcrumb">
-            <a href="index.html">Home</a><span aria-hidden="true">&rsaquo;</span>Contact Us
-          </nav>
-        </div>
+    <section class="ct-hero">
+      <div class="ct-hero-inner">
+        <h1>Get in <span class="hero-accent">Touch</span></h1>
+        <p>Partnerships, volunteering or questions about our programmes: give us a call or send a message, we'd love to hear from you.</p>
       </div>
     </section>
 
-    <!-- Body -->
-    <div class="contact-body">
-
-      <!-- Left: form -->
-      <div class="contact-form-wrap">
-        <h3>Send us a message</h3>
-        <p>We'll get back to you within 2 business days.</p>
-
-        <div id="contactFormInner">
-          <div class="form-row">
-            <div class="form-group">
-              <label>First Name</label>
-              <input type="text" id="firstName" placeholder="Jane" required />
+    <!-- Card: form and contact details -->
+    <div class="ct-wrap">
+      <div class="ct-card">
+        <div class="ct-form">
+          <div id="contactFormInner">
+            <div class="ct-head">
+              <h2>Send us a message</h2>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
             </div>
-            <div class="form-group">
-              <label>Last Name</label>
-              <input type="text" id="lastName" placeholder="Doe" required />
+            <div class="ct-grid">
+              <div class="ct-field"><label for="firstName">First name</label><input type="text" id="firstName" placeholder="Jane" autocomplete="given-name" required /></div>
+              <div class="ct-field"><label for="lastName">Last name</label><input type="text" id="lastName" placeholder="Doe" autocomplete="family-name" /></div>
+              <div class="ct-field"><label for="contactPhone">Phone (optional)</label><input type="tel" id="contactPhone" placeholder="07XX XXX XXX" autocomplete="tel" /></div>
+              <div class="ct-field"><label for="contactEmail">Email</label><input type="email" id="contactEmail" placeholder="you@example.com" autocomplete="email" required /></div>
+              <div class="ct-field full">
+                <label id="reasonLabel" for="reasonBtn">Reason for reaching out</label>
+                <div class="ct-select" id="reasonSelect">
+                  <button type="button" class="ct-select-btn" id="reasonBtn" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="reasonLabel reasonBtn">
+                    <span class="placeholder">Select a reason</span>
+                    <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                  </button>
+                  <ul class="ct-select-list" role="listbox" aria-labelledby="reasonLabel" tabindex="-1"></ul>
+                <select id="reason" tabindex="-1" aria-hidden="true">
+                  <option value="" disabled selected>Select a reason</option>
+                  <option>General Inquiry</option>
+                  <option>Partnership / Sponsorship</option>
+                  <option>Volunteering</option>
+                  <option>Donation Question</option>
+                  <option>Media / Press</option>
+                  <option>Other</option>
+                </select>
+                </div>
+              </div>
+              <div class="ct-field full"><label for="contactMessage">How can we help?</label><textarea id="contactMessage" placeholder="Tell us more…"></textarea></div>
             </div>
+            <div class="ct-foot">
+              <button class="ct-submit" type="button" onclick="handleContactSubmit()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                <span>Send</span>
+              </button>
+            </div>
+            <p class="ct-error" id="contactError" role="alert" hidden></p>
           </div>
-
-          <div class="form-group">
-            <label>Email Address</label>
-            <input type="email" id="contactEmail" placeholder="you@example.com" required />
-          </div>
-
-          <div class="form-group">
-            <label>Reason for reaching out</label>
-            <select id="reason">
-              <option value="" disabled selected>Select a reason</option>
-              <option>General Inquiry</option>
-              <option>Partnership / Sponsorship</option>
-              <option>Volunteering</option>
-              <option>Donation Question</option>
-              <option>Media / Press</option>
-              <option>Other</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label>Message</label>
-            <textarea id="contactMessage" placeholder="Tell us more..."></textarea>
-          </div>
-
-          <button class="submit-btn" onclick="handleContactSubmit()">Send Message</button>
-        </div>
-
-        <!-- Success state -->
-        <div class="success-msg" id="successMsg">
-          <div class="checkmark">
-            <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
-          </div>
-          <h4>Message sent!</h4>
-          <p>Thank you for reaching out. We'll be in touch soon.</p>
-        </div>
-      </div>
-
-      <!-- Right: info -->
-      <div class="contact-info-panel">
-        <h2>We'd love to hear from you.</h2>
-        <p>Whether you want to partner with us, volunteer, ask about our programs, or simply learn more, our team is always happy to connect.</p>
-
-        <div class="info-block">
-          <div class="info-icon">
-            <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5S13.38 11.5 12 11.5z"/></svg>
-          </div>
-          <div class="info-text">
-            <strong>Location</strong>
-            <p>Narok, Kenya</p>
+          <div class="ct-success" id="successMsg">
+            <div class="tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></div>
+            <h3>Message sent</h3>
+            <p>Thank you for reaching out. We'll be in touch soon.</p>
           </div>
         </div>
 
-        <div class="info-block">
-          <div class="info-icon">
-            <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-          </div>
-          <div class="info-text">
-            <strong>Email</strong>
-            <a href="mailto:jenniferkosencha@gmail.com"><span data-setting="email">jenniferkosencha@gmail.com</span></a>
-          </div>
-        </div>
-
-        <div class="info-block">
-          <div class="info-icon">
-            <svg viewBox="0 0 24 24"><path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24c1.12.45 2.33.69 3.58.69a1 1 0 011 1V20a1 1 0 01-1 1C10.61 21 3 13.39 3 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.24 2.45.69 3.57a1 1 0 01-.24 1.02l-2.33 2.2z"/></svg>
-          </div>
-          <div class="info-text">
-            <strong>Phone</strong>
-            <a href="tel:+254722537380"><span data-setting="phone">0722 537 380</span></a>
-          </div>
-        </div>
-
-        <div class="social-row">
-          <a href="#" class="social-btn facebook">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
-            Facebook
+        <aside class="ct-info">
+          <h2>Contact info</h2>
+          <p>Our team in Narok is always happy to talk.</p>
+          <a class="ct-row" href="tel:+254722537380">
+            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.4 1.8.7 2.7a2 2 0 01-.5 2.1L8.1 9.8a16 16 0 006 6l1.3-1.3a2 2 0 012.1-.4c.9.3 1.8.6 2.7.7a2 2 0 011.8 2z"/></svg></span>
+            <span><small>Phone &amp; WhatsApp</small><span data-setting="phone">0722 537 380</span></span>
           </a>
-          <a href="#" class="social-btn twitter">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-            X / Twitter
+          <a class="ct-row" href="mailto:jenniferkosencha@gmail.com">
+            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>
+            <span><small>Email</small><span data-setting="email">jenniferkosencha@gmail.com</span></span>
           </a>
-        </div>
+          <div class="ct-row">
+            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 10-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+            <span><small>Location</small><span>Narok, Kenya</span></span>
+          </div>
+        </aside>
       </div>
     </div>
 
@@ -396,51 +246,88 @@
     </div>
 
     <script src="js/supabase-config.js?v=1"></script>
-    <script src="js/site-data.js?v=2"></script>
+    <script src="js/site-data.js?v=3"></script>
     <script src="js/index.js?v=12"></script>
 
     <script>
+      // Styled reason list: mirrors the hidden <select>, works with mouse and keyboard
+      (function () {
+        const ICONS = {
+          'General Inquiry': '<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 015 .5c0 1.5-2.5 2-2.5 3.5"/><path d="M12 17h.01"/>',
+          'Partnership / Sponsorship': '<path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 000-7.8z"/>',
+          'Volunteering': '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0113 0"/><path d="M19 8v6M16 11h6"/>',
+          'Donation Question': '<rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/><path d="M7 15h3"/>',
+          'Media / Press': '<path d="M4 5h13v14H6a2 2 0 01-2-2z"/><path d="M17 9h3v8a2 2 0 01-2 2"/><path d="M8 9h5M8 13h5"/>',
+          'Other': '<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>',
+        };
+        const svg = (d) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+        const wrap = document.getElementById('reasonSelect');
+        const btn = document.getElementById('reasonBtn');
+        const list = wrap.querySelector('.ct-select-list');
+        const select = document.getElementById('reason');
+        const options = [...select.options].slice(1);
+        list.innerHTML = options.map((o, i) => `<li role="option" id="reasonOpt${i}" data-i="${i}" aria-selected="false"><span class="ic">${svg(ICONS[o.text] || ICONS.Other)}</span>${o.text}<svg class="tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg></li>`).join('');
+        const items = [...list.children];
+        let hl = -1;
+        const highlight = (i) => { hl = i; items.forEach((li, k) => li.classList.toggle('hl', k === i)); if (i >= 0) list.setAttribute('aria-activedescendant', items[i].id); };
+        const open = () => { wrap.classList.add('open'); btn.setAttribute('aria-expanded', 'true'); highlight(Math.max(0, select.selectedIndex - 1)); };
+        const close = () => { wrap.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); highlight(-1); };
+        window.syncReason = () => {
+          const i = select.selectedIndex - 1;
+          items.forEach((li, k) => li.setAttribute('aria-selected', String(k === i)));
+          btn.querySelector('span').textContent = i >= 0 ? options[i].text : 'Select a reason';
+          btn.querySelector('span').className = i >= 0 ? '' : 'placeholder';
+        };
+        const choose = (i) => { select.selectedIndex = i + 1; syncReason(); close(); btn.focus(); };
+        btn.addEventListener('click', () => (wrap.classList.contains('open') ? close() : open()));
+        list.addEventListener('click', (e) => { const li = e.target.closest('li'); if (li) choose(Number(li.dataset.i)); });
+        list.addEventListener('mousemove', (e) => { const li = e.target.closest('li'); if (li) highlight(Number(li.dataset.i)); });
+        btn.addEventListener('keydown', (e) => {
+          const isOpen = wrap.classList.contains('open');
+          if (['ArrowDown', 'ArrowUp'].includes(e.key)) { e.preventDefault(); if (!isOpen) return open(); highlight((hl + (e.key === 'ArrowDown' ? 1 : items.length - 1)) % items.length); }
+          else if ((e.key === 'Enter' || e.key === ' ') && isOpen) { e.preventDefault(); choose(hl); }
+          else if (e.key === 'Escape' || e.key === 'Tab') close();
+        });
+        document.addEventListener('click', (e) => { if (!wrap.contains(e.target)) close(); });
+      })();
+
       // Preselect the reason passed in the link, e.g. contact.html?reason=volunteering
       const requestedReason = new URLSearchParams(window.location.search).get('reason');
       if (requestedReason) {
         const reasonSelect = document.getElementById('reason');
         const match = [...reasonSelect.options].find(o => o.text.toLowerCase() === requestedReason.toLowerCase());
-        if (match) reasonSelect.value = match.value;
+        if (match) { reasonSelect.value = match.value; syncReason(); }
       }
 
       async function handleContactSubmit() {
+        const error = document.getElementById('contactError');
+        const fail = (msg) => { error.textContent = msg; error.hidden = false; };
+        error.hidden = true;
         const first = document.getElementById('firstName').value.trim();
         const last = document.getElementById('lastName').value.trim();
+        const phone = document.getElementById('contactPhone').value.trim();
         const email = document.getElementById('contactEmail').value.trim();
         const reasonEl = document.getElementById('reason');
         const message = document.getElementById('contactMessage').value.trim();
-
-        if (!first || !email || !message) {
-          alert('Please fill in your name, email, and message.');
-          return;
+        if (!first || !email || !message) return fail('Please fill in your first name, email and message.');
+        if (!/^\S+@\S+\.\S+$/.test(email)) return fail('Please check your email address.');
+        const sorry = 'Sorry, your message could not be sent. Please call us on 0722 537 380.';
+        // Saved to the dashboard's Messages (js/site-data.js)
+        if (!window.NamelokSite) return fail(sorry);
+        const btn = document.querySelector('.ct-submit');
+        btn.disabled = true;
+        try {
+          await window.NamelokSite.sendMessage({
+            first_name: first.slice(0, 100), last_name: last.slice(0, 100), email: email.slice(0, 200),
+            message: (phone ? `Phone: ${phone}\n\n` : '') + message.slice(0, 4800),
+            reason: reasonEl.selectedIndex > 0 ? reasonEl.options[reasonEl.selectedIndex].text : '',
+          });
+        } catch (err) {
+          btn.disabled = false;
+          return fail(sorry);
         }
-
-        // Saved to the dashboard's Messages once Supabase is connected (js/site-data.js)
-        if (window.NamelokSite) {
-          const btn = document.querySelector('.submit-btn');
-          btn.disabled = true;
-          btn.textContent = 'Sending…';
-          try {
-            await window.NamelokSite.sendMessage({
-              first_name: first, last_name: last, email, message,
-              reason: reasonEl.selectedIndex > 0 ? reasonEl.options[reasonEl.selectedIndex].text : '',
-            });
-          } catch (err) {
-            alert('Sorry, your message could not be sent. Please call us on 0722 537 380 or email jenniferkosencha@gmail.com.');
-            btn.disabled = false;
-            btn.textContent = 'Send Message';
-            return;
-          }
-        }
-
         document.getElementById('contactFormInner').style.display = 'none';
-        const msg = document.getElementById('successMsg');
-        msg.style.display = 'block';
+        document.getElementById('successMsg').style.display = 'block';
       }
     </script>
   </body>

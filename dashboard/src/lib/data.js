@@ -1,7 +1,7 @@
 // Data layer for the dashboard. The rest of the app only calls these methods,
 // so it works the same against Supabase or the in-memory demo.
 
-const SUPABASE_CDN = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+import { createClient } from "@supabase/supabase-js";
 
 export function isConfigured() {
   const cfg = window.NAMELOK_SUPABASE || {};
@@ -12,7 +12,6 @@ export function isConfigured() {
 // Supabase
 // ─────────────────────────────────────────────────────────────
 export async function createSupabaseBackend() {
-  const { createClient } = await import(SUPABASE_CDN);
   const { url, anonKey } = window.NAMELOK_SUPABASE;
   const sb = createClient(url, anonKey);
 
@@ -76,6 +75,15 @@ export async function createSupabaseBackend() {
       const data = check(await sb.storage.from("child-files").createSignedUrl(path, 300));
       return data.signedUrl;
     },
+    async privateUrls(paths) {
+      const list = [...new Set(paths.filter(Boolean))];
+      if (!list.length) return {};
+      const data = check(await sb.storage.from("child-files").createSignedUrls(list, 300));
+      return Object.fromEntries(data.filter((d) => d.signedUrl).map((d) => [d.path, d.signedUrl]));
+    },
+    async removePrivate(path) {
+      if (path) check(await sb.storage.from("child-files").remove([path]));
+    },
     // Private documents (reports, proposals, contracts): short-lived download links only
     async uploadDocument(file, folder = "reports") {
       const path = `${folder}/${Date.now()}-${safeName(file.name)}`;
@@ -119,6 +127,8 @@ export function createDemoBackend() {
       ["bank_account_name", "", "Bank account name"],
       ["bank_account_number", "", "Bank account number"],
       ["bank_branch", "", "Bank branch"],
+      ["bank_swift", "", "Bank SWIFT code (for donors abroad)"],
+      ["paypal_email", "", "PayPal email"],
     ].map(([key, value, label]) => ({ key, value, label, updated_at: stamp(3) })),
     stories: [
       { id: uid(), slug: "from-risk-to-resilience", title: "From Risk to Resilience", child_name: "Jackie", age: "20", category: "rescue", summary: "Rescued at 13 and kept in school, Jackie went on to graduate from university.", body: "", image_url: "images/web/thumbs/sch7.jpg", featured: false, published: true, sort_order: 1, created_at: stamp(40) },
@@ -135,10 +145,10 @@ export function createDemoBackend() {
       { id: uid(), first_name: "Sample", last_name: "Partner", email: "partner@example.com", reason: "Partnership / Sponsorship", message: "Our organisation would like to sponsor school fees.", status: "read", created_at: stamp(6) },
     ],
     children: [
-      { id: childA, first_name: "Demo Child", last_name: "A", date_of_birth: "2014-03-02", gender: "female", category: "disability", status: "in_care", admission_date: day(400), referral_channel: "hospital", referral_details: "", guardian_name: "Demo Guardian", guardian_phone: "0700 000 001", home_location: "Narok", school_name: "Demo Primary", school_class: "", class_track: "cbc", class_level: 6, class_year: new Date().getFullYear() - 1, medical_condition: "Club foot, post-surgery", notes: "", photo_path: "", created_at: stamp(400) },
-      { id: childB, first_name: "Demo Child", last_name: "B", date_of_birth: "2011-07-19", gender: "female", category: "rescued_girl", status: "boarding_school", admission_date: day(200), referral_channel: "chief", referral_details: "", guardian_name: "", guardian_phone: "", home_location: "Narok South", school_name: "Demo Secondary", school_class: "", class_track: "844", class_level: 1, class_year: new Date().getFullYear(), medical_condition: "", notes: "", photo_path: "", created_at: stamp(200) },
-      { id: childC, first_name: "Demo Child", last_name: "C", date_of_birth: "2017-01-11", gender: "male", category: "vulnerable", status: "reintegrated", admission_date: day(700), referral_channel: "family", referral_details: "", guardian_name: "Demo Parent", guardian_phone: "0700 000 003", home_location: "Narok East", school_name: "", school_class: "", class_track: "", class_level: null, class_year: null, medical_condition: "", notes: "", photo_path: "", created_at: stamp(700) },
-      { id: uid(), first_name: "Demo Child", last_name: "D", date_of_birth: "2012-09-30", gender: "male", category: "rescued_boy", status: "in_care", admission_date: day(60), referral_channel: "court", referral_details: "", guardian_name: "", guardian_phone: "", home_location: "Narok North", school_name: "Demo Junior School", school_class: "", class_track: "cbc", class_level: 9, class_year: new Date().getFullYear() - 2, medical_condition: "", notes: "", photo_path: "", created_at: stamp(60) },
+      { id: childA, first_name: "Demo Child", last_name: "A", date_of_birth: "2014-03-02", gender: "female", category: "disability", status: "in_care", admission_date: day(400), referral_channel: "hospital", referral_details: "", guardian_name: "Demo Guardian", guardian_phone: "0700 000 001", home_location: "Narok", school_name: "Demo Primary", school_class: "", class_track: "cbc", class_level: 6, class_year: new Date().getFullYear() - 1, medical_condition: "Club foot, post-surgery", notes: "", photo_path: "", arrival_photo_path: "", about: "", left_on: null, leaving_note: "", created_at: stamp(400) },
+      { id: childB, first_name: "Demo Child", last_name: "B", date_of_birth: "2011-07-19", gender: "female", category: "rescued_girl", status: "boarding_school", admission_date: day(200), referral_channel: "chief", referral_details: "", guardian_name: "", guardian_phone: "", home_location: "Narok South", school_name: "Demo Secondary", school_class: "", class_track: "844", class_level: 1, class_year: new Date().getFullYear(), medical_condition: "", notes: "", photo_path: "", arrival_photo_path: "", about: "", left_on: null, leaving_note: "", created_at: stamp(200) },
+      { id: childC, first_name: "Demo Child", last_name: "C", date_of_birth: "2017-01-11", gender: "male", category: "vulnerable", status: "reintegrated", admission_date: day(700), referral_channel: "family", referral_details: "", guardian_name: "Demo Parent", guardian_phone: "0700 000 003", home_location: "Narok East", school_name: "", school_class: "", class_track: "", class_level: null, class_year: null, medical_condition: "", notes: "", photo_path: "", arrival_photo_path: "", about: "", left_on: day(90), leaving_note: "Went home to a parent", created_at: stamp(700) },
+      { id: uid(), first_name: "Demo Child", last_name: "D", date_of_birth: "2012-09-30", gender: "male", category: "rescued_boy", status: "in_care", admission_date: day(60), referral_channel: "court", referral_details: "", guardian_name: "", guardian_phone: "", home_location: "Narok North", school_name: "Demo Junior School", school_class: "", class_track: "cbc", class_level: 9, class_year: new Date().getFullYear() - 2, medical_condition: "", notes: "", photo_path: "", arrival_photo_path: "", about: "", left_on: null, leaving_note: "", created_at: stamp(60) },
     ],
     child_events: [
       { id: uid(), child_id: childA, event_date: day(380), type: "medical", title: "Surgery", details: "Corrective surgery completed.", created_at: stamp(380) },
@@ -147,7 +157,7 @@ export function createDemoBackend() {
       { id: uid(), child_id: childA, event_date: day(-4), type: "follow_up", title: "Physiotherapy review", details: "", created_at: stamp(1) },
       { id: uid(), child_id: childB, event_date: day(-15), type: "school", title: "Term report collection", details: "", created_at: stamp(3) },
     ],
-    donors: [{ id: uid(), name: "Demo Donor", organisation: "Example Trust", email: "donor@example.com", phone: "", notes: "", created_at: stamp(90) }],
+    donors: [{ id: uid(), name: "Demo Donor", organisation: "Example Trust", email: "donor@example.com", phone: "", notes: "", giving_pattern: "one_off", currency: "KES", created_at: stamp(90) }],
     donations: [
       { id: uid(), donor_id: null, donor_name: "Demo Donor", amount: 5000, currency: "KES", method: "mpesa", reference: "DEMO123", received_on: day(4), purpose: "School fees", notes: "", created_at: stamp(4) },
       { id: uid(), donor_id: null, donor_name: "Sample Church Group", amount: 12000, currency: "KES", method: "bank", reference: "DEMO789", received_on: day(70), purpose: "Medical", notes: "", created_at: stamp(70) },
@@ -159,6 +169,10 @@ export function createDemoBackend() {
       { id: uid(), school_name: "Demo Mixed Day School", location: "Ololulung'a", visit_date: day(40), girls_reached: 140, boys_reached: 120, parents_reached: 25, topics: "Children's rights", notes: "", created_at: stamp(40) },
       { id: visit1, school_name: "Demo Primary School", location: "Narok", visit_date: day(10), girls_reached: 120, boys_reached: 95, parents_reached: 30, topics: "Menstrual hygiene, staying in school", notes: "", created_at: stamp(10) }],
     reports: [],
+    calendar_events: [],
+    expenses: [],
+    sponsorships: [],
+    child_photos: [],
     distributions: [
       { id: uid(), visit_id: visit1, item: "pads", quantity: 240, distributed_on: day(10), notes: "", created_at: stamp(10) },
       { id: uid(), visit_id: visit1, item: "books", quantity: 60, distributed_on: day(10), notes: "", created_at: stamp(10) },
@@ -183,9 +197,12 @@ export function createDemoBackend() {
       const female = category === "rescued_girl" ? true : category === "rescued_boy" ? false : rand() < 0.55;
       const id = uid();
       const admittedDaysAgo = between(5, 1100);
-      const ageYears = category === "disability" ? between(4, 15) : between(9, 17);
+      let ageYears = category === "disability" ? between(4, 15) : between(9, 17);
       const r = rand();
-      const status = r < 0.55 ? "in_care" : r < 0.82 ? "boarding_school" : r < 0.95 ? "reintegrated" : "exited";
+      const status = r < 0.55 ? "in_care" : r < 0.8 ? "boarding_school" : r < 0.88 ? "graduated" : r < 0.96 ? "reintegrated" : "exited";
+      if (status === "graduated") ageYears = between(18, 20);
+      const movedOn = ["graduated", "reintegrated", "exited"].includes(status);
+      const leftDaysAgo = movedOn ? between(1, Math.max(2, admittedDaysAgo - 30)) : 0;
       // School class for this year, chosen to fit the child's age
       let track = "cbc", level = Math.max(0, Math.min(13, ageYears - 4));
       if (category === "disability" && rand() < 0.3) { track = "special"; level = null; }
@@ -201,7 +218,9 @@ export function createDemoBackend() {
         school_class: track === "special" ? pick(["Unit A", "Unit B, level 2", "Vocational skills"]) : "",
         class_track: track, class_level: level == null ? null : level - recordedYearsAgo, class_year: level == null ? null : thisYear - recordedYearsAgo,
         medical_condition: category === "disability" ? pick(["Club foot, post-surgery", "Cerebral palsy", "Hearing impairment", "Spina bifida", "Contractures, in rehabilitation"]) : "",
-        notes: "", photo_path: "", created_at: stamp(admittedDaysAgo),
+        notes: "", photo_path: "", arrival_photo_path: "", about: "", created_at: stamp(admittedDaysAgo),
+        left_on: movedOn ? day(leftDaysAgo) : null,
+        leaving_note: { graduated: "Finished school, now at college", reintegrated: "Went home to an aunt in Narok", exited: "Moved away with family" }[status] || "",
       });
       // A few timeline entries each, some of them in the coming weeks
       for (let e = 0; e < between(1, 3); e++) {
@@ -214,20 +233,78 @@ export function createDemoBackend() {
   }
 
   // Donors and a year of donations (school-fee season in January and May is busier)
-  const donorNames = [["Wellspring International", "Wellspring International"], ["Narok Town Church", ""], ["Hands of Namelok Initiative", "Hands of Namelok Initiative"], ["Third Ladder", "Third Ladder"], ["Amina K.", ""], ["John M.", ""], ["Rotary Club of Narok", "Rotary"], ["Anonymous", ""]];
-  for (const [name, organisation] of donorNames.slice(0, 7)) tables.donors.push({ id: uid(), name, organisation, email: "", phone: "", notes: "", created_at: stamp(between(100, 600)) });
+  // Two overseas donors give in USD through the bank, at a different rate each time
+  const donorDefs = [
+    ["Wellspring International", "Wellspring International", "quarterly", "USD"], ["Third Ladder", "Third Ladder", "annual", "USD"],
+    ["Narok Town Church", "", "monthly", "KES"], ["Hands of Namelok Initiative", "Hands of Namelok Initiative", "twice_yearly", "KES"],
+    ["Amina K.", "", "monthly", "KES"], ["John M.", "", "", "KES"], ["Rotary Club of Narok", "Rotary", "annual", "KES"],
+  ];
+  const donorRow = {};
+  for (const [name, organisation, giving_pattern, currency] of donorDefs) {
+    const d = { id: uid(), name, organisation, email: "", phone: "", notes: "", giving_pattern, currency, created_at: stamp(between(400, 700)) };
+    tables.donors.push(d); donorRow[name] = d;
+  }
+  const fxRate = () => Math.round((127.6 + rand() * 4) * 100) / 100;
+  const gift = (donor, d, amount, extra = {}) => tables.donations.push({ id: uid(), donor_id: donor ? donor.id : null, donor_name: donor ? donor.name : "Anonymous", amount,
+    currency: "KES", original_amount: null, exchange_rate: null, method: "mpesa", reference: "DEMO" + between(1000, 9999), received_on: iso(d), purpose: "General", notes: "", created_at: d.toISOString(), ...extra });
+  const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  // Wellspring: USD 2,500 each quarter for school fees and the sponsored children
+  for (let q = 0; q < 5; q++) {
+    const d = new Date(now.getFullYear(), now.getMonth() - q * 3, between(3, 12));
+    if (d > now) continue;
+    const r = fxRate(), usd = q % 2 ? 1500 : 1800;
+    gift(donorRow["Wellspring International"], d, Math.round(usd * r - 1500), { currency: "USD", original_amount: usd, exchange_rate: r, method: "bank", reference: "SWIFT" + between(100000, 999999), purpose: "School fees & sponsored children", notes: "KES 1,500 bank charges deducted" });
+  }
+  // Third Ladder: USD 6,000 once a year for medical care
+  for (let y = 0; y < 2; y++) {
+    const d = new Date(now.getFullYear() - y, 1, 14);
+    if (d > now) continue;
+    const r = fxRate();
+    gift(donorRow["Third Ladder"], d, Math.round(2500 * r), { currency: "USD", original_amount: 2500, exchange_rate: r, method: "bank", reference: "SWIFT" + between(100000, 999999), purpose: "Medical" });
+  }
+  // Local gifts in KES
+  const locals = ["Narok Town Church", "Hands of Namelok Initiative", "Amina K.", "John M.", "Rotary Club of Narok", null];
   for (let m = 0; m < 12; m++) {
     const monthStart = new Date(now.getFullYear(), now.getMonth() - m, 1);
     const busy = [0, 4].includes(monthStart.getMonth()) ? 2 : 1;
-    for (let k = 0; k < between(2, 4) * busy; k++) {
-      const [name] = pick(donorNames);
+    for (let k = 0; k < between(1, 3) * busy; k++) {
+      const name = pick(locals);
       const d = new Date(monthStart.getFullYear(), monthStart.getMonth(), between(1, 27));
       if (d > now) continue;
       const big = rand() < 0.15;
-      tables.donations.push({ id: uid(), donor_id: null, donor_name: name, amount: big ? between(20, 80) * 1000 : between(5, 60) * 100,
-        currency: "KES", method: big ? "bank" : pick(["mpesa", "mpesa", "mpesa", "cash", "paypal"]), reference: "DEMO" + between(1000, 9999),
-        received_on: d.toISOString().slice(0, 10), purpose: pick(["School fees", "Medical", "General", "Sanitary pads", "Food"]), notes: "", created_at: d.toISOString() });
+      gift(name && donorRow[name], d, big ? between(20, 80) * 1000 : between(5, 60) * 100,
+        { method: big ? "bank" : pick(["mpesa", "mpesa", "mpesa", "cash"]), purpose: pick(["School fees", "Medical", "General", "Sanitary pads", "Food"]) });
     }
+  }
+
+  // Sponsorships: Wellspring sponsors three children, Amina K. one
+  const sponsorable = tables.children.filter((c) => ["in_care", "boarding_school"].includes(c.status));
+  [["Wellspring International", 0, 300, "USD", "quarterly"], ["Wellspring International", 1, 300, "USD", "quarterly"], ["Wellspring International", 5, 300, "USD", "quarterly"], ["Amina K.", 2, 3000, "KES", "monthly"]]
+    .forEach(([name, i, amount, currency, frequency]) => tables.sponsorships.push({ id: uid(), donor_id: donorRow[name].id, child_id: sponsorable[i].id, started_on: day(between(200, 500)), ended_on: null, amount, currency, frequency, notes: currency === "USD" ? "Covers school fees, uniform and books" : "Covers upkeep at the home", created_at: stamp(200) }));
+
+  // A year of expenses, some paid from a donor's funds, most with a scanned receipt
+  const demoReceipt = (n) => "data:image/svg+xml;charset=utf-8," + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 420"><rect width="300" height="420" fill="#fbfaf6"/><text x="150" y="50" font-family="monospace" font-size="18" text-anchor="middle">DEMO RECEIPT</text><text x="150" y="76" font-family="monospace" font-size="12" text-anchor="middle" fill="#666">No. ${n}</text>${[0, 1, 2, 3, 4].map((i) => `<rect x="30" y="${110 + i * 34}" width="${150 + ((n * (i + 3)) % 80)}" height="10" fill="#ddd"/>`).join("")}<rect x="30" y="300" width="240" height="2" fill="#bbb"/><text x="30" y="335" font-family="monospace" font-size="14">TOTAL</text><rect x="180" y="323" width="90" height="14" fill="#ccc"/></svg>`);
+  const spend = (d, description, category, amount, donor, child, vendor) => {
+    const n = between(1000, 9999);
+    tables.expenses.push({ id: uid(), spent_on: iso(d), description, category, amount, donor_id: donor ? donor.id : null, child_id: child ? child.id : null, vendor,
+      receipt_path: rand() < 0.85 ? demoReceipt(n) : "", receipt_name: "receipt-" + n + ".jpg", notes: "", created_at: d.toISOString(), updated_at: d.toISOString() });
+  };
+  const sponsored = tables.sponsorships.map((s) => tables.children.find((c) => c.id === s.child_id));
+  for (let m = 0; m < 12; m++) {
+    const at = (day) => { const d = new Date(now.getFullYear(), now.getMonth() - m, day); return d > now ? null : d; };
+    const month = new Date(now.getFullYear(), now.getMonth() - m, 1).getMonth();
+    let d;
+    if ((d = at(5))) spend(d, "Food supplies for the month", "food", between(38, 52) * 1000, m % 2 ? donorRow["Wellspring International"] : null, null, "Narok Wholesalers");
+    if ((d = at(9))) spend(d, "Water and electricity", "utilities", between(6, 9) * 1000, null, null, "Kenya Power");
+    if ([0, 4, 8].includes(month)) {
+      sponsored.slice(0, 3).forEach((c, i) => { if ((d = at(10 + i))) spend(d, `Term ${[0, 4, 8].indexOf(month) + 1} school fees`, "school_fees", between(14, 22) * 1000, donorRow["Wellspring International"], c, c.school_name || "School") });
+      if ((d = at(14))) spend(d, "Uniforms and exercise books", "school_items", between(18, 30) * 1000, donorRow["Wellspring International"], null, "Narok Uniform House");
+      if ((d = at(16))) spend(d, "School fees for other children", "school_fees", between(60, 90) * 1000, null, null, "Various schools");
+    }
+    if (rand() < 0.8 && (d = at(between(12, 25)))) spend(d, pick(["Hospital review and medicine", "Physiotherapy sessions", "Clinic visit"]), "medical", between(8, 28) * 1000, rand() < 0.85 ? donorRow["Third Ladder"] : null, pick(tables.children), "Narok County Referral Hospital");
+    if (rand() < 0.4 && (d = at(between(10, 26)))) spend(d, "Sanitary pads for school outreach", "hygiene", between(8, 15) * 1000, null, null, "Supplier");
+    if (rand() < 0.5 && (d = at(between(1, 27)))) spend(d, "Transport to schools and hospital", "transport", between(2, 6) * 1000, null, null, "Matatu / fuel");
+    if ((d = at(28))) spend(d, "Bank charges", "admin", between(4, 9) * 100, null, null, "Bank");
   }
 
   // School visits through the year, a few planned ahead, with items handed out
@@ -257,13 +334,50 @@ export function createDemoBackend() {
   // Two saved reports so the Reports page has something to show
   const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
   const lmEnd = new Date(now.getFullYear(), now.getMonth(), 0);
-  const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
   tables.reports.push(
     { id: uid(), title: `Monthly report – ${lastMonth.toLocaleDateString("en-GB", { month: "long", year: "numeric" })}`, kind: "monthly", period_start: iso(lastMonth), period_end: iso(lmEnd), donor_id: null, donor_name: "", status: "final",
       summary: "An invented demo summary: a steady month at the home with new admissions and three school visits.", highlights: "Demo highlight: two children moved up to secondary school.", challenges: "Demo challenge: school fees for the new term.", next_steps: "Demo next step: plan the December holiday programme.", figures: null, file_path: "", file_name: "", created_at: stamp(15) },
     { id: uid(), title: "Annual report 2025 (uploaded)", kind: "annual", period_start: `${now.getFullYear() - 1}-01-01`, period_end: `${now.getFullYear() - 1}-12-31`, donor_id: null, donor_name: "Wellspring International", status: "final",
       summary: "", highlights: "", challenges: "", next_steps: "", figures: null, file_path: "", file_name: "annual-report-2025.pdf", created_at: stamp(280) }
   );
+
+  // Calendar: meetings, board meetings, donor visits and holidays around this month
+  const onDay = (d) => iso(new Date(now.getFullYear(), now.getMonth(), d));
+  [
+    [3, "Staff meeting", "meeting", "09:00", "Namelok office"],
+    [7, "Board meeting", "board", "10:00", "Narok Town Hall"],
+    [12, "Wellspring International visit", "donor", "11:30", "Namelok Naretoi Home"],
+    [18, "Staff meeting", "meeting", "09:00", "Namelok office"],
+    [21, "Community forum on girls' education", "event", "14:00", "Ntulele"],
+    [26, "Rotary Club of Narok lunch", "donor", "13:00", "Narok"],
+    [31, "Staff meeting", "meeting", "09:00", "Namelok office"],
+    [38, "Board meeting", "board", "10:00", "Narok Town Hall"],
+    [45, "Christmas holiday", "holiday", "", ""],
+  ].forEach(([d, title, kind, start_time, location]) => tables.calendar_events.push({ id: uid(), title, kind, starts_on: onDay(d), ends_on: kind === "holiday" ? onDay(d + 6) : null, start_time, location, notes: "", created_at: stamp(20) }));
+
+  // Demo photos: plain drawn placeholders, never pictures of real children
+  const demoPhoto = (hue, scene) => {
+    const ground = scene % 3 === 0 ? `<rect y="300" width="400" height="100" fill="hsl(${hue} 30% 72%)"/>` : scene % 3 === 1 ? `<circle cx="330" cy="80" r="34" fill="hsl(45 90% 80%)"/>` : `<rect x="40" y="60" width="90" height="70" rx="6" fill="hsl(${hue} 35% 82%)"/>`;
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="hsl(${hue} 45% 88%)"/><stop offset="1" stop-color="hsl(${hue} 35% 76%)"/></linearGradient></defs><rect width="400" height="400" fill="url(#g)"/>${ground}<circle cx="200" cy="170" r="52" fill="hsl(${hue} 25% 52%)"/><path d="M110 400c0-70 40-130 90-130s90 60 90 130z" fill="hsl(${hue} 25% 52%)"/><text x="200" y="384" font-family="sans-serif" font-size="15" text-anchor="middle" fill="hsl(${hue} 30% 30%)" opacity=".7">Demo photo</text></svg>`;
+    return "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+  };
+  const captions = ["First day at the home", "Back to school", "After physiotherapy", "Christmas at the home", "Sports day", "With the other children", "Prize giving day", "Visiting home"];
+  const abouts = [
+    "A cheerful child who loves singing and helping in the kitchen. Settled in quickly and now has many friends at the home.",
+    "Quiet at first, now confident in class. Enjoys drawing and football, and wants to become a nurse.",
+    "Loves reading and is always the first to the classroom. Has made great progress since coming to the home.",
+  ];
+  tables.children.slice(4, 16).forEach((c, i) => {
+    const hue = (i * 47) % 360;
+    c.about = abouts[i % abouts.length];
+    c.arrival_photo_path = demoPhoto(hue, 0);
+    c.photo_path = demoPhoto((hue + 25) % 360, 1);
+    const admitted = Math.round((now - new Date(c.admission_date)) / 86400000);
+    for (let n = 0; n < 2 + (i % 4); n++) {
+      const ago = Math.round(admitted * (1 - (n + 1) / 6));
+      tables.child_photos.push({ id: uid(), child_id: c.id, path: demoPhoto((hue + 60 + n * 35) % 360, n + 2), caption: captions[(i + n) % captions.length], taken_on: day(ago), created_at: stamp(ago) });
+    }
+  });
 
   const copy = (x) => JSON.parse(JSON.stringify(x));
   const delay = () => new Promise((r) => setTimeout(r, 120));
@@ -297,7 +411,18 @@ export function createDemoBackend() {
     async remove(table, id) {
       await delay();
       tables[table] = tables[table].filter((r) => r.id !== id);
-      if (table === "children") tables.child_events = tables.child_events.filter((e) => e.child_id !== id);
+      if (table === "children") {
+        tables.child_events = tables.child_events.filter((e) => e.child_id !== id);
+        tables.child_photos = tables.child_photos.filter((e) => e.child_id !== id);
+        tables.sponsorships = tables.sponsorships.filter((e) => e.child_id !== id);
+        tables.expenses.forEach((e) => { if (e.child_id === id) e.child_id = null; });
+      }
+      if (table === "donors") {
+        tables.sponsorships = tables.sponsorships.filter((e) => e.donor_id !== id);
+        tables.expenses.forEach((e) => { if (e.donor_id === id) e.donor_id = null; });
+        tables.donations.forEach((e) => { if (e.donor_id === id) e.donor_id = null; });
+        tables.reports.forEach((e) => { if (e.donor_id === id) e.donor_id = null; });
+      }
     },
     async saveSetting(key, value) {
       await delay();
@@ -308,5 +433,7 @@ export function createDemoBackend() {
     async uploadDocument(file) { return URL.createObjectURL(file); },
     async documentUrl(path) { return path; },
     async privateUrl(path) { return path; },
+    async privateUrls(paths) { return Object.fromEntries(paths.filter(Boolean).map((p) => [p, p])); },
+    async removePrivate() {},
   };
 }
