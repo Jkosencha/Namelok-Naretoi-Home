@@ -108,7 +108,9 @@ function safeName(name) {
 // All people and records here are invented placeholders.
 // ─────────────────────────────────────────────────────────────
 export function createDemoBackend() {
-  const uid = () => crypto.randomUUID();
+  // crypto.randomUUID needs https (or localhost) and a recent browser; fall back to a random v4-style id
+  const uid = () => (globalThis.crypto?.randomUUID ? crypto.randomUUID()
+    : "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => { const r = Math.random() * 16 | 0; return (c === "x" ? r : (r & 3) | 8).toString(16); }));
   const now = new Date();
   const day = (offset) => new Date(now.getTime() - offset * 86400000).toISOString().slice(0, 10);
   const stamp = (offset) => new Date(now.getTime() - offset * 86400000).toISOString();
