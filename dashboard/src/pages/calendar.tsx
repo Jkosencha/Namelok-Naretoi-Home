@@ -10,7 +10,7 @@ import { useTables } from "@/lib/backend"
 import { RESOURCES } from "@/lib/domain"
 import { collectEvents, LEGEND, monthGrid, TONE_COLOR, type CalEvent } from "@/lib/events"
 import { cn } from "@/lib/utils"
-import { fmtDate, iso, shortDate, today, type Row } from "@/lib/format"
+import { fmtDate, iso, today, type Row } from "@/lib/format"
 
 const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
@@ -123,27 +123,13 @@ export function CalendarCard() {
         {!upcoming.length && <p className="col-span-2 text-sm text-muted-foreground">Nothing coming up.</p>}
       </div>
       <Calendar mode="single" month={month} onMonthChange={setMonth} weekStartsOn={1} onDayClick={() => navigate("/calendar")}
-        className="w-full rounded-lg bg-muted/50 p-2 [--cell-size:--spacing(9)] [&_td]:aspect-auto [&_td_button]:aspect-auto [&_td_button]:h-(--cell-size)"
+        className="w-full rounded-lg bg-muted/50 p-2 [--cell-size:--spacing(8)] [&_td]:aspect-auto [&_td_button]:aspect-auto [&_td_button]:h-(--cell-size)"
         modifiers={{ tone1: tones[1], tone2: tones[2], tone3: tones[3], tone4: tones[4] }}
         modifiersClassNames={{
           tone1: "[&>button]:bg-chart-1/15 [&>button]:text-chart-1", tone2: "[&>button]:bg-chart-2/15 [&>button]:text-chart-2",
           tone3: "[&>button]:bg-chart-3/15 [&>button]:text-chart-3", tone4: "[&>button]:bg-chart-4/15 [&>button]:text-chart-4",
           today: "[&>button]:!bg-chart-2 [&>button]:!text-white",
         }} />
-      {upcoming.length > 2 && (
-        <div>
-          <p className="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Coming up</p>
-          <ul>
-            {upcoming.slice(2, 6).map((e, i) => (
-              <li key={i}><button onClick={() => go(e)} className="flex w-full items-center gap-2.5 rounded-md px-1 py-1.5 text-left text-sm hover:bg-muted/60">
-                <span className="w-12 shrink-0 text-xs tabular-nums text-muted-foreground">{shortDate(e.date)}</span>
-                <span className="size-2 shrink-0 rounded-full" style={{ background: TONE_COLOR[e.tone] }} />
-                <span className="truncate font-medium">{e.title}</span>
-              </button></li>
-            ))}
-          </ul>
-        </div>
-      )}
     </div>
   )
 }
