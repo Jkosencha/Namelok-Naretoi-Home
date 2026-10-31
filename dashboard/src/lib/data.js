@@ -139,7 +139,7 @@ export function createDemoBackend() {
     ],
     gallery_photos: [
       { id: uid(), image_url: "images/web/thumbs/sch4.jpg", caption: "Handing out sanitary pads at a school", category: "school", published: true, sort_order: 1, created_at: stamp(20) },
-      { id: uid(), image_url: "images/web/thumbs/hsp3.jpg", caption: "A medical worker fitting a leg brace", category: "health", published: true, sort_order: 2, created_at: stamp(18) },
+      { id: uid(), image_url: "images/web/thumbs/aboutUs3.jpg", caption: "Children in wheelchairs with Namelok staff", category: "health", published: true, sort_order: 2, created_at: stamp(18) },
       { id: uid(), image_url: "images/web/thumbs/nam3.jpg", caption: "Staff and children outside the home", category: "home", published: true, sort_order: 3, created_at: stamp(15) },
     ],
     contact_messages: [
