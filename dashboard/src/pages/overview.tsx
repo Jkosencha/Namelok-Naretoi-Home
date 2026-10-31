@@ -71,8 +71,8 @@ export function Overview() {
             <Stat icon={HandHeartIcon} tone={4} title={`Donations ${year}`} value={money(view.given)} to="/donations" />
           </div>
 
-          <div className="grid gap-5 lg:grid-cols-2 2xl:grid-cols-[1.35fr_1fr_360px]">
-            <Card className="lg:col-span-2 2xl:col-start-1 2xl:row-start-1">
+          <div className="grid gap-5 lg:grid-cols-2 xl:grid-cols-[1.3fr_1fr_340px]">
+            <Card className="lg:col-span-2 xl:col-start-1 xl:row-start-1">
               <CardHeader>
                 <CardTitle>Donations</CardTitle>
                 <CardDescription><span className="font-semibold text-foreground">{money(view.months.reduce((s, m) => s + m.value, 0))}</span> received in {chartYear}</CardDescription>
@@ -84,20 +84,20 @@ export function Overview() {
                   <Button variant="ghost" size="sm" onClick={() => setAsTable(!asTable)}>{asTable ? "Chart" : "Table"}</Button>
                 </CardAction>
               </CardHeader>
-              <CardContent>
+              <CardContent className="flex-1">
                 {asTable ? (
                   <Table><TableHeader><TableRow><TableHead>Month</TableHead><TableHead className="text-right">Donations</TableHead></TableRow></TableHeader>
                     <TableBody>{view.months.map((m) => <TableRow key={m.full}><TableCell>{m.full}</TableCell><TableCell className="text-right tabular-nums">{money(m.value)}</TableCell></TableRow>)}</TableBody></Table>
-                ) : <MonthBars data={view.months} format={money} />}
+                ) : <MonthBars data={view.months} format={money} fill />}
               </CardContent>
             </Card>
 
-            <Card className="2xl:col-start-3 2xl:row-span-2 2xl:row-start-1">
+            <Card className="xl:col-start-3 xl:row-start-1">
               <CardHeader><CardTitle>Calendar</CardTitle><CardAction><Button variant="link" size="sm" asChild><Link to="/calendar">Open</Link></Button></CardAction></CardHeader>
               <CardContent><CalendarCard /></CardContent>
             </Card>
 
-            <Card className="2xl:col-start-2 2xl:row-span-2 2xl:row-start-2">
+            <Card className="xl:col-start-2 xl:row-start-2">
               <CardHeader><CardTitle>Children in care</CardTitle><CardDescription>By category</CardDescription></CardHeader>
               <CardContent className="grid gap-4">
                 {view.inCare.length ? <Donut data={view.byCategory} centerLabel="In care" /> : <p className="text-sm text-muted-foreground">No children in care recorded yet.</p>}
@@ -110,18 +110,18 @@ export function Overview() {
               </CardContent>
             </Card>
 
-            <Card className="lg:col-span-2 2xl:col-span-1 2xl:col-start-1 2xl:row-span-2 2xl:row-start-2">
+            <Card className="lg:col-span-2 xl:col-span-1 xl:col-start-1 xl:row-start-2">
               <CardHeader><CardTitle>Recently admitted</CardTitle><CardAction><Button variant="link" size="sm" asChild><Link to="/children">All children</Link></Button></CardAction></CardHeader>
               <CardContent className="px-2 sm:px-4">
                 {view.recent.length ? (
                   <Table>
-                    <TableHeader><TableRow><TableHead>Name</TableHead><TableHead>Category</TableHead><TableHead className="hidden sm:table-cell">Class</TableHead><TableHead className="hidden text-right sm:table-cell">Admitted</TableHead></TableRow></TableHeader>
+                    <TableHeader><TableRow><TableHead>Name</TableHead><TableHead>Category</TableHead><TableHead className="hidden sm:table-cell xl:hidden 2xl:table-cell">Class</TableHead><TableHead className="hidden text-right sm:table-cell">Admitted</TableHead></TableRow></TableHeader>
                     <TableBody>
                       {view.recent.map((c) => (
                         <TableRow key={c.id} className="cursor-pointer" onClick={() => navigate("/children/" + c.id)}>
                           <TableCell><span className="flex items-center gap-2.5 font-medium"><Avatar className="size-7"><AvatarFallback className="text-[10px]">{initials(c.first_name, c.last_name)}</AvatarFallback></Avatar>{`${c.first_name} ${c.last_name}`.trim()}</span></TableCell>
                           <TableCell><CategoryBadge value={c.category} /></TableCell>
-                          <TableCell className="hidden sm:table-cell">{currentClass(c)?.name || "—"}</TableCell>
+                          <TableCell className="hidden sm:table-cell xl:hidden 2xl:table-cell">{currentClass(c)?.name || "—"}</TableCell>
                           <TableCell className="hidden text-right tabular-nums sm:table-cell">{shortDate(c.admission_date)}</TableCell>
                         </TableRow>
                       ))}
@@ -131,7 +131,7 @@ export function Overview() {
               </CardContent>
             </Card>
 
-            <Card className="relative min-h-40 justify-center gap-4 overflow-hidden border-0 bg-[#3e4a5e] lg:col-span-2 2xl:col-span-1 2xl:col-start-3 2xl:row-start-3 px-6 py-6 text-white dark:bg-[#2b3546]">
+            <Card className="relative min-h-40 justify-center gap-4 overflow-hidden border-0 bg-[#3e4a5e] lg:col-span-2 xl:col-span-1 xl:col-start-3 xl:row-start-2 px-6 py-6 text-white dark:bg-[#2b3546]">
               <p className="relative z-10 max-w-56 text-base font-semibold leading-snug">See what visitors see on the Namelok website</p>
               <Button asChild variant="secondary" className="relative z-10 w-fit bg-white text-[#1f2937] hover:bg-white/90"><a href="../index.html" target="_blank" rel="noopener">Open website</a></Button>
               <span aria-hidden className="absolute -bottom-12 -right-10 size-44 rounded-full border-[26px] border-chart-2" />

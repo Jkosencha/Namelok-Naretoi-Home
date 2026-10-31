@@ -4,10 +4,11 @@ import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } f
 const compact = (n: number) => (n >= 1e6 ? (n / 1e6).toFixed(1).replace(/\.0$/, "") + "M" : n >= 1e3 ? Math.round(n / 1e3) + "K" : String(n))
 
 // One measure over time (donations per month)
-export function MonthBars({ data, format, height = 260 }: { data: { label: string; full: string; value: number }[]; format: (n: number) => string; height?: number }) {
+// `fill` lets the chart grow to the height of its card (e.g. next to a taller calendar)
+export function MonthBars({ data, format, height = 260, fill }: { data: { label: string; full: string; value: number }[]; format: (n: number) => string; height?: number; fill?: boolean }) {
   const config = { value: { label: "Donations", color: "var(--chart-1)" } } satisfies ChartConfig
   return (
-    <ChartContainer config={config} className="w-full" style={{ height }}>
+    <ChartContainer config={config} className={fill ? "aspect-auto h-full min-h-[260px] w-full" : "w-full"} style={fill ? undefined : { height }}>
       <BarChart data={data} margin={{ left: 4, right: 4, top: 8 }}>
         <CartesianGrid vertical={false} />
         <XAxis dataKey="label" tickLine={false} axisLine={false} tickMargin={8} />
