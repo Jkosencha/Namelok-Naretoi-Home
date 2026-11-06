@@ -16,6 +16,20 @@
         <div class="menu-toggle" id="menu-toggle">☰</div>
         <ul class="nav-links">
           <li><a href="${root}index.html">HOME</a></li>
+          <li class="dropdown">
+  <a href="${root}services.html" class="dropdown-toggle">
+    SERVICES <span class="dropdown-arrow">⌄</span>
+  </a>
+
+  <ul class="dropdown-menu">
+    <li><a href="${root}services.html">All Programmes</a></li>
+    <li><a href="${root}medical-rehabilitation.html">Disability Rehabilitation</a></li>
+    <li><a href="${root}education.html">Inclusive Education</a></li>
+    <li><a href="${root}rescue-girls.html">Rescue and Protection of Girls</a></li>
+    <li><a href="${root}safe-home.html">Safe Home and Holistic Care</a></li>
+    <li><a href="${root}community-outreach.html">Community Outreach and Mentorship</a></li>
+  </ul>
+</li>
           <li><a href="${root}about.html">ABOUT US</a></li>
           <li><a href="${root}stories.html">STORIES</a></li>
           <li><a href="${root}gallery.html">OUR GALLERY</a></li>
