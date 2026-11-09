@@ -1,0 +1,18 @@
+# Security headers, applied by Netlify to every response.
+# The Content-Security-Policy lists the only places pages may load from or talk to:
+# this site, Google Fonts, YouTube (the video on Home and About) and the Namelok Supabase project.
+
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(self), microphone=(), geolocation=(), payment=(), usb=()
+  Cross-Origin-Opener-Policy: same-origin
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://lqtmorojqulrzytnnyhl.supabase.co https://i.ytimg.com; connect-src 'self' https://lqtmorojqulrzytnnyhl.supabase.co; frame-src https://www.youtube.com https://www.youtube-nocookie.com; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
+
+# The dashboard: no inline scripts at all, never listed by search engines, never cached by shared caches
+/admin/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob: https://lqtmorojqulrzytnnyhl.supabase.co; connect-src 'self' https://lqtmorojqulrzytnnyhl.supabase.co; frame-src 'self' blob: https://lqtmorojqulrzytnnyhl.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+  X-Robots-Tag: noindex, nofollow, noarchive
+  Cache-Control: no-store
