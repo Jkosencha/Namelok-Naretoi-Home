@@ -113,13 +113,18 @@
         </button>
         <figcaption><span>${CATS[p.category] || ""}</span>${esc(p.caption)}</figcaption>
       </figure>`).join("");
-    const count = document.querySelector(".gallery-count strong");
-    if (count) count.textContent = photos.length;
-    document.querySelectorAll(".g-filter").forEach((btn) => {
-      const n = btn.dataset.filter === "all" ? photos.length : photos.filter((p) => p.category === btn.dataset.filter).length;
-      const badge = btn.querySelector("span");
-      if (badge) badge.textContent = n;
-    });
+    // Counts come from the photos actually shown; a photo whose file is missing is dropped
+    const recount = () => {
+      const shown = [...grid.querySelectorAll(".g-item")].map((f) => f.dataset.cat);
+      const count = document.querySelector(".gallery-count strong");
+      if (count) count.textContent = shown.length;
+      document.querySelectorAll(".g-filter").forEach((btn) => {
+        const badge = btn.querySelector("span");
+        if (badge) badge.textContent = btn.dataset.filter === "all" ? shown.length : shown.filter((c) => c === btn.dataset.filter).length;
+      });
+    };
+    grid.addEventListener("error", (e) => { const fig = e.target.closest?.(".g-item"); if (fig) { fig.remove(); recount(); } }, true);
+    recount();
     document.querySelector(".g-filter.is-active")?.click(); // re-apply the current filter
   }
 
