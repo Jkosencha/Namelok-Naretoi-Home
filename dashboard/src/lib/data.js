@@ -13,7 +13,12 @@ export function isConfigured() {
 // ─────────────────────────────────────────────────────────────
 export async function createSupabaseBackend() {
   const { url, anonKey } = window.NAMELOK_SUPABASE;
+  // Opened from an invitation or password-reset email? Then the person chooses a password first.
+  const linkType = /[#&]type=(invite|recovery)\b/.exec(location.hash)?.[1] || "";
   const sb = createClient(url, anonKey);
+  // Let the client read the sign-in link from the address before the page's router sees it
+  await sb.auth.getSession();
+  const adminUrl = location.origin + location.pathname;
 
   const check = ({ data, error }) => {
     if (error) throw new Error(error.message);
@@ -95,7 +100,36 @@ export async function createSupabaseBackend() {
       const data = check(await sb.storage.from("documents").createSignedUrl(path, 300, downloadName ? { download: downloadName } : undefined));
       return data.signedUrl;
     },
+
+    // ── Staff logins ──
+    passwordSetup: linkType,
+    async setPassword(password) {
+      const { error } = await sb.auth.updateUser({ password });
+      if (error) throw new Error(error.message);
+    },
+    async sendPasswordReset(email) {
+      const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: adminUrl });
+      if (error) throw new Error(error.message);
+    },
+    // Invitations and removing access run on Supabase (supabase/functions/invite-staff), which holds the secret key
+    async inviteStaff(email, staffId) {
+      return callStaffFunction({ email, staff_id: staffId, redirect_to: adminUrl });
+    },
+    async removeAccess(userId) {
+      return callStaffFunction({ action: "remove", user_id: userId });
+    },
   };
+
+  async function callStaffFunction(body) {
+    const { data, error } = await sb.functions.invoke("invite-staff", { body });
+    if (error) {
+      let message = error.message;
+      try { message = (await error.context.json()).error || message; } catch {}
+      if (/Failed to send a request|not found|404/i.test(message)) message = "The invite-staff function isn't set up in Supabase yet. See supabase/functions/invite-staff/index.ts.";
+      throw new Error(message);
+    }
+    return data;
+  }
 }
 
 function safeName(name) {
@@ -174,6 +208,9 @@ export function createDemoBackend() {
     calendar_events: [],
     expenses: [],
     sponsorships: [],
+    admins: [{ user_id: "demo-admin", email: "demo@namelok", created_at: stamp(400) }],
+    staff: [],
+    staff_documents: [],
     child_photos: [],
     distributions: [
       { id: uid(), visit_id: visit1, item: "pads", quantity: 240, distributed_on: day(10), notes: "", created_at: stamp(10) },
@@ -381,7 +418,46 @@ export function createDemoBackend() {
     }
   });
 
+  // Expenses paid from a donor's funds come out of their gifts, oldest first
+  const left = Object.fromEntries(tables.donations.map((d) => [d.id, Number(d.amount)]));
+  [...tables.expenses].sort((a, b) => (a.spent_on < b.spent_on ? -1 : 1)).forEach((e) => {
+    if (!e.donor_id) return;
+    const gift = tables.donations.filter((d) => d.donor_id === e.donor_id && d.received_on <= e.spent_on && left[d.id] >= Number(e.amount))
+      .sort((a, b) => (a.received_on < b.received_on ? -1 : 1))[0];
+    if (gift) { e.donation_id = gift.id; left[gift.id] -= Number(e.amount); }
+  });
+  tables.expenses.forEach((e) => { if (e.donation_id === undefined) e.donation_id = null; });
+
+  // One hand-out recorded before items lived on the visit
+  tables.distributions.push({ id: uid(), visit_id: null, item: "pads", quantity: 40, distributed_on: day(45), notes: "Girls at the home", created_at: stamp(45) });
+
+  // Staff (invented; no salaries are kept)
+  [["Demo Caregiver One", "House mother", "permanent", 2100], ["Demo Caregiver Two", "Caregiver", "permanent", 1500], ["Demo Social Worker", "Social worker", "fixed_term", 700],
+   ["Demo Physio", "Physiotherapist (visiting)", "casual", 400], ["Demo Cook", "Cook", "permanent", 1200], ["Demo Driver", "Driver", "fixed_term", 300], ["Demo Former Staff", "Caregiver", "permanent", 1800]]
+    .forEach(([full_name, role, contract_type, days], i) => tables.staff.push({
+      id: uid(), full_name, role, contract_type, status: i === 6 ? "left" : "active", start_date: day(days),
+      email: i < 3 ? full_name.toLowerCase().replace(/ /g, ".") + "@example.org" : "", phone: "0700 000 0" + (10 + i), id_number: "",
+      next_of_kin_name: "", next_of_kin_phone: "", notes: i === 6 ? "Moved to Nairobi" : "", user_id: null, created_at: stamp(days), updated_at: stamp(days) }));
+  tables.staff[0].user_id = "demo-admin";
+  tables.staff_documents.push({ id: uid(), staff_id: tables.staff[0].id, title: "Employment contract", file_path: "", file_name: "contract.pdf", created_at: stamp(300) });
+
   const copy = (x) => JSON.parse(JSON.stringify(x));
+  // The same automatic links the database makes (supabase/updates/2026-11-09b-connections-and-security.sql)
+  const anonymous = (n) => !String(n || "").trim() || ["anonymous", "anon", "well-wisher", "well wisher", "unknown"].includes(String(n).trim().toLowerCase());
+  function links(table, row) {
+    if (table === "donations") {
+      if (row.donor_id) row.donor_name = tables.donors.find((d) => d.id === row.donor_id)?.name ?? row.donor_name;
+      else if (!anonymous(row.donor_name)) {
+        row.donor_name = row.donor_name.trim();
+        let donor = tables.donors.find((d) => d.name.trim().toLowerCase() === row.donor_name.toLowerCase());
+        if (!donor) { donor = { id: uid(), name: row.donor_name, organisation: "", email: "", phone: "", notes: "", giving_pattern: "", currency: row.currency || "KES", created_at: new Date().toISOString() }; tables.donors.push(donor); }
+        row.donor_id = donor.id;
+      }
+    }
+    if (table === "expenses" && row.donation_id) row.donor_id = tables.donations.find((d) => d.id === row.donation_id)?.donor_id ?? null;
+    return row;
+  }
+  tables.donations.forEach((d) => links("donations", d));
   const delay = () => new Promise((r) => setTimeout(r, 120));
 
   return {
@@ -400,14 +476,20 @@ export function createDemoBackend() {
     },
     async insert(table, row) {
       await delay();
-      const full = { id: uid(), created_at: new Date().toISOString(), ...row };
+      const full = links(table, { id: uid(), created_at: new Date().toISOString(), ...row });
       tables[table].push(full);
       return copy(full);
     },
     async update(table, id, row) {
       await delay();
       const found = tables[table].find((r) => r.id === id);
+      const before = { ...found };
       Object.assign(found, row);
+      links(table, found);
+      if (table === "donors" && found.name !== before.name) tables.donations.forEach((d) => { if (d.donor_id === id) d.donor_name = found.name; });
+      if (table === "donations" && found.donor_id !== before.donor_id) tables.expenses.forEach((e) => { if (e.donation_id === id) e.donor_id = found.donor_id; });
+      if (table === "outreach_visits" && found.visit_date !== before.visit_date)
+        tables.distributions.forEach((d) => { if (d.visit_id === id && d.distributed_on === before.visit_date) d.distributed_on = found.visit_date; });
       return copy(found);
     },
     async remove(table, id) {
@@ -419,6 +501,8 @@ export function createDemoBackend() {
         tables.sponsorships = tables.sponsorships.filter((e) => e.child_id !== id);
         tables.expenses.forEach((e) => { if (e.child_id === id) e.child_id = null; });
       }
+      if (table === "staff") tables.staff_documents = tables.staff_documents.filter((e) => e.staff_id !== id);
+      if (table === "donations") tables.expenses.forEach((e) => { if (e.donation_id === id) e.donation_id = null; });
       if (table === "donors") {
         tables.sponsorships = tables.sponsorships.filter((e) => e.donor_id !== id);
         tables.expenses.forEach((e) => { if (e.donor_id === id) e.donor_id = null; });
@@ -437,5 +521,20 @@ export function createDemoBackend() {
     async privateUrl(path) { return path; },
     async privateUrls(paths) { return Object.fromEntries(paths.filter(Boolean).map((p) => [p, p])); },
     async removePrivate() {},
+    passwordSetup: "",
+    async setPassword() {},
+    async sendPasswordReset() {},
+    async inviteStaff(email, staffId) {
+      await delay();
+      const userId = uid();
+      tables.admins.push({ user_id: userId, email, created_at: new Date().toISOString() });
+      const member = tables.staff.find((m) => m.id === staffId);
+      if (member) Object.assign(member, { user_id: userId, email });
+      return { ok: true, user_id: userId };
+    },
+    async removeAccess(userId) {
+      await delay();
+      tables.admins = tables.admins.filter((a) => a.user_id !== userId);
+    },
   };
 }

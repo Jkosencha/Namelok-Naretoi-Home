@@ -22,7 +22,7 @@ export function SearchSelect({ id, value, onChange, choices, extra = [], placeho
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button id={id} type="button" variant="outline" role="combobox" aria-expanded={open} className="w-full justify-between font-normal">
+        <Button id={id} type="button" variant="outline" role="combobox" aria-expanded={open} className="w-full min-w-0 justify-between font-normal">
           <span className={cn("truncate", !current && "text-muted-foreground")}>{current ? current.label : placeholder}</span>
           <ChevronsUpDownIcon className="opacity-50" />
         </Button>

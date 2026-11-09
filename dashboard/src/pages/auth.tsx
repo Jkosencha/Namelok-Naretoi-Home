@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from "react"
-import { EyeIcon, EyeOffIcon } from "lucide-react"
+import { EyeIcon, EyeOffIcon, KeyRoundIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -48,9 +48,16 @@ export function MessageScreen({ title, text, action }: { title: string; text: st
 
 export function LoginScreen({ db, onSignedIn }: { db: Backend; onSignedIn: (user: { email: string }) => void }) {
   const [email, setEmail] = useState(""), [password, setPassword] = useState(""), [show, setShow] = useState(false)
-  const [err, setErr] = useState(""), [busy, setBusy] = useState(false)
+  const [err, setErr] = useState(""), [note, setNote] = useState(""), [busy, setBusy] = useState(false)
+  // Email a link to choose a new password
+  async function forgot() {
+    setErr(""); setNote("")
+    if (!/^\S+@\S+\.\S+$/.test(email.trim())) return setErr("Type your email above first, then press “Forgot your password?” again.")
+    try { await db.sendPasswordReset(email.trim()); setNote(`If ${email.trim()} has a login, a link to choose a new password is on its way. Check your inbox.`) }
+    catch (ex) { setErr("Could not send the email: " + (ex as Error).message) }
+  }
   async function submit(e: React.FormEvent) {
-    e.preventDefault(); setErr(""); setBusy(true)
+    e.preventDefault(); setErr(""); setNote(""); setBusy(true)
     try { onSignedIn(await db.signIn(email.trim(), password)) }
     catch (ex) { setErr("Sign-in failed: " + (ex as Error).message); setBusy(false) }
   }
@@ -100,13 +107,42 @@ export function LoginScreen({ db, onSignedIn }: { db: Backend; onSignedIn: (user
                   {show ? <EyeOffIcon className="size-4" /> : <EyeIcon className="size-4" />}
                 </button>
               </div>
-              <p className="text-right text-xs text-white/55">Forgot it? Ask the director to reset it.</p>
+              <button type="button" onClick={forgot} className="justify-self-end text-xs text-white/60 underline-offset-4 hover:text-white hover:underline">Forgot your password?</button>
             </div>
             {err && <p role="alert" className="rounded-xl bg-red-500/15 px-4 py-2.5 text-sm text-red-100">{err}</p>}
+            {note && <p role="status" className="rounded-xl bg-white/10 px-4 py-2.5 text-sm text-white/90">{note}</p>}
             <Button type="submit" disabled={busy} className="mt-2 h-11 rounded-full bg-[#7fa6b0] text-base font-semibold text-[#1f2937] hover:bg-[#8fb3bd]">{busy ? "Signing in…" : "Sign in"}</Button>
           </form>
         </div>
       </div>
+    </AuthPage>
+  )
+}
+
+// Opened from an invitation or password-reset email: choose a password, then carry on into the dashboard
+export function SetPasswordScreen({ db, kind, onDone }: { db: Backend; kind: "invite" | "recovery"; onDone: () => void }) {
+  const [pw, setPw] = useState(""), [pw2, setPw2] = useState(""), [err, setErr] = useState(""), [busy, setBusy] = useState(false)
+  async function save(e: React.FormEvent) {
+    e.preventDefault(); setErr("")
+    if (pw.length < 8) return setErr("Use at least 8 characters.")
+    if (pw !== pw2) return setErr("The two passwords don't match.")
+    setBusy(true)
+    try { await db.setPassword(pw); onDone() } catch (ex) { setErr((ex as Error).message); setBusy(false) }
+  }
+  return (
+    <AuthPage>
+      <Card className="w-full max-w-sm">
+        <CardHeader className="text-center"><Logo /><CardTitle className="text-xl">{kind === "invite" ? "Welcome! Choose a password" : "Choose a new password"}</CardTitle>
+          <CardDescription>You'll use it with your email to sign in to the Namelok dashboard.</CardDescription></CardHeader>
+        <CardContent>
+          <form onSubmit={save} className="grid gap-4">
+            <div className="grid gap-1.5"><Label htmlFor="pw1">New password</Label><Input id="pw1" type="password" autoComplete="new-password" value={pw} onChange={(e) => setPw(e.target.value)} /></div>
+            <div className="grid gap-1.5"><Label htmlFor="pw2">Type it again</Label><Input id="pw2" type="password" autoComplete="new-password" value={pw2} onChange={(e) => setPw2(e.target.value)} /></div>
+            {err && <p role="alert" className="text-sm text-destructive">{err}</p>}
+            <Button type="submit" disabled={busy}><KeyRoundIcon /> {busy ? "Saving…" : "Save password"}</Button>
+          </form>
+        </CardContent>
+      </Card>
     </AuthPage>
   )
 }

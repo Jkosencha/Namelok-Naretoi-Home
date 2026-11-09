@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { HandHeartIcon, SchoolIcon, UserPlusIcon, UsersIcon, type LucideIcon } from "lucide-react"
+import { HandHeartIcon, SchoolIcon, UserPlusIcon, UsersIcon } from "lucide-react"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -8,27 +8,12 @@ import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle }
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Donut, MonthBars } from "@/components/charts"
+import { Stat } from "@/components/bits"
 import { ErrorNote, Loading, Page } from "@/components/page"
 import { CalendarCard } from "@/pages/calendar"
 import { useTables } from "@/lib/backend"
 import { CATEGORY_COLOR, CHILD_CATEGORY, currentClass, isCurrent, label } from "@/lib/domain"
 import { initials, money, shortDate, thisYear } from "@/lib/format"
-
-function Stat({ icon: Icon, tone, title, value, to }: { icon: LucideIcon; tone: number; title: string; value: string; to: string }) {
-  return (
-    <Link to={to} className="block">
-      <Card className="flex-row items-center gap-4 px-5 py-5 transition-shadow hover:shadow-md">
-        <span className="flex size-12 shrink-0 items-center justify-center rounded-xl" style={{ background: `color-mix(in srgb, var(--chart-${tone}) 13%, transparent)`, color: `var(--chart-${tone})` }}>
-          <Icon className="size-6" />
-        </span>
-        <span className="min-w-0">
-          <span className="block text-sm text-muted-foreground">{title}</span>
-          <span className="block truncate text-2xl font-semibold tracking-tight">{value}</span>
-        </span>
-      </Card>
-    </Link>
-  )
-}
 
 export function Overview() {
   const { data, error } = useTables(["children", "donations", "outreach_visits", "volunteers"])
@@ -121,7 +106,7 @@ export function Overview() {
                         <TableRow key={c.id} className="cursor-pointer" onClick={() => navigate("/children/" + c.id)}>
                           <TableCell><span className="flex items-center gap-2.5 font-medium"><Avatar className="size-7"><AvatarFallback className="text-[10px]">{initials(c.first_name, c.last_name)}</AvatarFallback></Avatar>{`${c.first_name} ${c.last_name}`.trim()}</span></TableCell>
                           <TableCell><CategoryBadge value={c.category} /></TableCell>
-                          <TableCell className="hidden sm:table-cell xl:hidden 2xl:table-cell">{currentClass(c)?.name || "—"}</TableCell>
+                          <TableCell className="hidden sm:table-cell xl:hidden 2xl:table-cell">{currentClass(c)?.name || ""}</TableCell>
                           <TableCell className="hidden text-right tabular-nums sm:table-cell">{shortDate(c.admission_date)}</TableCell>
                         </TableRow>
                       ))}

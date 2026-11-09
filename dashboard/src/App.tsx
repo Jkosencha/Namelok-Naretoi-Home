@@ -10,7 +10,7 @@ import { TitleProvider } from "@/components/page"
 import { SiteHeader } from "@/components/site-header"
 import { BackendProvider, type Backend } from "@/lib/backend"
 import { createDemoBackend, createSupabaseBackend, isConfigured } from "@/lib/data"
-import { LoginScreen, MessageScreen, SetupScreen } from "@/pages/auth"
+import { LoginScreen, MessageScreen, SetPasswordScreen, SetupScreen } from "@/pages/auth"
 import { CalendarPage } from "@/pages/calendar"
 import { ChildPage, ChildrenPage } from "@/pages/children"
 import { DonationsPage } from "@/pages/donations"
@@ -21,14 +21,17 @@ import { Overview } from "@/pages/overview"
 import { ReportForm, ReportsList, ReportView } from "@/pages/reports"
 import { ResourcePage } from "@/pages/resource-page"
 import { SettingsPage } from "@/pages/settings"
+import { StaffMemberPage, StaffPage } from "@/pages/staff"
+import { VisitsPage } from "@/pages/visits"
 
 type State =
   | { screen: "loading" | "setup" | "login" }
   | { screen: "message"; title: string; text: string }
   | { screen: "noaccess"; user: { email: string } }
+  | { screen: "password"; kind: "invite" | "recovery"; user: { email: string } }
   | { screen: "app"; user: { email: string } }
 
-const RESOURCE_ROUTES = ["volunteers", "outreach_visits", "distributions", "stories", "gallery_photos"]
+const RESOURCE_ROUTES = ["volunteers", "stories", "gallery_photos"]
 
 // Sign out automatically after 30 minutes without activity (children's records are sensitive)
 function useIdleSignOut(db: Backend | null, active: boolean) {
@@ -67,6 +70,7 @@ export default function App() {
       setDb(real)
       const user = await real.currentUser()
       if (!user) return setState({ screen: "login" })
+      if (real.passwordSetup) return setState({ screen: "password", kind: real.passwordSetup, user })
       setState((await real.isAdmin()) ? { screen: "app", user } : { screen: "noaccess", user })
     })()
   }, [])
@@ -79,6 +83,7 @@ export default function App() {
       case "setup": return <SetupScreen />
       case "message": return <MessageScreen title={s.title} text={s.text} />
       case "login": return <LoginScreen db={db!} onSignedIn={signedIn} />
+      case "password": return <SetPasswordScreen db={db!} kind={s.kind} onDone={() => { history.replaceState(null, "", location.pathname); signedIn(s.user) }} />
       case "noaccess": return <MessageScreen title="No access" text={`You are signed in as ${s.user.email}, but this account is not on the admin list. Ask the director to add you.`}
         action={<Button variant="outline" onClick={async () => { await db!.signOut(); location.reload() }}>Sign out</Button>} />
       case "app": return <Shell db={db!} user={s.user} />
@@ -122,6 +127,10 @@ function Shell({ db, user }: { db: Backend; user: { email: string } }) {
                   <Route path="/donors/:id" element={<DonorPage />} />
                   <Route path="/expenses" element={<ExpensesPage />} />
                   <Route path="/settings" element={<SettingsPage />} />
+                  <Route path="/staff" element={<StaffPage />} />
+                  <Route path="/outreach_visits" element={<VisitsPage />} />
+                  <Route path="/distributions" element={<Navigate to="/outreach_visits" replace />} />
+                  <Route path="/staff/:id" element={<StaffMemberPage />} />
                   <Route path="/reports" element={<ReportsList />} />
                   <Route path="/reports/new" element={<ReportForm />} />
                   <Route path="/reports/:id" element={<ReportView />} />

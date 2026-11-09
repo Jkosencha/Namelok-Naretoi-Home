@@ -1,14 +1,15 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
-import { ArrowLeftIcon, FileTextIcon, HandCoinsIcon, HeartHandshakeIcon, PencilIcon, PlusIcon, ReceiptIcon, SearchIcon, WalletIcon, type LucideIcon } from "lucide-react"
+import { ArrowLeftIcon, FileTextIcon, HandCoinsIcon, HeartHandshakeIcon, PencilIcon, PlusIcon, ReceiptIcon, WalletIcon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { DonationDialog } from "@/components/donation-dialog"
+import { SpentBar } from "@/pages/donations"
 import { ExpenseDialog, ReceiptViewer } from "@/components/expense-dialog"
+import { MoreItem, MoreMenu, SearchBox, Stat } from "@/components/bits"
 import { ErrorNote, Loading, Page } from "@/components/page"
 import { RecordDialog } from "@/components/record-dialog"
 import { useTables } from "@/lib/backend"
@@ -39,11 +40,11 @@ export function DonorsPage() {
   const shown = rows.filter(({ d }) => !q || [d.name, d.organisation, d.email].join(" ").toLowerCase().includes(q.toLowerCase()))
 
   return (
-    <Page title="Donors" intro="People and organisations who give. Open a donor to see their gifts, what was spent from their funds, what is left, and the children they sponsor."
+    <Page title="Donors"
       actions={<Button onClick={() => setAdding(true)}><PlusIcon /> Add donor</Button>}>
       {error ? <ErrorNote message={error} /> : !data ? <Loading /> : (
         <Card className="gap-0 py-0">
-          <div className="border-b p-3"><div className="relative w-full sm:w-72"><SearchIcon className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" /><Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search donors…" className="pl-8" /></div></div>
+          <div className="border-b p-3"><SearchBox value={q} onChange={setQ} placeholder="Search donors…" className="sm:w-72" /></div>
           <Table>
             <TableHeader><TableRow>
               <TableHead className="px-4">Donor</TableHead><TableHead className="hidden px-4 md:table-cell">Last gift</TableHead><TableHead className="hidden px-4 lg:table-cell">Next gift</TableHead>
@@ -54,8 +55,8 @@ export function DonorsPage() {
                 <TableRow key={d.id} className="cursor-pointer" onClick={() => navigate("/donors/" + d.id)}>
                   <TableCell className="px-4"><span className="block font-medium">{d.name}</span>
                     <span className="flex flex-wrap gap-x-2 text-xs text-muted-foreground">{d.giving_pattern && <span>{label(GIVING_PATTERN, d.giving_pattern)}</span>}{d.currency && d.currency !== "KES" && <span>in {d.currency}</span>}{sponsoring > 0 && <span>sponsors {sponsoring} child{sponsoring === 1 ? "" : "ren"}</span>}</span></TableCell>
-                  <TableCell className="hidden px-4 md:table-cell">{f.last ? <><span className="block tabular-nums">{fmtDate(f.last.received_on)}</span><span className="text-xs text-muted-foreground">{f.last.currency !== "KES" && f.last.original_amount ? cash(f.last.original_amount, f.last.currency) : money(f.last.amount)}</span></> : <span className="text-muted-foreground">—</span>}</TableCell>
-                  <TableCell className="hidden px-4 lg:table-cell">{exp ? <span className={"rounded-md px-2 py-0.5 text-xs font-medium " + TONE[exp.tone]}>{exp.text}</span> : <span className="text-muted-foreground">—</span>}</TableCell>
+                  <TableCell className="hidden px-4 md:table-cell">{f.last ? <><span className="block tabular-nums">{fmtDate(f.last.received_on)}</span><span className="text-xs text-muted-foreground">{f.last.currency !== "KES" && f.last.original_amount ? cash(f.last.original_amount, f.last.currency) : money(f.last.amount)}</span></> : <span className="text-muted-foreground">None yet</span>}</TableCell>
+                  <TableCell className="hidden px-4 lg:table-cell">{exp ? <span className={"rounded-md px-2 py-0.5 text-xs font-medium " + TONE[exp.tone]}>{exp.text}</span> : <span className="text-muted-foreground">Not set</span>}</TableCell>
                   <TableCell className="hidden px-4 text-right tabular-nums sm:table-cell">{money(thisYear)}</TableCell>
                   <TableCell className="px-4 text-right font-medium tabular-nums">{f.spent.length ? money(f.balance) : <span className="text-xs font-normal text-muted-foreground">General funds</span>}</TableCell>
                 </TableRow>
@@ -66,15 +67,6 @@ export function DonorsPage() {
       )}
       <RecordDialog resource={RESOURCES.donors} row={null} open={adding} onOpenChange={setAdding} onSaved={(s) => { reload(); if (s) navigate("/donors/" + s.id) }} />
     </Page>
-  )
-}
-
-function Stat({ icon: Icon, tone, title, value, sub }: { icon: LucideIcon; tone: number; title: string; value: string; sub?: string }) {
-  return (
-    <Card className="flex-row items-center gap-4 px-5 py-4">
-      <span className="flex size-11 shrink-0 items-center justify-center rounded-xl" style={{ background: `color-mix(in srgb, var(--chart-${tone}) 13%, transparent)`, color: `var(--chart-${tone})` }}><Icon className="size-5" /></span>
-      <span className="min-w-0"><span className="block text-sm text-muted-foreground">{title}</span><span className="block truncate text-xl font-semibold tracking-tight">{value}</span>{sub && <span className="block text-xs text-muted-foreground">{sub}</span>}</span>
-    </Card>
   )
 }
 
@@ -97,8 +89,10 @@ export function DonorPage() {
   return (
     <Page title={donor?.name || "Donor"} actions={donor && <>
       <Button variant="outline" asChild><Link to="/donors"><ArrowLeftIcon /> All donors</Link></Button>
-      <Button variant="outline" onClick={() => setEditing(true)}><PencilIcon /> Edit</Button>
-      <Button variant="outline" asChild><Link to={`/reports/new?donor=${donor.id}&kind=quarterly&quarter=${q.quarter}&year=${q.year}`}><FileTextIcon /> Quarterly statement</Link></Button>
+      <MoreMenu>
+        <MoreItem onSelect={() => setEditing(true)}><PencilIcon /> Edit donor</MoreItem>
+        <MoreItem asChild><Link to={`/reports/new?donor=${donor.id}&kind=quarterly&quarter=${q.quarter}&year=${q.year}`}><FileTextIcon /> Quarterly statement</Link></MoreItem>
+      </MoreMenu>
       <Button variant="outline" onClick={() => setSpend({ open: true, row: null })}><ReceiptIcon /> Record expense</Button>
       <Button onClick={() => setGift({ open: true, row: null })}><PlusIcon /> Record donation</Button></>}>
       {error ? <ErrorNote message={error} /> : !donor || !f ? <Loading /> : (
@@ -107,9 +101,9 @@ export function DonorPage() {
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             <Stat icon={HandCoinsIcon} tone={1} title="Received" value={money(f.received)} sub={[`${f.gifts.length} gift${f.gifts.length === 1 ? "" : "s"}`, ...Object.entries(f.foreign).map(([c, n]) => cash(n, c))].join(" · ")} />
             <Stat icon={ReceiptIcon} tone={4} title="Spent from their funds" value={money(f.used)} sub={`${f.spent.length} expense${f.spent.length === 1 ? "" : "s"}`} />
-            <Stat icon={WalletIcon} tone={2} title="Funds left" value={f.spent.length ? money(f.balance) : "—"}
-              sub={!f.spent.length ? "Their gifts go to general funds. Choose them under “Paid from” to track spending." : usdLeft != null ? `≈ ${cash(Math.round(usdLeft), f.lastForeign!.currency)} at the last rate (${rate(f.lastForeign!.exchange_rate)})` : undefined} />
-            <Stat icon={HeartHandshakeIcon} tone={3} title="Next gift" value={exp ? monthYear(exp.next) : "—"} sub={exp ? (exp.tone === "late" ? "Later than usual" : exp.tone === "due" ? "Due soon" : `Last one ${fmtDate(f.last?.received_on)}`) : "Set how often they give to see this"} />
+            <Stat icon={WalletIcon} tone={2} title="Funds left" value={f.spent.length ? money(f.balance) : "Not tracked"}
+              sub={!f.spent.length ? "No spending linked to them yet" : usdLeft != null ? `≈ ${cash(Math.round(usdLeft), f.lastForeign!.currency)} at the last rate (${rate(f.lastForeign!.exchange_rate)})` : undefined} />
+            <Stat icon={HeartHandshakeIcon} tone={3} title="Next gift" value={exp ? monthYear(exp.next) : "Not set"} sub={exp ? (exp.tone === "late" ? "Later than usual" : exp.tone === "due" ? "Due soon" : `Last one ${fmtDate(f.last?.received_on)}`) : "Set how often they give to see this"} />
           </div>
 
           <Sponsorships mode="donor" id={donor.id} rows={data!.sponsorships.filter((s) => s.donor_id === donor.id)} children={data!.children} donors={data!.donors} onChanged={reload} />
@@ -118,16 +112,17 @@ export function DonorPage() {
             <TabsList><TabsTrigger value="donations">Donations <span className="text-muted-foreground">{f.gifts.length}</span></TabsTrigger><TabsTrigger value="expenses">Spent from their funds <span className="text-muted-foreground">{f.spent.length}</span></TabsTrigger></TabsList>
             <TabsContent value="donations">
               <Card className="gap-0 py-0"><Table>
-                <TableHeader><TableRow><TableHead className="px-4">Date</TableHead><TableHead className="px-4">Amount</TableHead><TableHead className="hidden px-4 sm:table-cell">Rate</TableHead><TableHead className="px-4 text-right">KES received</TableHead><TableHead className="hidden px-4 md:table-cell">Method</TableHead><TableHead className="hidden px-4 lg:table-cell">Purpose</TableHead></TableRow></TableHeader>
+                <TableHeader><TableRow><TableHead className="px-4">Date</TableHead><TableHead className="px-4">Amount</TableHead><TableHead className="hidden px-4 sm:table-cell">Rate</TableHead><TableHead className="px-4 text-right">KES received</TableHead><TableHead className="hidden px-4 md:table-cell">Spent</TableHead><TableHead className="hidden px-4 xl:table-cell">Method</TableHead><TableHead className="hidden px-4 2xl:table-cell">Purpose</TableHead></TableRow></TableHeader>
                 <TableBody>{f.gifts.length ? f.gifts.map((d) => (
                   <TableRow key={d.id} className="cursor-pointer" onClick={() => setGift({ open: true, row: d })}>
                     <TableCell className="px-4 tabular-nums">{fmtDate(d.received_on)}</TableCell>
                     <TableCell className="px-4 tabular-nums">{d.currency !== "KES" && d.original_amount != null ? cash(d.original_amount, d.currency) : money(d.amount)}</TableCell>
-                    <TableCell className="hidden px-4 tabular-nums sm:table-cell">{d.exchange_rate ? rate(d.exchange_rate) : "—"}</TableCell>
+                    <TableCell className="hidden px-4 tabular-nums sm:table-cell">{d.exchange_rate ? rate(d.exchange_rate) : ""}</TableCell>
                     <TableCell className="px-4 text-right font-medium tabular-nums">{money(d.amount)}</TableCell>
-                    <TableCell className="hidden px-4 md:table-cell">{label(METHODS, d.method)}</TableCell>
-                    <TableCell className="hidden px-4 lg:table-cell">{d.purpose}</TableCell>
-                  </TableRow>)) : <TableRow><TableCell colSpan={6} className="h-24 text-center text-muted-foreground">No donations recorded yet.</TableCell></TableRow>}</TableBody>
+                    <TableCell className="hidden w-48 px-4 md:table-cell"><SpentBar amount={Number(d.amount)} spent={data!.expenses.filter((e) => e.donation_id === d.id).reduce((t, e) => t + Number(e.amount), 0)} /></TableCell>
+                    <TableCell className="hidden px-4 xl:table-cell">{label(METHODS, d.method)}</TableCell>
+                    <TableCell className="hidden px-4 2xl:table-cell">{d.purpose}</TableCell>
+                  </TableRow>)) : <TableRow><TableCell colSpan={7} className="h-24 text-center text-muted-foreground">No donations recorded yet.</TableCell></TableRow>}</TableBody>
               </Table></Card>
             </TabsContent>
             <TabsContent value="expenses">
@@ -164,7 +159,7 @@ export function Sponsorships({ mode, id, rows, children, donors, onChanged }: { 
   const current = rows.filter((s) => !s.ended_on || s.ended_on >= today), past = rows.filter((s) => s.ended_on && s.ended_on < today)
   const item = (s: Row) => {
     const who = mode === "donor" ? children.find((c) => c.id === s.child_id) : donors.find((d) => d.id === s.donor_id)
-    const name = who ? lookupLabel(mode === "donor" ? "children" : "donors", who) : "—"
+    const name = who ? lookupLabel(mode === "donor" ? "children" : "donors", who) : "Unknown"
     return (
       <li key={s.id} className="flex items-center gap-3 py-2.5">
         <div className="min-w-0 flex-1">

@@ -21,7 +21,6 @@ export type Resource = {
   singular: string
   order?: string
   ascending?: boolean
-  intro?: string
   columns?: [string, string][]
   fields: Field[]
 }
@@ -42,7 +41,7 @@ export const CHILD_STATUS = opt([["in_care", "In care at the home"], ["boarding_
 export const CURRENT_STATUSES = ["in_care", "boarding_school"]
 export const MOVED_ON = ["graduated", "reintegrated", "exited"]
 export const isCurrent = (c: { status?: string }) => CURRENT_STATUSES.includes(c.status || "")
-export const REFERRAL = opt([["", "—"], ["chief", "Chief"], ["do", "District Officer"], ["dc", "District Commissioner"], ["court", "Court"], ["hospital", "Hospital"], ["school", "School"], ["family", "Family"], ["self", "Came on their own"], ["other", "Other"]])
+export const REFERRAL = opt([["", "Not recorded"], ["chief", "Chief"], ["do", "District Officer"], ["dc", "District Commissioner"], ["court", "Court"], ["hospital", "Hospital"], ["school", "School"], ["family", "Family"], ["self", "Came on their own"], ["other", "Other"]])
 export const EVENT_TYPES = opt([["medical", "Medical"], ["follow_up", "Follow-up"], ["school", "School"], ["case", "Case / legal"], ["other", "Other"]])
 export const ITEMS = opt([["pads", "Sanitary pads"], ["panties", "Panties"], ["boxers", "Boxers"], ["balls", "Balls"], ["socks", "Socks"], ["books", "Books"], ["other", "Other"]])
 export const CURRENCIES = opt([["KES", "KES – Kenya shilling"], ["USD", "USD – US dollar"], ["GBP", "GBP – British pound"], ["EUR", "EUR – Euro"]])
@@ -60,6 +59,9 @@ export function nextExpected(pattern: string, last?: string) {
   return d
 }
 
+export const CALENDAR_KINDS = opt([["meeting", "Staff meeting"], ["board", "Board meeting"], ["donor", "Donor visit"], ["event", "Community event"], ["holiday", "Holiday"], ["other", "Other"]])
+export const CONTRACT_TYPE = opt([["", "Not recorded"], ["permanent", "Permanent"], ["fixed_term", "Fixed term"], ["casual", "Casual"], ["volunteer", "Volunteer"]])
+export const STAFF_STATUS = opt([["active", "Working here"], ["left", "Has left"]])
 // Each child category keeps one colour everywhere (charts and badges)
 export const CATEGORY_COLOR: Record<string, string> = { disability: "var(--chart-1)", vulnerable: "var(--chart-2)", rescued_girl: "var(--chart-3)", rescued_boy: "var(--chart-4)" }
 
@@ -100,7 +102,6 @@ export const currentClass = (c: Row) => classAt(c, new Date().getFullYear())
 export const RESOURCES: Record<string, Resource> = {
   stories: {
     table: "stories", title: "Stories", singular: "story", order: "sort_order", ascending: true,
-    intro: "Stories shown on the website. Only published stories are visible to the public.",
     columns: [["title", "Title"], ["child_name", "Child"], ["category", "Category"], ["published", "Published"]],
     fields: [
       { name: "title", label: "Title", required: true },
@@ -118,7 +119,6 @@ export const RESOURCES: Record<string, Resource> = {
   },
   gallery_photos: {
     table: "gallery_photos", title: "Gallery", singular: "photo", order: "sort_order", ascending: true,
-    intro: "Photos on the website gallery. Only use photos where the people shown are comfortable being public.",
     columns: [["image_url", "Photo"], ["caption", "Caption"], ["category", "Category"], ["published", "Published"]],
     fields: [
       { name: "image_url", label: "Photo", type: "image", required: true },
@@ -146,7 +146,6 @@ export const RESOURCES: Record<string, Resource> = {
   },
   volunteers: {
     table: "volunteers", title: "Volunteers", singular: "volunteer",
-    intro: "Speakers, mentors, outreach helpers and donation-drive volunteers.",
     columns: [["name", "Name"], ["role", "Role"], ["status", "Status"], ["phone", "Phone"], ["email", "Email"]],
     fields: [
       { name: "name", label: "Name", required: true },
@@ -159,7 +158,6 @@ export const RESOURCES: Record<string, Resource> = {
   },
   outreach_visits: {
     table: "outreach_visits", title: "School visits", singular: "visit", order: "visit_date",
-    intro: "Awareness visits to schools and communities.",
     columns: [["visit_date", "Date"], ["school_name", "School"], ["location", "Location"], ["girls_reached", "Girls"], ["boys_reached", "Boys"], ["parents_reached", "Parents"]],
     fields: [
       { name: "school_name", label: "School or community", required: true },
@@ -174,7 +172,6 @@ export const RESOURCES: Record<string, Resource> = {
   },
   distributions: {
     table: "distributions", title: "Items handed out", singular: "entry", order: "distributed_on",
-    intro: "Pads, panties, boxers, balls, socks, books and other items given to children.",
     columns: [["distributed_on", "Date"], ["item", "Item"], ["quantity", "Quantity"], ["visit_id", "Visit"]],
     fields: [
       { name: "item", label: "Item", type: "select", options: ITEMS },
@@ -191,7 +188,7 @@ export const RESOURCES: Record<string, Resource> = {
       { name: "first_name", label: "First name", required: true },
       { name: "last_name", label: "Last name" },
       { name: "date_of_birth", label: "Date of birth", type: "date" },
-      { name: "gender", label: "Gender", type: "select", options: opt([["", "—"], ["female", "Female"], ["male", "Male"]]) },
+      { name: "gender", label: "Gender", type: "select", options: opt([["", "Not recorded"], ["female", "Female"], ["male", "Male"]]) },
       { name: "about", label: "About", type: "textarea", rows: 3, help: "A short description: personality, interests, progress." },
       { section: "Photos (private)" },
       { name: "arrival_photo_path", label: "When they came", type: "privateImage" },
@@ -230,6 +227,24 @@ export const RESOURCES: Record<string, Resource> = {
       { name: "notes", label: "Notes", type: "textarea", rows: 2, help: "e.g. Covers school fees and uniform" },
     ],
   },
+  staff: {
+    table: "staff", title: "Staff", singular: "staff member", order: "full_name", ascending: true,
+    fields: [
+      { section: "Details" },
+      { name: "full_name", label: "Full name", required: true },
+      { name: "role", label: "Role", help: "e.g. Caregiver, Social worker, Cook" },
+      { name: "email", label: "Email", type: "email", help: "Needed to invite them to the dashboard" },
+      { name: "phone", label: "Phone" },
+      { name: "start_date", label: "Start date", type: "date" },
+      { name: "contract_type", label: "Contract", type: "select", options: CONTRACT_TYPE },
+      { name: "status", label: "Status", type: "select", options: STAFF_STATUS },
+      { section: "Private" },
+      { name: "id_number", label: "ID number" },
+      { name: "next_of_kin_name", label: "Next of kin" },
+      { name: "next_of_kin_phone", label: "Next of kin's phone" },
+      { name: "notes", label: "Notes", type: "textarea", rows: 3 },
+    ],
+  },
   child_photos: {
     table: "child_photos", title: "Photos", singular: "photo", order: "taken_on",
     fields: [
@@ -251,7 +266,7 @@ export const RESOURCES: Record<string, Resource> = {
     table: "calendar_events", title: "Calendar", singular: "event",
     fields: [
       { name: "title", label: "What", required: true },
-      { name: "kind", label: "Type", type: "select", options: opt([["meeting", "Staff meeting"], ["board", "Board meeting"], ["donor", "Donor visit"], ["event", "Community event"], ["holiday", "Holiday"], ["other", "Other"]]) },
+      { name: "kind", label: "Type", type: "select", options: CALENDAR_KINDS },
       { name: "starts_on", label: "Date", type: "date", required: true },
       { name: "start_time", label: "Time (optional)", type: "time" },
       { name: "ends_on", label: "Ends on (for events over several days)", type: "date" },

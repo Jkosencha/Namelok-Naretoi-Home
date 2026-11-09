@@ -64,7 +64,7 @@ function ClassField({ values, set }: { values: Row; set: (patch: Row) => void })
   return (
     <div className={"grid gap-2 " + (list.length ? "sm:grid-cols-[1.4fr_1fr]" : "")}>
       <SelectField id="f_class_track" value={values.class_track || ""} placeholder="Not recorded"
-        options={[{ value: "", label: "— Not recorded —" }, ...Object.entries(CLASS_TRACKS).map(([value, t]) => ({ value, label: t.label }))]}
+        options={[{ value: "", label: "Not recorded" }, ...Object.entries(CLASS_TRACKS).map(([value, t]) => ({ value, label: t.label }))]}
         onChange={(v) => set({ class_track: v, _class_level: CLASS_TRACKS[v]?.classes.length ? "0" : "" })} />
       {list.length > 0 && <SelectField id="f_class_level" value={values._class_level ?? ""} options={options} onChange={(v) => set({ _class_level: v })} />}
     </div>
@@ -97,7 +97,7 @@ export function RecordDialog({ resource, row, open, onOpenChange, onSaved, onRem
     setValues({ ...start, ...(initial || {}) })
     setError("")
     for (const f of fields.filter((f) => f.optionsFrom)) {
-      db.list(f.optionsFrom!).then((rows) => setLookups((l) => ({ ...l, [f.name!]: [{ value: "", label: "—" }, ...rows.map((r) => ({ value: r.id, label: lookupLabel(f.optionsFrom!, r) })).sort((a, b) => a.label.localeCompare(b.label))] })))
+      db.list(f.optionsFrom!).then((rows) => setLookups((l) => ({ ...l, [f.name!]: [{ value: "", label: "None" }, ...rows.map((r) => ({ value: r.id, label: lookupLabel(f.optionsFrom!, r) })).sort((a, b) => a.label.localeCompare(b.label))] })))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, row, fields, db, JSON.stringify(initial ?? null)])

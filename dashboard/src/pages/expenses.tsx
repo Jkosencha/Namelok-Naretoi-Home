@@ -1,12 +1,12 @@
 import { useCallback, useMemo, useState } from "react"
 import { Link } from "react-router-dom"
-import { DownloadIcon, PlusIcon, ReceiptIcon, SearchIcon, TriangleAlertIcon } from "lucide-react"
+import { DownloadIcon, PlusIcon, ReceiptIcon, TriangleAlertIcon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { ExpenseDialog, ReceiptViewer } from "@/components/expense-dialog"
+import { SearchBox } from "@/components/bits"
 import { ErrorNote, Loading, Page } from "@/components/page"
 import { SelectField } from "@/components/record-dialog"
 import { useTables } from "@/lib/backend"
@@ -52,12 +52,12 @@ export function ExpensesPage() {
     shown.map((e) => [e.spent_on, e.description, label(EXPENSE_CATEGORY, e.category), e.vendor, name("donors", e.donor_id) || "General funds", name("children", e.child_id), e.amount, e.receipt_path ? "Yes" : "Missing", e.notes]))
 
   return (
-    <Page title="Expenses" intro="Money spent, with the receipt attached. Choose whose funds paid for it, so each donor's statement shows what was spent and what is left."
+    <Page title="Expenses"
       actions={<><Button variant="outline" onClick={csv} disabled={!shown.length}><DownloadIcon /> Download</Button><Button onClick={() => setDialog({ open: true, row: null })}><PlusIcon /> Record expense</Button></>}>
       {error ? <ErrorNote message={error} /> : !data ? <Loading /> : (
         <Card className="gap-0 py-0">
           <div className="flex flex-wrap items-center gap-3 border-b p-3">
-            <div className="relative w-full sm:w-60"><SearchIcon className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" /><Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search expenses…" className="pl-8" /></div>
+            <SearchBox value={q} onChange={setQ} placeholder="Search expenses…" className="sm:w-60" />
             <div className="w-[calc(50%-6px)] sm:w-36"><SelectField value={period} onChange={setPeriod} options={periodOptions(rows.map((e) => e.spent_on))} /></div>
             <div className="w-[calc(50%-6px)] sm:w-48"><SelectField value={fund} onChange={setFund} options={[{ value: "all", label: "All funds" }, { value: "", label: "General funds" }, ...data.donors.map((d) => ({ value: d.id, label: d.name }))]} /></div>
             <div className="w-full sm:w-52"><SelectField value={cat} onChange={setCat} options={[{ value: "", label: "All categories" }, ...EXPENSE_CATEGORY]} /></div>
