@@ -1,4 +1,4 @@
-// Back to top button — fades in after scrolling, scrolls smoothly to top
+// Back to top button: fades in after scrolling, scrolls smoothly to top
 const upArrow = document.getElementById("upArrow");
 if (upArrow) {
   const upArrowCont = document.getElementById("upArrow");
