@@ -23,9 +23,8 @@ Only people you add should be able to sign in.
 1. Go to **Authentication → Sign In / Providers** (or **Providers → Email**).
 2. Turn **off** "Allow new users to sign up".
 
-## 4. Add the admins (one or two people)
+## 4. Add the first admin
 
-For each admin:
 
 1. **Authentication → Users → Add user → Create new user.** Enter their email and a strong password, and tick **Auto confirm user**.
 2. Copy the new user's **UID** from the users list.
@@ -38,7 +37,7 @@ For each admin:
 
 A signed-in account that is **not** in this list can't see anything, so a forgotten test account can never open children's records.
 
-To remove someone's access later: `delete from public.admins where email = 'their@email.com';`, then delete the user under **Authentication → Users**.
+Everyone after that is invited from the dashboard (step 6).
 
 ## 5. Connect the website and dashboard
 
@@ -54,6 +53,22 @@ To remove someone's access later: `delete from public.admins where email = 'thei
 
    The anon key is meant to be public; the database's security rules decide what it can see. **Never** put the `service_role` key in this file or anywhere on the website.
 3. Publish the site. The dashboard is at `/admin/` (for example `https://your-site/admin/`).
+
+## 6. Invite staff from the dashboard
+
+Inviting needs Supabase's secret key, which never goes in the website, so it runs as a small function on Supabase:
+
+1. **Edge Functions → Deploy a new function → Via editor.** Name it `invite-staff`, paste `supabase/functions/invite-staff/index.ts`, and click **Deploy**.
+2. **Authentication → URL Configuration → Redirect URLs:** add the dashboard's address, for example `https://namelok-naretoi-home.netlify.app/admin/`.
+
+Then, in the dashboard: **Staff → open the person → Invite to the dashboard.** They get an email to set their password. **Remove access** on the same page takes it away again.
+
+## Updating a database that's already in use
+
+New features come with a file in `supabase/updates/`. Run each new one once, oldest first, in **SQL Editor**.
+
+- Download a backup first: open each table in **Table Editor** and choose **Export → CSV** (children, child_events, donations, donors, expenses, staff at least).
+- The updates only add and link things; they never delete records, and each runs all-or-nothing.
 
 ## What the public can and can't see
 

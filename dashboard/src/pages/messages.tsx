@@ -18,7 +18,7 @@ export function MessagesPage() {
   const [volunteer, setVolunteer] = useState<Row | null>(null)
   const rows = (data?.contact_messages || []).filter((m) => tab === "all" || (tab === "archived" ? m.status === "archived" : m.status !== "archived"))
   return (
-    <Page title="Messages" intro="Messages sent through the website's contact form.">
+    <Page title="Messages">
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList><TabsTrigger value="inbox">Inbox</TabsTrigger><TabsTrigger value="archived">Archived</TabsTrigger><TabsTrigger value="all">All</TabsTrigger></TabsList>
       </Tabs>

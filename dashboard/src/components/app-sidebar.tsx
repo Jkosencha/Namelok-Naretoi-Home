@@ -1,6 +1,6 @@
 import { NavLink, useLocation } from "react-router-dom"
 import {
-  BookOpenIcon, CalendarDaysIcon, FileBarChartIcon, GiftIcon, GlobeIcon, HandHeartIcon, HeartHandshakeIcon, ImageIcon,
+  BookOpenIcon, CalendarDaysIcon, FileBarChartIcon, GlobeIcon, HandHeartIcon, IdCardIcon, HeartHandshakeIcon, ImageIcon,
   LayoutDashboardIcon, LogOutIcon, MessageSquareIcon, ReceiptIcon, SchoolIcon, Settings2Icon, UserPlusIcon, UsersIcon, type LucideIcon,
 } from "lucide-react"
 import {
@@ -13,8 +13,8 @@ const NAV: [string, [string, string, LucideIcon][]][] = [
   ["", [["/", "Dashboard", LayoutDashboardIcon], ["/calendar", "Calendar", CalendarDaysIcon]]],
   ["The Home", [["/children", "Children", UsersIcon]]],
   ["Money", [["/donations", "Donations", HandHeartIcon], ["/donors", "Donors", HeartHandshakeIcon], ["/expenses", "Expenses", ReceiptIcon]]],
-  ["People", [["/messages", "Messages", MessageSquareIcon], ["/volunteers", "Volunteers", UserPlusIcon]]],
-  ["Outreach", [["/outreach_visits", "School visits", SchoolIcon], ["/distributions", "Items handed out", GiftIcon]]],
+  ["People", [["/staff", "Staff", IdCardIcon], ["/messages", "Messages", MessageSquareIcon], ["/volunteers", "Volunteers", UserPlusIcon]]],
+  ["Outreach", [["/outreach_visits", "School visits", SchoolIcon]]],
   ["Website", [["/stories", "Stories", BookOpenIcon], ["/gallery_photos", "Gallery", ImageIcon], ["/settings", "Stats & details", Settings2Icon]]],
   ["Reports", [["/reports", "Reports", FileBarChartIcon]]],
 ]

@@ -1,4 +1,4 @@
-import { Bar, BarChart, CartesianGrid, Cell, Label, Line, LineChart, Pie, PieChart, XAxis, YAxis } from "recharts"
+import { Bar, BarChart, CartesianGrid, Cell, Label, Pie, PieChart, XAxis, YAxis } from "recharts"
 import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart"
 
 const compact = (n: number) => (n >= 1e6 ? (n / 1e6).toFixed(1).replace(/\.0$/, "") + "M" : n >= 1e3 ? Math.round(n / 1e3) + "K" : String(n))
@@ -50,36 +50,5 @@ export function Donut({ data, centerLabel }: { data: { label: string; value: num
         ))}
       </ul>
     </div>
-  )
-}
-
-// One measure across categories, value on each bar
-export function CategoryBars({ data, color = "var(--chart-2)", height = 200 }: { data: { label: string; value: number }[]; color?: string; height?: number }) {
-  const config = { value: { label: "Children", color } } satisfies ChartConfig
-  return (
-    <ChartContainer config={config} className="w-full" style={{ height }}>
-      <BarChart data={data} margin={{ top: 20, left: 4, right: 4 }}>
-        <CartesianGrid vertical={false} />
-        <XAxis dataKey="label" tickLine={false} axisLine={false} tickMargin={8} interval={0} fontSize={11} />
-        <ChartTooltip cursor={{ fill: "var(--muted)" }} content={<ChartTooltipContent hideIndicator />} />
-        <Bar dataKey="value" fill="var(--color-value)" radius={[4, 4, 0, 0]} maxBarSize={28} label={{ position: "top", className: "fill-foreground text-xs font-semibold" }} />
-      </BarChart>
-    </ChartContainer>
-  )
-}
-
-// A line over time with the last value labelled (used in reports)
-export function TrendLine({ data, format, color = "var(--chart-3)", height = 200 }: { data: { label: string; value: number }[]; format: (n: number) => string; color?: string; height?: number }) {
-  const config = { value: { label: "Donations", color } } satisfies ChartConfig
-  return (
-    <ChartContainer config={config} className="w-full" style={{ height }}>
-      <LineChart data={data} margin={{ left: 4, right: 24, top: 16 }}>
-        <CartesianGrid vertical={false} />
-        <XAxis dataKey="label" tickLine={false} axisLine={false} tickMargin={8} />
-        <YAxis tickLine={false} axisLine={false} width={42} tickFormatter={compact} />
-        <ChartTooltip content={<ChartTooltipContent formatter={(v) => <span className="font-semibold tabular-nums">{format(Number(v))}</span>} />} />
-        <Line dataKey="value" stroke="var(--color-value)" strokeWidth={2} dot={{ r: 3.5 }} activeDot={{ r: 5 }} />
-      </LineChart>
-    </ChartContainer>
   )
 }

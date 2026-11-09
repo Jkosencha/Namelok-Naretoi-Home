@@ -15,7 +15,7 @@ import type { Row } from "@/lib/format"
 
 type Hit = { text: string; sub: string; to: string; icon: typeof UsersIcon }
 
-export const displayName = (email: string) => (email || "Admin").split("@")[0].replace(/[._-]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())
+const displayName = (email: string) => (email || "Admin").split("@")[0].replace(/[._-]+/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())
 
 export function SiteHeader() {
   const { db, user } = useSession()
@@ -52,7 +52,7 @@ export function SiteHeader() {
       <SidebarTrigger />
       <Separator orientation="vertical" className="hidden h-5 sm:block" />
       <h1 className="text-lg font-semibold tracking-tight">{title}</h1>
-      <div ref={box} className="relative order-last w-full sm:order-none sm:ml-auto sm:w-80">
+      <div ref={box} className="relative order-last w-full sm:order-none sm:ml-auto sm:w-auto sm:min-w-40 sm:max-w-80 sm:flex-1">
         <SearchIcon className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
         <Input value={q} onFocus={loadIndex} onChange={(e) => { setQ(e.target.value); loadIndex() }} onKeyDown={(e) => { if (e.key === "Enter" && hits[0]) go(hits[0].to); if (e.key === "Escape") setQ("") }}
           placeholder="Search children, donors, volunteers…" aria-label="Search" className="bg-muted/60 pl-8" />

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { toast } from "sonner"
-import { ArrowLeftIcon, CheckIcon, HeartHandshakeIcon, ChevronLeftIcon, GraduationCapIcon, HomeIcon, LogOutIcon, Undo2Icon, ChevronRightIcon, ImagePlusIcon, PencilIcon, PlusIcon, SearchIcon, ShieldAlertIcon, Trash2Icon } from "lucide-react"
+import { ArrowLeftIcon, CheckIcon, HeartHandshakeIcon, ChevronLeftIcon, GraduationCapIcon, HomeIcon, LogOutIcon, Undo2Icon, ChevronRightIcon, ImagePlusIcon, PencilIcon, PlusIcon, Trash2Icon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { DialogFooter, DialogHeader } from "@/components/ui/dialog"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { SearchBox } from "@/components/bits"
 import { ErrorNote, Loading, Page } from "@/components/page"
 import { RecordDialog, SelectField } from "@/components/record-dialog"
 import { Sponsorships } from "@/pages/donors"
@@ -61,7 +62,7 @@ export function ChildrenPage() {
     (cat === "all" || c.category === cat) && (!stage || currentClass(c)?.stage === stage)), [byStatus, q, cat, stage])
 
   return (
-    <Page title="Children" intro={<span className="inline-flex items-center gap-2 text-destructive"><ShieldAlertIcon className="size-4 shrink-0" />Private records. Never share these details outside the team.</span>}
+    <Page title="Children"
       actions={<Button onClick={() => setAdding(true)}><PlusIcon /> Add child</Button>}>
       <Tabs value={status} onValueChange={setStatus} className="max-w-full overflow-x-auto">
         <TabsList variant="line">
@@ -83,10 +84,7 @@ export function ChildrenPage() {
           </TabsList>
         </Tabs>
         <div className="flex w-full flex-wrap gap-2 xl:ml-auto xl:w-auto">
-          <div className="relative w-full sm:w-60">
-            <SearchIcon className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-            <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search name, school, area…" className="bg-card pl-8" />
-          </div>
+          <SearchBox value={q} onChange={setQ} placeholder="Search name, school, area…" className="sm:w-60 bg-card" />
           <div className="w-full sm:w-44"><SelectField value={stage} onChange={setStage} options={[{ value: "", label: "All school stages" }, ...CLASS_STAGES.map((s) => ({ value: s, label: s }))]} /></div>
         </div>
       </div>
@@ -101,7 +99,7 @@ export function ChildrenPage() {
                   <ChildPicture src={urls[c.photo_path]} child={c} className="aspect-[4/3] w-full" />
                   <div className="grid gap-1 p-3.5">
                     <p className="flex items-center gap-1.5 font-semibold"><span className="truncate">{fullName(c)}</span>{sponsored.has(c.id) && <HeartHandshakeIcon className="size-3.5 shrink-0 text-chart-2" aria-label="Sponsored" />}</p>
-                    <p className="truncate text-xs text-muted-foreground">{[years !== "" ? `${years} yrs` : "", cl?.name].filter(Boolean).join(" · ") || "—"}</p>
+                    <p className="truncate text-xs text-muted-foreground">{[years !== "" ? `${years} yrs` : "", cl?.name].filter(Boolean).join(" · ")}</p>
                     <div className="mt-1.5 flex flex-wrap gap-1"><CategoryBadge value={c.category} />{c.status !== "in_care" && <Badge variant="outline">{label(CHILD_STATUS, c.status)}{!isCurrent(c) && c.left_on ? ` · ${c.left_on.slice(0, 4)}` : ""}</Badge>}</div>
                   </div>
                 </Card>
@@ -169,7 +167,7 @@ export function ChildPage() {
   const classText = !cl ? "" : !cl.auto ? cl.name : `${cl.name} · ${cl.stage}` + (child!.class_year < new Date().getFullYear() ? `\n(recorded as ${CLASS_TRACKS[child!.class_track].classes[child!.class_level] || "Finished"} in ${child!.class_year}, moved up automatically)` : "")
   const rows: [string, string][] = child ? [
     ["Age", age(child.date_of_birth) !== "" ? `${age(child.date_of_birth)} (born ${fmtDate(child.date_of_birth)})` : ""],
-    ["Gender", capital(child.gender || "")], ["Admitted", fmtDate(child.admission_date)], ["Came through", label(REFERRAL, child.referral_channel)],
+    ["Gender", capital(child.gender || "")], ["Admitted", fmtDate(child.admission_date)], ["Came through", child.referral_channel ? label(REFERRAL, child.referral_channel) : ""],
     ["Referral details", child.referral_details], ["Medical", child.medical_condition], ["School", child.school_name], ["Class", classText],
     ["Class details", child.school_class !== cl?.name ? child.school_class : ""], ["Guardian", [child.guardian_name, child.guardian_phone].filter(Boolean).join(" · ")], ["Home area", child.home_location], ["Notes", child.notes],
   ] : []
@@ -208,7 +206,7 @@ export function ChildPage() {
                 <div className="flex items-start gap-3 rounded-lg bg-muted/70 px-3.5 py-3 text-sm">
                   <MovedOnIcon status={child.status} className="mt-0.5 size-4 shrink-0 text-muted-foreground" />
                   <p><span className="font-medium">{label(CHILD_STATUS, child.status)}{child.left_on ? ` on ${fmtDate(child.left_on)}` : ""}.</span>{child.leaving_note && ` ${child.leaving_note}`}
-                    <span className="block text-muted-foreground">No longer counted as currently supported. Their records and photos are kept.</span></p>
+</p>
                 </div>
               )}
               <div>
@@ -223,7 +221,7 @@ export function ChildPage() {
           <Card>
             <CardHeader>
               <CardTitle>Gallery</CardTitle>
-              <CardDescription>{photos.length} of {MAX_PHOTOS} photos · private, only the team can see them</CardDescription>
+              <CardDescription>{photos.length} of {MAX_PHOTOS} photos</CardDescription>
               <CardAction>
                 <input ref={fileInput} type="file" accept="image/*" multiple hidden onChange={(e) => addPhotos(e.target.files)} />
                 <Button size="sm" variant="outline" disabled={uploading || photos.length >= MAX_PHOTOS} onClick={() => fileInput.current?.click()}><ImagePlusIcon /> {uploading ? "Uploading…" : "Add photos"}</Button>
@@ -364,7 +362,7 @@ function MoveOnDialog({ open, onOpenChange, child, onSaved }: { open: boolean; o
         <form onSubmit={save} className="grid gap-4">
           <DialogHeader>
             <DialogTitle>{fullName(child)} has moved on</DialogTitle>
-            <DialogDescription>They will no longer count as currently supported. Their records and photos are kept, and you can bring them back into care at any time.</DialogDescription>
+            <DialogDescription>They will no longer count as currently supported. You can bring them back into care at any time.</DialogDescription>
           </DialogHeader>
           <div role="radiogroup" aria-label="How they moved on" className="grid gap-2">
             {MOVE_ON_CHOICES.map(({ value, icon: Icon, title, text }) => (

@@ -1,10 +1,10 @@
 import { useMemo, useState } from "react"
-import { PlusIcon, SearchIcon } from "lucide-react"
+import { PlusIcon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { SearchBox } from "@/components/bits"
 import { ErrorNote, Loading, Page } from "@/components/page"
 import { RecordDialog } from "@/components/record-dialog"
 import { useTables } from "@/lib/backend"
@@ -40,14 +40,11 @@ export function ResourcePage({ name }: { name: string }) {
     : name === "distributions" ? `${rows.reduce((s, r) => s + r.quantity, 0).toLocaleString()} items in total` : ""
 
   return (
-    <Page title={res.title} intro={res.intro} actions={<Button onClick={() => { setEditing(null); setOpen(true) }}><PlusIcon /> Add {res.singular}</Button>}>
+    <Page title={res.title} actions={<Button onClick={() => { setEditing(null); setOpen(true) }}><PlusIcon /> Add {res.singular}</Button>}>
       {error ? <ErrorNote message={error} /> : !data ? <Loading /> : (
         <Card className="gap-0 py-0">
           <div className="flex flex-wrap items-center gap-3 border-b p-3">
-            <div className="relative w-full sm:w-72">
-              <SearchIcon className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-              <Input value={q} onChange={(e) => setQ(e.target.value)} placeholder={`Search ${res.title.toLowerCase()}…`} className="pl-8" />
-            </div>
+            <SearchBox value={q} onChange={setQ} placeholder={`Search ${res.title.toLowerCase()}…`} className="sm:w-72" />
             {summary && <p className="ml-auto text-sm font-medium">{summary}</p>}
           </div>
           <Table>

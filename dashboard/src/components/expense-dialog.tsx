@@ -13,14 +13,14 @@ import { SearchSelect } from "@/components/pickers"
 import { SelectField } from "@/components/record-dialog"
 import { useDb } from "@/lib/backend"
 import { EXPENSE_CATEGORY, isCurrent, lookupLabel } from "@/lib/domain"
-import { friendly, money, today, type Row } from "@/lib/format"
+import { cash, fmtDate, friendly, money, today, type Row } from "@/lib/format"
 import { fundSummary } from "@/lib/funds"
 
 const isPdf = (name = "") => /\.pdf$/i.test(name)
 
 // Record money spent, with a photo or scan of the receipt (stored privately)
-export function ExpenseDialog({ open, onOpenChange, row, donorId, childId, onSaved }: {
-  open: boolean; onOpenChange: (o: boolean) => void; row?: Row | null; donorId?: string; childId?: string; onSaved: () => void
+export function ExpenseDialog({ open, onOpenChange, row, donorId, donationId, childId, onSaved }: {
+  open: boolean; onOpenChange: (o: boolean) => void; row?: Row | null; donorId?: string; donationId?: string; childId?: string; onSaved: () => void
 }) {
   const db = useDb()
   const [lists, setLists] = useState<{ donors: Row[]; children: Row[]; sponsorships: Row[]; donations: Row[]; expenses: Row[] }>({ donors: [], children: [], sponsorships: [], donations: [], expenses: [] })
@@ -29,13 +29,13 @@ export function ExpenseDialog({ open, onOpenChange, row, donorId, childId, onSav
   const [err, setErr] = useState(""), [busy, setBusy] = useState(false), [uploading, setUploading] = useState(false), [confirm, setConfirm] = useState(false)
   const [added, setAdded] = useState(0)
   const file = useRef<HTMLInputElement>(null)
-  const blank = (keep: Row = {}) => ({ spent_on: today(), description: "", category: "other", amount: "", donor_id: donorId || "", child_id: childId || "", vendor: "", receipt_path: "", receipt_name: "", notes: "", ...keep })
+  const blank = (keep: Row = {}) => ({ spent_on: today(), description: "", category: "other", amount: "", donor_id: donorId || "", donation_id: donationId || "", child_id: childId || "", vendor: "", receipt_path: "", receipt_name: "", notes: "", ...keep })
 
   useEffect(() => {
     if (!open) return
     setErr(""); setAdded(0)
     Promise.all(["donors", "children", "sponsorships", "donations", "expenses"].map((t) => db.list(t))).then(([donors, children, sponsorships, donations, expenses]) => setLists({ donors, children, sponsorships, donations, expenses }))
-    setV(row ? { ...row, donor_id: row.donor_id || "", child_id: row.child_id || "" } : blank())
+    setV(row ? { ...row, donor_id: row.donor_id || "", donation_id: row.donation_id || "", child_id: row.child_id || "" } : blank())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, row, donorId, childId, db])
   useEffect(() => {
@@ -46,7 +46,15 @@ export function ExpenseDialog({ open, onOpenChange, row, donorId, childId, onSav
 
   const set = (patch: Row) => setV((x) => ({ ...x, ...patch }))
   const fund = v.donor_id ? lists.donors.find((d) => d.id === v.donor_id) : null
-  const left = fund ? fundSummary(fund, lists.donations, lists.expenses.filter((e) => e.id !== row?.id)).balance : null
+  const others = lists.expenses.filter((e) => e.id !== row?.id)
+  const left = fund ? fundSummary(fund, lists.donations, others).balance : null
+  // What is left of each gift (other expenses already paid from it)
+  const giftLeft = (d: Row) => Number(d.amount) - others.filter((e) => e.donation_id === d.id).reduce((t, e) => t + Number(e.amount), 0)
+  const gifts = lists.donations.filter((d) => (v.donor_id ? d.donor_id === v.donor_id : !d.donor_id)).sort((a, b) => (a.received_on < b.received_on ? 1 : -1))
+  const gift = v.donation_id ? lists.donations.find((d) => d.id === v.donation_id) : null
+  const giftChoices = gifts.map((d) => ({ value: d.id, label: `${fmtDate(d.received_on)} · ${d.currency !== "KES" && d.original_amount ? `${cash(d.original_amount, d.currency)} (${money(d.amount)})` : money(d.amount)}${v.donor_id ? "" : " · " + d.donor_name}`, sub: `${money(giftLeft(d))} left` }))
+  // Choosing a gift also sets whose funds it is
+  const chooseGift = (id: string) => { const d = lists.donations.find((x) => x.id === id); set({ donation_id: id, ...(d ? { donor_id: d.donor_id || "" } : {}) }) }
   // Picking a sponsored child suggests their sponsor's funds
   function chooseChild(id: string) {
     const sponsor = lists.sponsorships.find((s) => s.child_id === id && !s.ended_on)
@@ -69,14 +77,14 @@ export function ExpenseDialog({ open, onOpenChange, row, donorId, childId, onSav
     if (v.amount === "" || !(Number(v.amount) >= 0)) return setErr("Enter the amount in KES.")
     setBusy(true)
     try {
-      const data = { spent_on: v.spent_on, description: v.description.trim(), category: v.category, amount: Number(v.amount), donor_id: v.donor_id || null, child_id: v.child_id || null,
+      const data = { spent_on: v.spent_on, description: v.description.trim(), category: v.category, amount: Number(v.amount), donor_id: v.donor_id || null, donation_id: v.donation_id || null, child_id: v.child_id || null,
         vendor: v.vendor.trim(), receipt_path: v.receipt_path, receipt_name: v.receipt_name, notes: v.notes.trim() }
       if (row) await db.update("expenses", row.id, data); else await db.insert("expenses", data)
       onSaved()
       if (another) {
         toast.success(`Saved: ${data.description}`)
         setAdded((n) => n + 1)
-        setV(blank({ spent_on: v.spent_on, category: v.category, donor_id: v.donor_id, vendor: v.vendor }))
+        setV(blank({ spent_on: v.spent_on, category: v.category, donor_id: v.donor_id, donation_id: v.donation_id, vendor: v.vendor }))
         setTimeout(() => document.getElementById("ex_desc")?.focus(), 50)
         setLists((l) => ({ ...l, expenses: [...l.expenses, data] }))
       } else { toast.success(row ? "Expense updated" : "Expense recorded"); onOpenChange(false) }
@@ -93,7 +101,7 @@ export function ExpenseDialog({ open, onOpenChange, row, donorId, childId, onSav
           <form onSubmit={(e) => { e.preventDefault(); save(false) }} className="grid gap-4">
             <DialogHeader>
               <DialogTitle>{row ? "Edit expense" : "Record an expense"}</DialogTitle>
-              <DialogDescription>{added ? `${added} saved so far. Keep going, or close when you're done.` : "Take a photo of the receipt or attach a scan. It is stored privately."}</DialogDescription>
+              <DialogDescription className={added ? undefined : "sr-only"}>{added ? `${added} saved so far` : "Record an expense"}</DialogDescription>
             </DialogHeader>
 
             {/* Receipt first: it's what you have in your hand */}
@@ -120,10 +128,15 @@ export function ExpenseDialog({ open, onOpenChange, row, donorId, childId, onSav
               <div className="grid gap-1.5"><Label htmlFor="ex_date">Date</Label><Input id="ex_date" type="date" required value={v.spent_on ?? ""} onChange={(e) => set({ spent_on: e.target.value })} /></div>
               <div className="grid gap-1.5"><Label htmlFor="ex_cat">Category</Label><SelectField id="ex_cat" value={v.category ?? "other"} options={EXPENSE_CATEGORY} onChange={(c) => set({ category: c })} /></div>
               <div className="grid gap-1.5"><Label htmlFor="ex_vendor">Paid to</Label><Input id="ex_vendor" value={v.vendor ?? ""} onChange={(e) => set({ vendor: e.target.value })} placeholder="Shop, school, hospital…" /></div>
-              <div className="grid gap-1.5"><Label htmlFor="ex_fund">Paid from</Label>
-                <SearchSelect id="ex_fund" value={v.donor_id ?? ""} onChange={(id) => set({ donor_id: id })} placeholder="General funds" choices={donorChoices} extra={[{ value: "", label: "General funds" }]} />
+              <div className="grid min-w-0 gap-1.5"><Label htmlFor="ex_fund">Paid from</Label>
+                <SearchSelect id="ex_fund" value={v.donor_id ?? ""} onChange={(id) => set({ donor_id: id, donation_id: "" })} placeholder="General funds" choices={donorChoices} extra={[{ value: "", label: "General funds" }]} />
                 {fund && left != null && <p className="text-xs text-muted-foreground">{fund.name}'s funds: {money(left)} left before this.</p>}</div>
-              <div className="grid gap-1.5"><Label htmlFor="ex_child">For a child (optional)</Label>
+              <div className="grid min-w-0 gap-1.5"><Label htmlFor="ex_gift">From which donation</Label>
+                <SearchSelect id="ex_gift" value={v.donation_id ?? ""} onChange={chooseGift} placeholder={fund ? "Any of their gifts" : "Not a specific gift"} choices={giftChoices}
+                  extra={[{ value: "", label: fund ? "Any of their gifts" : "Not a specific gift" }]} />
+                {gift && <p className={"text-xs " + (Number(v.amount) > giftLeft(gift) ? "font-medium text-destructive" : "text-muted-foreground")}>
+                  {money(giftLeft(gift))} of this gift left before this{Number(v.amount) > giftLeft(gift) ? ": this expense is more than what's left" : ""}.</p>}</div>
+              <div className="grid min-w-0 gap-1.5"><Label htmlFor="ex_child">For a child (optional)</Label>
                 <SearchSelect id="ex_child" value={v.child_id ?? ""} onChange={chooseChild} placeholder="Not for one child" choices={childChoices} extra={[{ value: "", label: "Not for one child" }]} /></div>
               <div className="grid gap-1.5 sm:col-span-2"><Label htmlFor="ex_notes">Notes</Label><Textarea id="ex_notes" rows={2} value={v.notes ?? ""} onChange={(e) => set({ notes: e.target.value })} /></div>
             </div>

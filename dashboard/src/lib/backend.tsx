@@ -20,6 +20,12 @@ export type Backend = {
   removePrivate(path: string): Promise<void>
   uploadDocument(file: File, folder?: string): Promise<string>
   documentUrl(path: string, downloadName?: string): Promise<string>
+  // Staff logins
+  passwordSetup: "" | "invite" | "recovery"
+  setPassword(password: string): Promise<void>
+  sendPasswordReset(email: string): Promise<void>
+  inviteStaff(email: string, staffId?: string): Promise<{ ok: boolean; user_id?: string }>
+  removeAccess(userId: string): Promise<void>
 }
 
 type Session = { db: Backend; user: { email: string }; configured: boolean }

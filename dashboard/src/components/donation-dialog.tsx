@@ -98,7 +98,7 @@ export function DonationDialog({ open, onOpenChange, row, donorId, onSaved }: {
           <form onSubmit={save} className="grid gap-4">
             <DialogHeader>
               <DialogTitle>{row ? "Edit donation" : "Record a donation"}</DialogTitle>
-              <DialogDescription>Choose the donor first: their usual currency, rate and purpose fill in for you.</DialogDescription>
+              <DialogDescription className="sr-only">Record a donation</DialogDescription>
             </DialogHeader>
 
             <div className="grid gap-1.5">
@@ -107,7 +107,9 @@ export function DonationDialog({ open, onOpenChange, row, donorId, onSaved }: {
                 choices={choices} onChange={(id) => (id === "" || id === NEW ? set({ donor: id }) : choose(id))}
                 extra={[{ value: "", label: "Someone else / anonymous" }, ...(newName ? [{ value: NEW, label: `New donor: ${newName}` }] : [])]}
                 onCreate={(text) => { setNewName(text); set({ donor: NEW }) }} />
-              {v.donor === "" && <Input aria-label="Name" value={v.name ?? ""} onChange={(e) => set({ name: e.target.value })} placeholder="Name, or Anonymous" />}
+              {v.donor === "" && <>
+                <Input aria-label="Name" value={v.name ?? ""} onChange={(e) => set({ name: e.target.value })} placeholder="Name, or Anonymous" />
+                <p className="text-xs text-muted-foreground">New names are added to Donors automatically.</p></>}
               {v.donor === NEW && <p className="text-xs text-muted-foreground">“{newName}” will be added to your donors when you save.</p>}
               {last && <p className="flex items-center gap-1.5 text-xs text-muted-foreground"><InfoIcon className="size-3.5" />
                 Last gift: {last.currency !== "KES" && last.original_amount ? `${cash(last.original_amount, last.currency)} (${money(last.amount)})` : money(last.amount)} on {fmtDate(last.received_on)}

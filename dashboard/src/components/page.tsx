@@ -8,17 +8,12 @@ export function TitleProvider({ children }: { children: ReactNode }) {
 }
 export const usePageTitleValue = () => useContext(TitleCtx).title
 
-export function Page({ title, actions, intro, children }: { title: string; actions?: ReactNode; intro?: ReactNode; children: ReactNode }) {
+export function Page({ title, actions, children }: { title: string; actions?: ReactNode; children: ReactNode }) {
   const { setTitle } = useContext(TitleCtx)
-  useEffect(() => { setTitle(title); document.title = `${title} – Namelok Dashboard` }, [title, setTitle])
+  useEffect(() => { setTitle(title); document.title = `${title} · Namelok Dashboard` }, [title, setTitle])
   return (
-    <div className="grid gap-5">
-      {(intro || actions) && (
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="max-w-2xl text-sm text-muted-foreground">{intro}</div>
-          {actions && <div className="flex flex-wrap gap-2">{actions}</div>}
-        </div>
-      )}
+    <div className="grid min-w-0 grid-cols-1 gap-5 [&>*]:min-w-0">
+      {actions && <div className="flex flex-wrap items-center justify-end gap-2">{actions}</div>}
       {children}
     </div>
   )
