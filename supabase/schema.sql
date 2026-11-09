@@ -218,6 +218,7 @@ create table if not exists public.expenses (
                     'hygiene', 'transport', 'utilities', 'building', 'outreach', 'admin', 'other')),
   amount        numeric(12, 2) not null check (amount >= 0),          -- KES
   donor_id      uuid references public.donors (id) on delete set null, -- null = general funds
+  donation_id   uuid references public.donations (id) on delete set null, -- a specific gift it was paid from
   child_id      uuid references public.children (id) on delete set null,
   vendor        text not null default '',
   receipt_path  text not null default '',
@@ -227,6 +228,7 @@ create table if not exists public.expenses (
   updated_at    timestamptz not null default now()
 );
 create index if not exists expenses_donor on public.expenses (donor_id, spent_on);
+create index if not exists expenses_donation on public.expenses (donation_id);
 
 -- A donor supporting a specific child
 create table if not exists public.sponsorships (
@@ -413,7 +415,7 @@ on conflict (key) do nothing;
 create table if not exists public.reports (
   id            uuid primary key default gen_random_uuid(),
   title         text not null check (char_length(title) between 1 and 200),
-  kind          text not null default 'monthly' check (kind in ('monthly', 'quarterly', 'annual', 'custom')),
+  kind          text not null default 'monthly' constraint reports_kind_check check (kind in ('daily', 'monthly', 'quarterly', 'annual', 'custom')),
   period_start  date not null,
   period_end    date not null,
   donor_id      uuid references public.donors (id) on delete set null,
@@ -424,6 +426,7 @@ create table if not exists public.reports (
   challenges    text not null default '',
   next_steps    text not null default '',
   figures       jsonb,                              -- numbers as they were when the report was made
+  document_html text,                               -- the document as edited by hand (null = built from the figures)
   file_path     text not null default '',           -- an uploaded report file in the "documents" folder
   file_name     text not null default '',
   created_at    timestamptz not null default now(),
@@ -478,4 +481,53 @@ grant select, insert, update, delete on public.calendar_events to authenticated;
 
 drop trigger if exists touch_calendar_events on public.calendar_events;
 create trigger touch_calendar_events before update on public.calendar_events
+  for each row execute function public.touch_updated_at();
+
+-- ─────────────────────────────────────────────────────────────
+-- Staff
+-- ─────────────────────────────────────────────────────────────
+-- Staff: records and documents only (no salaries)
+create table if not exists public.staff (
+  id                 uuid primary key default gen_random_uuid(),
+  full_name          text not null check (char_length(full_name) between 1 and 150),
+  role               text not null default '',
+  email              text not null default '',
+  phone              text not null default '',
+  start_date         date,
+  contract_type      text not null default '' check (contract_type in ('', 'permanent', 'fixed_term', 'casual', 'volunteer')),
+  status             text not null default 'active' check (status in ('active', 'left')),
+  id_number          text not null default '',
+  next_of_kin_name   text not null default '',
+  next_of_kin_phone  text not null default '',
+  notes              text not null default '',
+  user_id            uuid references auth.users (id) on delete set null,  -- their dashboard login, once invited
+  created_at         timestamptz not null default now(),
+  updated_at         timestamptz not null default now()
+);
+
+-- Contracts, CVs, copies of ID… (files in the private "documents" folder)
+create table if not exists public.staff_documents (
+  id          uuid primary key default gen_random_uuid(),
+  staff_id    uuid not null references public.staff (id) on delete cascade,
+  title       text not null default '',
+  file_path   text not null,
+  file_name   text not null default '',
+  created_at  timestamptz not null default now()
+);
+
+do $$
+declare t text;
+begin
+  foreach t in array array['staff', 'staff_documents']
+  loop
+    execute format('alter table public.%I enable row level security', t);
+    execute format('drop policy if exists admin_all on public.%I', t);
+    execute format('create policy admin_all on public.%I for all to authenticated using (public.is_admin()) with check (public.is_admin())', t);
+    execute format('grant select, insert, update, delete on public.%I to authenticated', t);
+    execute format('drop trigger if exists audit_%1$s on public.%1$s', t);
+    execute format('create trigger audit_%1$s after insert or update or delete on public.%1$s for each row execute function public.write_audit()', t);
+  end loop;
+end $$;
+drop trigger if exists touch_staff on public.staff;
+create trigger touch_staff before update on public.staff
   for each row execute function public.touch_updated_at();
