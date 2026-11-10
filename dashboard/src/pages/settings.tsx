@@ -16,7 +16,7 @@ const GROUPS: [string, string, string[]][] = [
 
 export function SettingsPage() {
   const db = useDb()
-  const { data, error } = useTables(["site_settings"], { site_settings: { order: "key", ascending: true } })
+  const { data, error, reload } = useTables(["site_settings"], { site_settings: { order: "key", ascending: true } })
   const [values, setValues] = useState<Record<string, string>>({})
   const [saving, setSaving] = useState(false)
   useEffect(() => { if (data) setValues(Object.fromEntries(data.site_settings.map((s) => [s.key, s.value]))) }, [data])
@@ -24,8 +24,9 @@ export function SettingsPage() {
   async function save() {
     setSaving(true)
     try {
-      for (const s of data!.site_settings) if ((values[s.key] ?? "").trim() !== s.value) { await db.saveSetting(s.key, values[s.key].trim()); s.value = values[s.key].trim() }
+      for (const s of data!.site_settings) if ((values[s.key] ?? "").trim() !== s.value) await db.saveSetting(s.key, values[s.key].trim())
       toast.success("Saved. The website will show the new details.")
+      reload()
     } catch (e) { toast.error("Could not save: " + (e as Error).message) }
     setSaving(false)
   }

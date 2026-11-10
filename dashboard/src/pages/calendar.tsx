@@ -14,7 +14,7 @@ import { fmtDate, iso, today, type Row } from "@/lib/format"
 
 const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
-export function useEvents() {
+function useEvents() {
   const { data, error, reload } = useTables(["calendar_events", "outreach_visits", "child_events", "children"])
   const events = useMemo(() => (data ? collectEvents(data.calendar_events, data.outreach_visits, data.child_events, data.children) : null), [data])
   return { events, error, reload }
