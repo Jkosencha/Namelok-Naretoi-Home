@@ -36,9 +36,9 @@ const opt = (pairs: [string, string][]): Option[] => pairs.map(([value, label]) 
 export const label = (options: Option[] | undefined, value: unknown) => (options?.find((o) => o.value === value) || { label: String(value ?? "") }).label
 
 export const CHILD_CATEGORY = opt([["disability", "Disability"], ["rescued_girl", "Rescued girl"], ["rescued_boy", "Rescued boy"], ["vulnerable", "Vulnerable home"]])
-export const CHILD_STATUS = opt([["in_care", "In care at the home"], ["boarding_school", "At boarding school"], ["at_campus", "At University"], ["graduated", "Finished school"], ["reintegrated", "Back with family"], ["exited", "Left the programme"]])
+export const CHILD_STATUS = opt([["in_care", "In care at the home"], ["boarding_school", "At boarding school"], ["at_campus", "At university, college or polytechnic"], ["graduated", "Finished school"], ["reintegrated", "Back with family"], ["exited", "Left the programme"]])
 // Currently supported vs. moved on (moved-on children stay in the records)
-const CURRENT_STATUSES = ["in_care", "boarding_school"]
+const CURRENT_STATUSES = ["in_care", "boarding_school", "at_campus"]
 export const MOVED_ON = ["graduated", "reintegrated", "exited"]
 export const isCurrent = (c: { status?: string }) => CURRENT_STATUSES.includes(c.status || "")
 export const REFERRAL = opt([["", "Not recorded"], ["chief", "Chief"], ["do", "District Officer"], ["dc", "District Commissioner"], ["court", "Court"], ["hospital", "Hospital"], ["school", "School"], ["family", "Family"], ["self", "Came on their own"], ["other", "Other"]])
