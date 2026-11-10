@@ -1,0 +1,130 @@
+/* NAMELOK NARETOI HOME: PROGRAMMES PAGE
+   Five programmes on one page: a row of buttons opens each one below.
+   The navbar, page header, buttons and footer come from theme.css. */
+
+h1, h2, h3, h4, p { margin: 0; }
+
+.container { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
+.container.narrow { max-width: 820px; }
+.section { padding: 90px 0; }
+
+/* ---------- Programme buttons ---------- */
+.prog-picker { padding: 90px 0 0; }
+.prog-picker > .container > h2, .prog-picker > .container > p { text-align: center; }
+.prog-picker h2 { font-size: clamp(1.8rem, 3vw, 2.5rem); line-height: 1.25; margin-bottom: 12px; }
+.prog-picker > .container > p { color: var(--ink-mute); font-size: 1.05rem; }
+
+.prog-tabs {
+  position: sticky; top: var(--nav-h); z-index: 50;
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px;
+  margin-top: 40px; padding: 12px; background: #fff;
+  border: 1px solid var(--border-soft); border-radius: 18px; box-shadow: var(--shadow-md);
+}
+.prog-tab {
+  display: flex; align-items: center; gap: 12px; padding: 14px 14px; text-align: left;
+  border-radius: 12px; text-decoration: none; color: var(--ink);
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+.prog-tab:hover { background: var(--cream); }
+.prog-tab-icon {
+  display: grid; place-items: center; flex-shrink: 0; width: 46px; height: 46px; border-radius: 12px;
+  background: color-mix(in srgb, var(--c) 14%, #fff); color: var(--c);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+.prog-tab-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.prog-tab strong { font-family: var(--font-display); font-size: 0.95rem; line-height: 1.25; }
+.prog-tab small { font-size: 0.78rem; line-height: 1.35; color: var(--ink-mute); }
+.prog-tab[aria-selected="true"] { background: var(--navy); color: #fff; }
+.prog-tab[aria-selected="true"] small { color: rgba(255, 255, 255, 0.7); }
+.prog-tab[aria-selected="true"] .prog-tab-icon { background: var(--c); color: #fff; }
+
+/* ---------- One programme ---------- */
+.prog-panels { padding-top: 80px; }
+.prog-panel { animation: progIn 0.5s cubic-bezier(0.2, 0.7, 0.3, 1); }
+.prog-panel[hidden] { display: none; }
+@keyframes progIn { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+
+/* Photos and the programme's story, side by side */
+.prog-story { display: grid; grid-template-columns: 0.9fr 1fr; gap: clamp(40px, 6vw, 90px); align-items: center; }
+.prog-photos { position: relative; margin: 0 0 40px; padding: 0 40px 0 0; }
+.prog-photos::before {              /* coloured arch behind the photo, in the programme's colour */
+  content: ""; position: absolute; inset: 30px 0 -30px 40px; border-radius: 999px 999px 24px 24px;
+  background: color-mix(in srgb, var(--c) 16%, #fff);
+}
+.prog-photo-main {
+  position: relative; display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover;
+  border-radius: 999px 999px 24px 24px; box-shadow: var(--shadow-lg);
+}
+.prog-photo-inset {
+  position: absolute; right: 0; bottom: -30px; width: 42%; aspect-ratio: 1; object-fit: cover;
+  border: 8px solid #fff; border-radius: 50%; box-shadow: var(--shadow-md);
+}
+.prog-text h2 {
+  position: relative; margin-bottom: 22px; padding-bottom: 20px;
+  font-size: clamp(1.9rem, 3.2vw, 2.8rem); font-weight: 900; line-height: 1.16;
+}
+.prog-text h2::after { content: ""; position: absolute; left: 0; bottom: 0; width: 64px; height: 4px; border-radius: 4px; background: var(--c); }
+.prog-lead { margin-bottom: 16px; font-size: 1.15rem; line-height: 1.7; color: var(--ink); }
+.prog-text p:not(.prog-lead) { line-height: 1.8; color: var(--ink-mute); }
+.prog-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+
+/* How we help: a numbered list with large outlined numbers */
+.prog-how {
+  display: grid; grid-template-columns: 0.75fr 1.6fr; gap: clamp(30px, 5vw, 80px);
+  margin-top: 100px; padding: clamp(36px, 5vw, 64px); border-radius: 28px; background: var(--cream);
+}
+.prog-how h3 { font-size: clamp(1.5rem, 2.4vw, 2rem); line-height: 1.3; align-self: start; position: sticky; top: calc(var(--nav-h) + 140px); }
+.prog-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0 40px; }
+.prog-steps li { display: flex; gap: 18px; padding: 26px 0; border-top: 1px solid rgba(19, 50, 74, 0.12); }
+.prog-steps li:nth-child(-n + 2) { border-top: 0; padding-top: 0; }
+.prog-step-num {
+  flex-shrink: 0; width: 3.3rem; font-family: var(--font-display); font-size: 2.6rem; font-weight: 900; line-height: 1;
+  color: transparent; -webkit-text-stroke: 1.5px var(--c);
+}
+.prog-steps h4 { margin-bottom: 8px; font-size: 1.05rem; line-height: 1.35; color: var(--ink); }
+.prog-steps p { font-size: 0.93rem; line-height: 1.75; color: var(--ink-mute); }
+
+/* ---------- Approach quote ---------- */
+.prog-quote { padding: 110px 0 20px; text-align: center; }
+.prog-quote blockquote {
+  position: relative; margin: 0; padding-top: 60px;
+  font-family: var(--font-display); font-size: clamp(1.4rem, 2.6vw, 2rem); font-style: italic; line-height: 1.5; color: var(--ink);
+}
+.prog-quote blockquote::before {
+  content: "\201C"; position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+  font-size: 6rem; line-height: 1; color: var(--amber); font-style: normal;
+}
+
+/* ---------- Call-to-action band ---------- */
+.callout {
+  display: flex; align-items: center; justify-content: space-between; gap: 30px; flex-wrap: wrap;
+  padding: 46px clamp(26px, 5vw, 56px); border-radius: 22px; background: var(--navy); box-shadow: var(--shadow-md);
+}
+.callout h2 { margin-bottom: 8px; font-size: clamp(1.5rem, 2.8vw, 2.1rem); color: #fff; }
+.callout p { max-width: 560px; line-height: 1.7; color: rgba(255, 255, 255, 0.85); }
+
+/* ---------- Smaller screens ---------- */
+@media (max-width: 1100px) {
+  .prog-tabs { grid-template-columns: repeat(5, minmax(150px, 1fr)); overflow-x: auto; scrollbar-width: none; }
+  .prog-tabs::-webkit-scrollbar { display: none; }
+  .prog-tab small { display: none; }
+}
+@media (max-width: 860px) {
+  .prog-story { grid-template-columns: 1fr; }
+  .prog-photos { max-width: 420px; margin: 0 auto 50px; }
+  .prog-how { grid-template-columns: 1fr; margin-top: 70px; }
+  .prog-how h3 { position: static; }
+}
+@media (max-width: 640px) {
+  .section { padding: 64px 0; }
+  .prog-picker { padding-top: 60px; }
+  .prog-tabs { grid-template-columns: repeat(5, 76%); gap: 8px; margin: 28px -20px 0; border-radius: 0; border-left: 0; border-right: 0; scroll-snap-type: x mandatory; }
+  .prog-tab { scroll-snap-align: center; }
+  .prog-panels { padding-top: 50px; }
+  .prog-steps { grid-template-columns: 1fr; }
+  .prog-how { padding: 30px 22px; }
+  .prog-step-num { width: 2.8rem; font-size: 2.2rem; }
+  .prog-steps li:nth-child(2) { border-top: 1px solid rgba(19, 50, 74, 0.12); padding-top: 26px; }
+  .prog-quote { padding-top: 80px; }
+  .callout .btn { width: 100%; }
+}

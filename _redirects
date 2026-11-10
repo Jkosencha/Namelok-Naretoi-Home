@@ -1,0 +1,11 @@
+# The five programme pages now live as sections of the Programmes page (services.html)
+/medical-rehabilitation.html  /services.html#rehabilitation  301
+/medical-rehabilitation       /services.html#rehabilitation  301
+/education.html               /services.html#education       301
+/education                    /services.html#education       301
+/rescue-girls.html            /services.html#rescue          301
+/rescue-girls                 /services.html#rescue          301
+/safe-home.html               /services.html#safe-home       301
+/safe-home                    /services.html#safe-home       301
+/community-outreach.html      /services.html#outreach        301
+/community-outreach           /services.html#outreach        301
