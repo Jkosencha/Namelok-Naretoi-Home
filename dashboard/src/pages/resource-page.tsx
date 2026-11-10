@@ -9,7 +9,7 @@ import { ErrorNote, Loading, Page } from "@/components/page"
 import { RecordDialog } from "@/components/record-dialog"
 import { useTables } from "@/lib/backend"
 import { label, lookupLabel, RESOURCES } from "@/lib/domain"
-import { capital, fmtDate, money, siteImg, type Row } from "@/lib/format"
+import { capital, fmtDate, siteImg, type Row } from "@/lib/format"
 
 export function ResourcePage({ name }: { name: string }) {
   const res = RESOURCES[name]
@@ -19,7 +19,7 @@ export function ResourcePage({ name }: { name: string }) {
   const [editing, setEditing] = useState<Row | null>(null)
   const [open, setOpen] = useState(false)
 
-  const rows = data?.[res.table] || []
+  const rows = useMemo(() => data?.[res.table] || [], [data, res.table])
   const shown = useMemo(() => rows.filter((r) => !q || JSON.stringify(r).toLowerCase().includes(q.toLowerCase())), [rows, q])
   const lookup = (table: string, id: string) => { const v = data?.[table]?.find((r) => r.id === id); return v ? lookupLabel(table, v) : "" }
 
@@ -29,15 +29,11 @@ export function ResourcePage({ name }: { name: string }) {
     if (field.type === "image") return v ? <img src={siteImg(v)} alt="" className="h-10 w-14 rounded-md object-cover" /> : null
     if (field.type === "checkbox") return v ? <Badge variant="secondary" className="bg-emerald-500/10 text-emerald-700 dark:text-emerald-400">Yes</Badge> : <Badge variant="outline">No</Badge>
     if (field.type === "date") return fmtDate(v)
-    if (key === "amount") return <span className="font-medium tabular-nums">{money(v)}</span>
     if (field.optionsFrom) return lookup(field.optionsFrom, v)
     if (key === "status") return <Badge variant={v === "active" ? "secondary" : "outline"}>{capital(String(v || ""))}</Badge>
     if (field.options) return label(field.options, v)
     return v ?? ""
   }
-
-  const summary = name === "donations" ? `${rows.length} donations · ${money(rows.reduce((s, r) => s + Number(r.amount), 0))} in total`
-    : name === "distributions" ? `${rows.reduce((s, r) => s + r.quantity, 0).toLocaleString()} items in total` : ""
 
   return (
     <Page title={res.title} actions={<Button onClick={() => { setEditing(null); setOpen(true) }}><PlusIcon /> Add {res.singular}</Button>}>
@@ -45,7 +41,6 @@ export function ResourcePage({ name }: { name: string }) {
         <Card className="gap-0 py-0">
           <div className="flex flex-wrap items-center gap-3 border-b p-3">
             <SearchBox value={q} onChange={setQ} placeholder={`Search ${res.title.toLowerCase()}…`} className="sm:w-72" />
-            {summary && <p className="ml-auto text-sm font-medium">{summary}</p>}
           </div>
           <Table>
             <TableHeader>

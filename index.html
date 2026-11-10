@@ -12,15 +12,16 @@
     <meta property="og:description" content="Supporting disabled children and rescued girls in Narok since 1991. Donate, partner, or learn more." />
     <meta property="og:image" content="images/namelokBG3.jpg" />
     <meta property="og:type" content="website" />
-    <meta name="theme-color" content="#c98d4b" />
+    <meta name="theme-color" content="#13324a" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Figtree:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet" />
 
     <!-- Styles & Fonts -->
-    <link rel="stylesheet" href="css/index.css?v=30" />
+    <link rel="stylesheet" href="css/theme.css?v=5" />
+    <link rel="stylesheet" href="css/index.css?v=34" />
 
     <title>Namelok Naretoi Home </title>
   </head>
@@ -29,184 +30,139 @@
 
     <!-- ── NAVBAR ── -->
     <div id="navbar"></div>
-    <script src="components/navbar.js?v=8"></script>
+    <script src="components/navbar.js?v=12"></script>
 
-    <!-- ── HERO ── -->
-    <section class="section1" id="home">
-      <div class="tint"></div>
-      <span class="hero-dot hero-dot-1" aria-hidden="true"></span>
-      <span class="hero-dot hero-dot-2" aria-hidden="true"></span>
-      <span class="hero-dot hero-dot-3" aria-hidden="true"></span>
-      <span class="hero-dot hero-dot-4" aria-hidden="true"></span>
-      <div class="mainBody">
-        <div class="mainText">
-          <h1>
-            Supporting vulnerable children in<br />
-            <span class="hero-accent">Narok - Kenya</span>
-          </h1>
-          <p>Supporting disabled children and rescued girls with medical care, education, and love, since 1991.</p>
-          <a href="donate.html">
-            Support Us
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.4C.9 8 3.2 4 7 4c2.1 0 3.6 1.1 5 2.9C13.4 5.1 14.9 4 17 4c3.8 0 6.1 4 4.6 7.6C19.5 16.4 12 21 12 21z"/></svg>
-          </a>
-          <a href="#aboutUs">
-            Our Story
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </a>
-        </div>
+    <!-- ── HERO: headline with the impact numbers, beside a photo ── -->
+    <section class="home-hero" id="home">
+      <div class="home-hero-card heart-mark">
+        <h1><span class="hero-accent">Charity</span> begins at home, but <span class="hero-accent">should not end</span> there.</h1>
+        <p>Medical care, school and a safe home for children living with disabilities and girls rescued from FGM and early marriage in Narok, Kenya.</p>
+        <a href="donate.html" class="btn">Donate now</a>
+      </div>
+      <div class="home-hero-photo">
+        <img src="images/aboutUs.jpg" alt="Smiling girls supported by Namelok Naretoi Home" />
       </div>
     </section>
 
-    <!-- ── ABOUT ── -->
-    <section class="section2" id="aboutUs">
-      <div class="aboutUs">
-
-        <!-- Left: image + counter attached -->
-        <div class="aboutUsLeft">
-          <div class="about-collage">
-            <span class="collage-pattern" aria-hidden="true"></span>
-            <div class="collage-circle collage-main">
-              <img src="images/namelokBG2.jpg" alt="Children at Namelok Naretoi Home" />
-            </div>
-            <div class="collage-circle collage-top">
-              <img src="images/nam10.jpg" alt="A caregiver with children at the home" />
-            </div>
-            <div class="collage-circle collage-bottom">
-              <img src="images/nam5.jpg" alt="A child in a wheelchair with a caregiver" />
-            </div>
-            <span class="collage-dot collage-dot-1" aria-hidden="true"></span>
-            <span class="collage-dot collage-dot-2" aria-hidden="true"></span>
-            <span class="collage-dot collage-dot-3" aria-hidden="true"></span>
-          </div>
-          <div class="counterContainer">
-            <div class="elementor">
-              <strong class="counter" data-target="35" data-since="1991">0</strong>
-              <p>YEARS</p>
-            </div>
-            <div class="elementor">
-              <strong class="counter" data-target="350" data-setting="children_supported">0</strong>
-              <p>CHILDREN</p>
-            </div>
-            <div class="elementor">
-              <strong class="counter" data-target="50" data-setting="girls_rescued">0</strong>
-              <p>GIRLS RESCUED</p>
-            </div>
-          </div>
+    <!-- ── NUMBERS AND PROGRAMMES ── -->
+    <section class="home-band" id="aboutUs">
+      <div class="home-band-text">
+        <h2 class="counterContainer">
+          <span class="hero-accent"><span class="counter" data-target="35" data-since="1991">0</span> years</span> of care,
+          <span class="hero-accent"><span class="counter" data-target="350" data-setting="children_supported">0</span>+ children</span> supported and
+          <span class="hero-accent"><span class="counter" data-target="50" data-setting="girls_rescued">0</span>+ girls</span> rescued.
+        </h2>
+        <p>
+          We stand up for the children others hid away. Franciska started Namelok Naretoi in Narok for children living
+          with disabilities who were hidden at home. Today it is a safe home, a school sponsor and a voice in the community.
+        </p>
+        <div class="home-band-actions">
+          <a href="contact.html?reason=volunteering" class="btn">Join us</a>
+          <a href="about.html" class="btn btn-teal">Learn more</a>
         </div>
+      </div>
 
-        <!-- Right: text -->
-        <div class="aboutUsText">
-          <h3>
-            Dedicated to the most vulnerable children in our community since 1991.
-          </h3>
-          <p>
-            Namelok Naretoi is a registered community based organisation founded in Narok, Kenya.
-            We support children living with disabilities through medical rehabilitation and scholarships,
-            rescue girls from FGM and early marriage, and provide shelter, counseling, and education
-            to those who need it most.
-          </p>
-          <div class="about-actions">
-            <a href="about.html">Learn More</a>
-            <button type="button" class="video-btn" id="videoOpen">
-              <span class="video-btn-icon" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="18" height="18"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>
-              </span>
-              Watch Video
-            </button>
+      <div class="home-programs" id="programs">
+        <a class="home-program" href="services.html#rehabilitation" style="--c: #2f8572">
+          <div class="home-program-head">
+            <span class="home-program-icon">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+            </span>
+            <h3>Disability rehabilitation</h3>
           </div>
-        </div>
-
+          <p>Medical treatment, physiotherapy and follow-up for children living with disabilities.</p>
+        </a>
+        <a class="home-program" href="services.html#education" style="--c: #f5a623">
+          <div class="home-program-head">
+            <span class="home-program-icon">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/><path d="M22 10v6"/></svg>
+            </span>
+            <h3>Inclusive education</h3>
+          </div>
+          <p>Scholarships and support in special needs and mainstream schools, based on each child's abilities.</p>
+        </a>
+        <a class="home-program" href="services.html#rescue" style="--c: #e0573e">
+          <div class="home-program-head">
+            <span class="home-program-icon">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg>
+            </span>
+            <h3>Rescue of girls</h3>
+          </div>
+          <p>Safety, counselling and a fresh start for girls escaping FGM and early marriage.</p>
+        </a>
+        <a class="home-program" href="services.html#safe-home" style="--c: #3f6fd1">
+          <div class="home-program-head">
+            <span class="home-program-icon">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10 12 3l9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+            </span>
+            <h3>A safe home</h3>
+          </div>
+          <p>A loving, stable place where children in recovery get the care they need.</p>
+        </a>
       </div>
     </section>
 
-    <!-- ── WHAT WE DO ── -->
-    <section class="programs-section" id="programs">
-      <div class="programs-inner">
-        <div class="programs-head">
-          <h2>Making a Difference</h2>
-          <p>Four ways we care for the most vulnerable children in our community.</p>
-        </div>
-        <div class="programs-grid">
-          <div class="program-card">
-            <div class="program-icon">
-              <svg viewBox="0 0 48 48" width="38" height="38" fill="none" stroke="currentColor" aria-hidden="true"><path d="M24 41s-15-9.2-15-20.2C9 15.4 13 12 17.4 12c3 0 5.2 1.6 6.6 3.8C25.4 13.6 27.6 12 30.6 12 35 12 39 15.4 39 20.8 39 31.8 24 41 24 41z"/><path d="M14 25h6l2.5-5 4 9 2.5-4H34"/></svg>
-            </div>
-            <h3>Healthcare</h3>
-            <p>Medical treatment, physiotherapy and rehabilitation for children living with disabilities.</p>
-          </div>
-          <div class="program-card">
-            <div class="program-icon">
-              <svg viewBox="0 0 48 48" width="38" height="38" fill="none" stroke="currentColor" aria-hidden="true"><path d="M4 18l20-9 20 9-20 9z"/><path d="M12 22v9c0 3 5.4 6 12 6s12-3 12-6v-9"/><path d="M42 19v11"/></svg>
-            </div>
-            <h3>Inclusive Education</h3>
-            <p>Scholarships and support in special needs and mainstream schools, based on each child's abilities.</p>
-          </div>
-          <div class="program-card">
-            <div class="program-icon">
-              <svg viewBox="0 0 48 48" width="38" height="38" fill="none" stroke="currentColor" aria-hidden="true"><path d="M24 5l15 6v11c0 9.5-6.4 17.6-15 21-8.6-3.4-15-11.5-15-21V11z"/><path d="M17 24l5 5 9-10"/></svg>
-            </div>
-            <h3>Rescued Girls</h3>
-            <p>Safety, counseling and a fresh start for girls escaping FGM and early marriage.</p>
-          </div>
-          <div class="program-card">
-            <div class="program-icon">
-              <svg viewBox="0 0 48 48" width="38" height="38" fill="none" stroke="currentColor" aria-hidden="true"><path d="M6 22L24 7l18 15"/><path d="M11 18v22h26V18"/><path d="M20 40V29h8v11"/></svg>
-            </div>
-            <h3>A Safe Home</h3>
-            <p>A loving, stable place where children in recovery get the care and resources they need.</p>
-          </div>
-        </div>
+    <!-- ── ABOUT AND VIDEO ── -->
+    <section class="lift-section">
+      <h2>There is <span class="hero-accent">no exercise</span> better for the heart than reaching down and <span class="hero-accent">lifting people.</span></h2>
+      <p>
+        Namelok Naretoi is a registered community based organisation founded in Narok, Kenya.
+        We support children living with disabilities through medical rehabilitation and scholarships,
+        rescue girls from FGM and early marriage, and provide shelter, counselling and education
+        to those who need it most.
+      </p>
+      <div class="lift-actions">
+        <a href="about.html" class="btn">About us</a>
+        <button type="button" class="video-link" id="videoOpen">
+          Watch our video
+          <span class="video-link-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg></span>
+        </button>
       </div>
     </section>
 
-    <!-- ── STORIES ── -->
+    <!-- ── STORIES: a slider of cards ── -->
     <section class="stories-section" id="stories">
-      <h2>Impact Stories</h2>
-      <p class="stories-subtitle">Real lives changed. Real stories from Narok.</p>
+      <div class="stories-head">
+        <div>
+          <h2>It's not how much we give, but how much <span class="hero-accent">love we put into giving.</span></h2>
+          <p class="stories-subtitle">Real lives changed. Real stories from Narok.</p>
+        </div>
+        <div class="stories-arrows">
+          <button type="button" class="stories-prev" aria-label="Previous stories"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+          <button type="button" class="stories-next" aria-label="More stories"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        </div>
+      </div>
       <div class="stories-grid">
-
         <article class="story-card">
-          <img src="images/aboutUs3.jpg" alt="Story of rescue and resilience" />
+          <img src="images/aboutUs3.jpg" alt="" />
           <div class="story-card-body">
+            <span class="story-card-tag">Rescue</span>
             <h3>From Risk to Resilience</h3>
-            <p>
-              Franciska narrates how she helped a young girl avoid FGM and early marriage
-              and rewrite her future through education and support.
-            </p>
-            <a href="Stories/story1.html">Read More <svg class="arrow-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <p>Franciska narrates how she helped a young girl avoid FGM and early marriage and rewrite her future through education and support.</p>
+            <a href="Stories/story1.html">Read more <svg class="arrow-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
           </div>
         </article>
-
         <article class="story-card">
-          <img src="images/aboutUs.jpg" alt="Story of a child with disability" />
+          <img src="images/aboutUs.jpg" alt="" />
           <div class="story-card-body">
+            <span class="story-card-tag">Disability</span>
             <h3>Beyond the Diagnosis</h3>
-            <p>
-              Susan was rejected by her community because of her disability. Namelok gave her
-              a home, medical care, and a school that saw her potential.
-            </p>
-            <a href="Stories/story2.html">Read More <svg class="arrow-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <p>Susan was rejected by her community because of her disability. Namelok gave her a home, medical care, and a school that saw her potential.</p>
+            <a href="Stories/story2.html">Read more <svg class="arrow-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
           </div>
         </article>
-
         <article class="story-card">
-          <img src="images/aboutUs3.jpg" alt="Vivian's story" />
+          <img src="images/aboutUs3.jpg" alt="" />
           <div class="story-card-body">
+            <span class="story-card-tag">Education</span>
             <h3>Dreams Revived</h3>
-            <p>
-              Rescued from early marriage at 13, Vivian is now in secondary school
-              and dreams of becoming a nurse.
-            </p>
-            <a href="Stories/story3.html">Read More <svg class="arrow-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <p>Rescued from early marriage at 13, Vivian is now in secondary school and dreams of becoming a nurse.</p>
+            <a href="Stories/story3.html">Read more <svg class="arrow-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
           </div>
         </article>
-
-
-
-
       </div>
       <div class="stories-more">
-        <a href="stories.html" class="gallery-link-btn">View All Stories <svg class="arrow-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <a href="stories.html" class="gallery-link-btn">View all stories <svg class="arrow-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
     </section>
 
@@ -452,7 +408,7 @@
 
     <!-- ── FOOTER ── -->
     <div id="footer"></div>
-    <script src="components/footer.js?v=3"></script>
+    <script src="components/footer.js?v=4"></script>
 
     <!-- Video modal -->
     <dialog class="video-modal" id="videoModal" aria-label="Namelok Naretoi Home video">
@@ -468,7 +424,7 @@
     </div>
 
     <script src="js/supabase-config.js?v=1"></script>
-    <script src="js/site-data.js?v=4"></script>
-    <script src="js/index.js?v=12"></script>
+    <script src="js/site-data.js?v=5"></script>
+    <script src="js/index.js?v=17"></script>
   </body>
 </html>

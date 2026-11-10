@@ -36,9 +36,9 @@ const opt = (pairs: [string, string][]): Option[] => pairs.map(([value, label]) 
 export const label = (options: Option[] | undefined, value: unknown) => (options?.find((o) => o.value === value) || { label: String(value ?? "") }).label
 
 export const CHILD_CATEGORY = opt([["disability", "Disability"], ["rescued_girl", "Rescued girl"], ["rescued_boy", "Rescued boy"], ["vulnerable", "Vulnerable home"]])
-export const CHILD_STATUS = opt([["in_care", "In care at the home"], ["boarding_school", "At boarding school"], ["at_campus", "At University"], ["graduated", "Finished school"], ["reintegrated", "Back with family"], ["exited", "Left the programme"]])
+export const CHILD_STATUS = opt([["in_care", "In care at the home"], ["boarding_school", "At boarding school"], ["at_campus", "At university, college or polytechnic"], ["graduated", "Finished school"], ["reintegrated", "Back with family"], ["exited", "Left the programme"]])
 // Currently supported vs. moved on (moved-on children stay in the records)
-export const CURRENT_STATUSES = ["in_care", "boarding_school"]
+const CURRENT_STATUSES = ["in_care", "boarding_school", "at_campus"]
 export const MOVED_ON = ["graduated", "reintegrated", "exited"]
 export const isCurrent = (c: { status?: string }) => CURRENT_STATUSES.includes(c.status || "")
 export const REFERRAL = opt([["", "Not recorded"], ["chief", "Chief"], ["do", "District Officer"], ["dc", "District Commissioner"], ["court", "Court"], ["hospital", "Hospital"], ["school", "School"], ["family", "Family"], ["self", "Came on their own"], ["other", "Other"]])
@@ -84,9 +84,9 @@ function stageOf(track: string, name: string) {
   const g = Number((name.match(/Grade (\d+)/) || [])[1])
   return g <= 6 ? "Primary" : g <= 9 ? "Junior school" : "Senior school"
 }
-export type ClassInfo = { name: string; stage: string; level?: number; auto: boolean; finished?: boolean }
+type ClassInfo = { name: string; stage: string; level?: number; auto: boolean; finished?: boolean }
 // The child's class in a given school year
-export function classAt(c: Row, year: number): ClassInfo | null {
+function classAt(c: Row, year: number): ClassInfo | null {
   const track = CLASS_TRACKS[c.class_track]
   if (!track) return null
   if (!track.classes.length) return { name: c.class_track === "special" ? c.school_class || "Special needs unit" : "Not in school", stage: stageOf(c.class_track, ""), auto: false }
@@ -128,10 +128,6 @@ export const RESOURCES: Record<string, Resource> = {
       { name: "sort_order", label: "Order", type: "number" },
     ],
   },
-  donations: {
-    table: "donations", title: "Donations", singular: "donation", order: "received_on",
-    fields: [],
-  },
   donors: {
     table: "donors", title: "Donors", singular: "donor", order: "name", ascending: true,
     fields: [
@@ -156,23 +152,8 @@ export const RESOURCES: Record<string, Resource> = {
       { name: "notes", label: "Notes", type: "textarea" },
     ],
   },
-  outreach_visits: {
-    table: "outreach_visits", title: "School visits", singular: "visit", order: "visit_date",
-    columns: [["visit_date", "Date"], ["school_name", "School"], ["location", "Location"], ["girls_reached", "Girls"], ["boys_reached", "Boys"], ["parents_reached", "Parents"]],
-    fields: [
-      { name: "school_name", label: "School or community", required: true },
-      { name: "location", label: "Location" },
-      { name: "visit_date", label: "Date", type: "date", required: true },
-      { name: "girls_reached", label: "Girls reached", type: "number", min: 0 },
-      { name: "boys_reached", label: "Boys reached", type: "number", min: 0 },
-      { name: "parents_reached", label: "Parents reached", type: "number", min: 0 },
-      { name: "topics", label: "Topics covered", type: "textarea", rows: 2 },
-      { name: "notes", label: "Notes", type: "textarea" },
-    ],
-  },
   distributions: {
     table: "distributions", title: "Items handed out", singular: "entry", order: "distributed_on",
-    columns: [["distributed_on", "Date"], ["item", "Item"], ["quantity", "Quantity"], ["visit_id", "Visit"]],
     fields: [
       { name: "item", label: "Item", type: "select", options: ITEMS },
       { name: "quantity", label: "Quantity", type: "number", required: true, min: 1 },

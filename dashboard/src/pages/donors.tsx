@@ -106,7 +106,7 @@ export function DonorPage() {
             <Stat icon={HeartHandshakeIcon} tone={3} title="Next gift" value={exp ? monthYear(exp.next) : "Not set"} sub={exp ? (exp.tone === "late" ? "Later than usual" : exp.tone === "due" ? "Due soon" : `Last one ${fmtDate(f.last?.received_on)}`) : "Set how often they give to see this"} />
           </div>
 
-          <Sponsorships mode="donor" id={donor.id} rows={data!.sponsorships.filter((s) => s.donor_id === donor.id)} children={data!.children} donors={data!.donors} onChanged={reload} />
+          <Sponsorships mode="donor" id={donor.id} rows={data!.sponsorships.filter((s) => s.donor_id === donor.id)} kids={data!.children} donors={data!.donors} onChanged={reload} />
 
           <Tabs defaultValue="donations">
             <TabsList><TabsTrigger value="donations">Donations <span className="text-muted-foreground">{f.gifts.length}</span></TabsTrigger><TabsTrigger value="expenses">Spent from their funds <span className="text-muted-foreground">{f.spent.length}</span></TabsTrigger></TabsList>
@@ -150,7 +150,7 @@ export function DonorPage() {
 }
 
 // Who sponsors whom, shown on both the donor's and the child's page
-export function Sponsorships({ mode, id, rows, children, donors, onChanged }: { mode: "donor" | "child"; id: string; rows: Row[]; children: Row[]; donors: Row[]; onChanged: () => void }) {
+export function Sponsorships({ mode, id, rows, kids, donors, onChanged }: { mode: "donor" | "child"; id: string; rows: Row[]; kids: Row[]; donors: Row[]; onChanged: () => void }) {
   const [edit, setEdit] = useState<{ open: boolean; row: Row | null }>({ open: false, row: null })
   const resource = useMemo(() => ({ ...RESOURCES.sponsorships, fields: RESOURCES.sponsorships.fields.filter((f) => f.name !== (mode === "donor" ? "donor_id" : "child_id")) }), [mode])
   const today = iso(new Date())
@@ -158,7 +158,7 @@ export function Sponsorships({ mode, id, rows, children, donors, onChanged }: { 
   const initial = useMemo(() => ({ started_on: iso(new Date()), currency: donorCurrency }), [donorCurrency])
   const current = rows.filter((s) => !s.ended_on || s.ended_on >= today), past = rows.filter((s) => s.ended_on && s.ended_on < today)
   const item = (s: Row) => {
-    const who = mode === "donor" ? children.find((c) => c.id === s.child_id) : donors.find((d) => d.id === s.donor_id)
+    const who = mode === "donor" ? kids.find((c) => c.id === s.child_id) : donors.find((d) => d.id === s.donor_id)
     const name = who ? lookupLabel(mode === "donor" ? "children" : "donors", who) : "Unknown"
     return (
       <li key={s.id} className="flex items-center gap-3 py-2.5">

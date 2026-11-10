@@ -15,7 +15,7 @@ import { fmtDate, iso, money, type Row } from "@/lib/format"
 import { downloadCsv } from "@/lib/funds"
 
 // Quarters and years to filter by, newest first
-export function periodOptions(dates: string[]) {
+function periodOptions(dates: string[]) {
   const now = new Date()
   const years = [...new Set([now.getFullYear(), ...dates.map((d) => Number(d.slice(0, 4)))])].sort((a, b) => b - a)
   const out: { value: string; label: string }[] = []
@@ -25,13 +25,13 @@ export function periodOptions(dates: string[]) {
   }
   return [...out, { value: "", label: "All time" }]
 }
-export function periodRange(p: string): [string, string] | null {
+function periodRange(p: string): [string, string] | null {
   if (!p) return null
   const m = p.match(/^(\d{4})-Q(\d)$/)
   if (m) { const y = Number(m[1]), q = Number(m[2]); return [iso(new Date(y, (q - 1) * 3, 1)), iso(new Date(y, q * 3, 0))] }
   return [`${p}-01-01`, `${p}-12-31`]
 }
-export const thisQuarter = () => { const n = new Date(); return `${n.getFullYear()}-Q${Math.floor(n.getMonth() / 3) + 1}` }
+const thisQuarter = () => { const n = new Date(); return `${n.getFullYear()}-Q${Math.floor(n.getMonth() / 3) + 1}` }
 
 export function ExpensesPage() {
   const { data, error, reload } = useTables(["expenses", "donors", "children"], { expenses: { order: "spent_on" } })

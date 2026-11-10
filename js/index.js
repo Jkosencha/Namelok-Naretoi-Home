@@ -40,12 +40,13 @@ const counters = document.querySelectorAll(".counter");
 
 const startCount = () => {
   counters.forEach((counter) => {
-    const target = +counter.getAttribute("data-target");
     const duration = 2000;
     const frameRate = 20;
-    const increment = Math.ceil(target / (duration / frameRate));
 
+    // The target is read on every step: the dashboard's number can arrive mid-count
     const updateCount = () => {
+      const target = +counter.getAttribute("data-target");
+      const increment = Math.ceil(target / (duration / frameRate));
       let count = +counter.innerText;
       if (count < target) {
         counter.innerText = Math.min(count + increment, target);
@@ -78,9 +79,11 @@ const revealSelectors = [
   ".tl-card",
   ".story-tile",
   ".next-story-inner",
+  ".home-program",
   ".aboutUsLeft",
   ".aboutUsText",
-  ".stories-section h2",
+  ".lift-section",
+  ".stories-head",
   ".stories-subtitle",
   ".story-card",
   ".section4-heading",
@@ -91,13 +94,6 @@ const revealSelectors = [
   ".partner-marquee",
   ".service-card",
   ".video-section",
-  ".history-content",
-  ".history-cta",
-  ".donate-form-wrap",
-  ".trust-panel",
-  ".contact-form-wrap",
-  ".contact-info-panel",
-  ".impact-stat",
 ];
 
 const revealEls = document.querySelectorAll(revealSelectors.join(","));
@@ -309,4 +305,21 @@ if (slider3d) {
   window.addEventListener("resize", layout);
   layout();
   start();
+}
+
+// Home: stories slider. The arrows scroll one card at a time
+const storyTrack = document.querySelector(".stories-section .stories-grid");
+if (storyTrack) {
+  const step = (dir) => {
+    const card = storyTrack.querySelector(".story-card");
+    const gap = parseFloat(getComputedStyle(storyTrack).columnGap) || 0;
+    storyTrack.scrollBy({ left: dir * ((card ? card.offsetWidth : 300) + gap), behavior: "smooth" });
+  };
+  document.querySelector(".stories-prev").addEventListener("click", () => step(-1));
+  document.querySelector(".stories-next").addEventListener("click", () => step(1));
+  // Arrows only when there are more stories than fit (the dashboard may add or remove some)
+  const arrows = document.querySelector(".stories-arrows");
+  const toggleArrows = () => { arrows.hidden = storyTrack.scrollWidth <= storyTrack.clientWidth + 2; };
+  new ResizeObserver(toggleArrows).observe(storyTrack);
+  new MutationObserver(toggleArrows).observe(storyTrack, { childList: true });
 }

@@ -10,11 +10,12 @@
     <meta property="og:type" content="website" />
     <link rel="icon" type="image/png" href="images/logo.png" />
     <link rel="apple-touch-icon" href="images/logo.png" />
-    <meta name="theme-color" content="#c98d4b" />
+    <meta name="theme-color" content="#13324a" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Figtree:ital,wght@0,400;0,500;0,600;0,700;0,800;1,500&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="css/index.css?v=30" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/theme.css?v=5" />
+    <link rel="stylesheet" href="css/index.css?v=34" />
     <title>Contact Us – Namelok Naretoi Home</title>
     <style>
       /* ── Contact: photo hero with a card that overlaps it ── */
@@ -30,10 +31,10 @@
         content: "";
         position: absolute;
         inset: 0;
-        background: linear-gradient(105deg, rgba(20, 16, 12, 0.94) 0%, rgba(20, 16, 12, 0.7) 50%, rgba(96, 70, 42, 0.62) 100%);
+        background: linear-gradient(105deg, rgba(13, 37, 54, 0.96) 0%, rgba(19, 50, 74, 0.84) 50%, rgba(58, 155, 136, 0.55) 100%);
       }
       .ct-hero-inner { position: relative; width: 92%; max-width: 960px; margin: 0 auto; }
-      .ct-hero h1 { font-family: var(--font-display); font-weight: 400; font-size: clamp(2.4rem, 5vw, 3.4rem); line-height: 1.1; margin: 10px 0 14px; color: #fff; }
+      .ct-hero h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.4rem, 5vw, 3.4rem); line-height: 1.1; margin: 10px 0 14px; color: #fff; }
       .ct-hero p { max-width: 460px; font-size: 1.02rem; line-height: 1.75; color: rgba(255, 255, 255, 0.82); margin: 0; }
 
       .ct-wrap { position: relative; width: 92%; max-width: 960px; margin: -190px auto 0; padding-bottom: 90px; }
@@ -49,7 +50,7 @@
       /* Left: the form */
       .ct-form { padding: 38px 40px 36px; }
       .ct-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 26px; }
-      .ct-head h2 { font-family: var(--font-display); font-weight: 400; font-size: 1.45rem; color: var(--ink); margin: 0; }
+      .ct-head h2 { font-family: var(--font-display); font-weight: 700; font-size: 1.45rem; color: var(--ink); margin: 0; }
       .ct-head svg { width: 22px; height: 22px; color: var(--primary-dark); }
       .ct-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 28px; }
       .ct-field { display: flex; flex-direction: column; gap: 4px; }
@@ -60,7 +61,7 @@
         box-sizing: border-box;
         padding: 9px 0 10px;
         border: 0;
-        border-bottom: 1.5px solid rgba(28, 26, 23, 0.16);
+        border-bottom: 1.5px solid rgba(19, 50, 74, 0.16);
         border-radius: 0;
         background: transparent;
         font: 400 0.98rem var(--font-body);
@@ -72,10 +73,10 @@
       .ct-select { position: relative; }
       .ct-select-btn {
         width: 100%; display: flex; align-items: center; gap: 10px;
-        padding: 9px 0 10px; border: 0; border-bottom: 1.5px solid rgba(28, 26, 23, 0.16); background: transparent;
+        padding: 9px 0 10px; border: 0; border-bottom: 1.5px solid rgba(19, 50, 74, 0.16); background: transparent;
         font: 400 0.98rem var(--font-body); color: var(--ink); text-align: left; cursor: pointer; outline: none;
       }
-      .ct-select-btn .placeholder { color: #b9b2a7; }
+      .ct-select-btn .placeholder { color: #93a3b0; }
       .ct-select-btn .chev { margin-left: auto; width: 16px; height: 16px; color: var(--ink-mute); transition: transform 0.2s; }
       .ct-select.open .ct-select-btn, .ct-select-btn:focus-visible { border-bottom-color: var(--primary); }
       .ct-select.open .chev { transform: rotate(180deg); }
@@ -90,37 +91,37 @@
       .ct-select-list li .ic { width: 30px; height: 30px; flex-shrink: 0; border-radius: 9px; background: var(--primary-tint); color: var(--primary-dark); display: flex; align-items: center; justify-content: center; }
       .ct-select-list li .ic svg { width: 15px; height: 15px; }
       .ct-select-list li .tick { margin-left: auto; width: 16px; height: 16px; color: var(--primary-dark); opacity: 0; }
-      .ct-select-list li:hover, .ct-select-list li.hl { background: #f7f3ee; }
+      .ct-select-list li:hover, .ct-select-list li.hl { background: var(--cream); }
       .ct-select-list li[aria-selected="true"] .tick { opacity: 1; }
       .ct-select-list li[aria-selected="true"] { font-weight: 600; }
       .ct-select select { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
       .ct-field select { appearance: none; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a8378' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") right 2px center no-repeat; cursor: pointer; }
       .ct-field textarea { resize: vertical; min-height: 96px; line-height: 1.6; }
-      .ct-field input::placeholder, .ct-field textarea::placeholder { color: #b9b2a7; }
+      .ct-field input::placeholder, .ct-field textarea::placeholder { color: #93a3b0; }
       .ct-field input:focus, .ct-field select:focus, .ct-field textarea:focus { border-bottom-color: var(--primary); }
       .ct-foot { display: flex; justify-content: flex-end; margin-top: 30px; }
       .ct-submit {
         display: inline-flex; align-items: center; gap: 10px;
         padding: 14px 28px;
-        border: 0; border-radius: var(--radius-pill);
-        background: var(--gradient); color: #fff;
+        border: 0; border-radius: var(--radius-sm);
+        background: var(--amber); color: var(--navy);
         font: 700 0.86rem var(--font-body); letter-spacing: 0.1em; text-transform: uppercase;
         cursor: pointer; transition: transform 0.2s ease, filter 0.2s ease;
       }
       .ct-submit svg { width: 16px; height: 16px; }
-      .ct-submit:hover { transform: translateY(-1px); filter: brightness(1.04); }
+      .ct-submit:hover { transform: translateY(-1px); background: var(--amber-dark); }
       .ct-submit:disabled { opacity: 0.6; cursor: wait; transform: none; }
       .ct-error { margin: 14px 0 0; color: #b42318; font-size: 0.88rem; }
 
       .ct-success { display: none; padding: 40px 10px; text-align: center; }
       .ct-success .tick { width: 56px; height: 56px; margin: 0 auto 16px; border-radius: 50%; background: var(--primary-tint); color: var(--primary-dark); display: flex; align-items: center; justify-content: center; }
       .ct-success .tick svg { width: 26px; height: 26px; }
-      .ct-success h3 { font-family: var(--font-display); font-weight: 400; font-size: 1.45rem; color: var(--ink); margin: 0 0 8px; }
+      .ct-success h3 { font-family: var(--font-display); font-weight: 700; font-size: 1.45rem; color: var(--ink); margin: 0 0 8px; }
       .ct-success p { color: var(--ink-soft); margin: 0; }
 
       /* Right: contact details on dark, with a faint logo */
-      .ct-info { position: relative; overflow: hidden; padding: 38px 34px; background: #23201c; color: #fff; }
-      .ct-info h2 { font-family: var(--font-display); font-weight: 400; font-size: 1.45rem; margin: 0 0 8px; color: #fff; }
+      .ct-info { position: relative; overflow: hidden; padding: 38px 34px; background: var(--navy); color: #fff; }
+      .ct-info h2 { font-family: var(--font-display); font-weight: 700; font-size: 1.45rem; margin: 0 0 8px; color: #fff; }
       .ct-info > p { margin: 0 0 28px; font-size: 0.9rem; line-height: 1.7; color: rgba(255, 255, 255, 0.66); }
       .ct-row { position: relative; z-index: 1; display: flex; align-items: center; gap: 14px; margin-bottom: 20px; color: #fff; text-decoration: none; }
       .ct-row .ico { width: 40px; height: 40px; flex-shrink: 0; border-radius: 12px; background: rgba(255, 255, 255, 0.07); display: flex; align-items: center; justify-content: center; color: var(--primary-light); }
@@ -130,8 +131,8 @@
       a.ct-row:hover span { color: var(--primary-light); }
 
       /* Like the reference: square card with only a soft shadow */
-      .ct-card { border-radius: 0; box-shadow: 0 24px 60px rgba(28, 20, 8, 0.14); }
-      .ct-select-list { border: 0; border-radius: 0; box-shadow: 0 16px 40px rgba(28, 20, 8, 0.16); }
+      .ct-card { border-radius: 0; box-shadow: 0 24px 60px rgba(19, 50, 74, 0.14); }
+      .ct-select-list { border: 0; border-radius: 0; box-shadow: 0 16px 40px rgba(19, 50, 74, 0.16); }
       .ct-select-list li { border-radius: 0; }
       .ct-row .ico, .ct-select-list li .ic { border-radius: 0; }
 
@@ -151,7 +152,7 @@
   <body class="contact-page">
 
     <div id="navbar"></div>
-    <script src="components/navbar.js?v=8"></script>
+    <script src="components/navbar.js?v=12"></script>
 
     <!-- Hero -->
     <section class="ct-hero">
@@ -238,7 +239,7 @@
     </div>
 
     <div id="footer"></div>
-    <script src="components/footer.js?v=3"></script>
+    <script src="components/footer.js?v=4"></script>
 
     <!-- Back to top -->
     <div class="upArrowCont" id="upArrow">
@@ -246,8 +247,8 @@
     </div>
 
     <script src="js/supabase-config.js?v=1"></script>
-    <script src="js/site-data.js?v=4"></script>
-    <script src="js/index.js?v=12"></script>
+    <script src="js/site-data.js?v=5"></script>
+    <script src="js/index.js?v=17"></script>
 
     <script>
       // Styled reason list: mirrors the hidden <select>, works with mouse and keyboard

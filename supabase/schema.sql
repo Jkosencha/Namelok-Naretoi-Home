@@ -103,7 +103,7 @@ create table if not exists public.children (
   gender            text not null default '' check (gender in ('', 'female', 'male')),
   category          text not null default 'disability' check (category in ('disability', 'rescued_girl', 'rescued_boy', 'vulnerable')),
   status            text not null default 'in_care' constraint children_status_check
-                      check (status in ('in_care', 'boarding_school', 'graduated', 'reintegrated', 'exited')),
+                      check (status in ('in_care', 'boarding_school', 'at_campus', 'graduated', 'reintegrated', 'exited')),
   left_on           date,                      -- when they finished school, went home or left
   leaving_note      text not null default '',
   admission_date    date,

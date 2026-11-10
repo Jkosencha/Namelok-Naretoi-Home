@@ -243,7 +243,7 @@ export function ChildPage() {
 
           <div className="grid items-start gap-5 lg:grid-cols-[minmax(300px,1fr)_1.3fr]">
             <div className="grid gap-5">
-            <Sponsorships mode="child" id={child.id} rows={data!.sponsorships} children={[child]} donors={data!.donors} onChanged={reload} />
+            <Sponsorships mode="child" id={child.id} rows={data!.sponsorships} kids={[child]} donors={data!.donors} onChanged={reload} />
             <Card>
               <CardHeader><CardTitle>Details</CardTitle></CardHeader>
               <CardContent>

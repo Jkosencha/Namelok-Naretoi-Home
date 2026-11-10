@@ -317,7 +317,7 @@ export function createDemoBackend() {
   }
 
   // Sponsorships: Wellspring sponsors three children, Amina K. one
-  const sponsorable = tables.children.filter((c) => ["in_care", "boarding_school"].includes(c.status));
+  const sponsorable = tables.children.filter((c) => ["in_care", "boarding_school", "at_campus"].includes(c.status));
   [["Wellspring International", 0, 300, "USD", "quarterly"], ["Wellspring International", 1, 300, "USD", "quarterly"], ["Wellspring International", 5, 300, "USD", "quarterly"], ["Amina K.", 2, 3000, "KES", "monthly"]]
     .forEach(([name, i, amount, currency, frequency]) => tables.sponsorships.push({ id: uid(), donor_id: donorRow[name].id, child_id: sponsorable[i].id, started_on: day(between(200, 500)), ended_on: null, amount, currency, frequency, notes: currency === "USD" ? "Covers school fees, uniform and books" : "Covers upkeep at the home", created_at: stamp(200) }));
 
