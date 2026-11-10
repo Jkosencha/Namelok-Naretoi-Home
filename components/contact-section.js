@@ -6,13 +6,13 @@
   if (!contactEl) return;
 
   contactEl.innerHTML = `
-    <section class="contact-cta-strip-global">
-      <div class="cta-strip-inner">
-        <div class="cta-strip-text">
-          <h3>Have questions or want to get involved?</h3>
-          <p>Reach out to the Namelok Naretoi team, we'd love to hear from you.</p>
+    <section class="next-story-section">
+      <div class="next-story-inner">
+        <h2>Have questions or want to get involved?</h2>
+        <p>Reach out to the Namelok Naretoi team, we'd love to hear from you.</p>
+        <div class="next-story-actions">
+          <a href="${root}contact.html" class="next-story-btn">Contact Us</a>
         </div>
-        <a href="${root}contact.html" class="cta-strip-btn">Contact Us</a>
       </div>
     </section>
   `;

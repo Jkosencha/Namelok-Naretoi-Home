@@ -14,29 +14,30 @@ h1, h2, h3, h4, p { margin: 0; }
 .prog-picker h2 { font-size: clamp(1.8rem, 3vw, 2.5rem); line-height: 1.25; margin-bottom: 12px; }
 .prog-picker > .container > p { color: var(--ink-mute); font-size: 1.05rem; }
 
+/* A slim strip of text links that stays under the navbar; the open programme is underlined in its colour */
 .prog-tabs {
   position: sticky; top: var(--nav-h); z-index: 50;
-  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px;
-  margin-top: 40px; padding: 12px; background: #fff;
-  border: 1px solid var(--border-soft); border-radius: 18px; box-shadow: var(--shadow-md);
+  display: flex; justify-content: center; gap: clamp(22px, 3.4vw, 56px);
+  margin-top: 44px; padding: 0 20px;
+  background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid var(--border-soft); border-bottom: 1px solid var(--border-soft);
+  overflow-x: auto; scrollbar-width: none;
 }
+.prog-tabs::-webkit-scrollbar { display: none; }
 .prog-tab {
-  display: flex; align-items: center; gap: 12px; padding: 14px 14px; text-align: left;
-  border-radius: 12px; text-decoration: none; color: var(--ink);
-  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
+  position: relative; display: inline-flex; align-items: center; flex-shrink: 0;
+  padding: 22px 2px 20px; white-space: nowrap; text-decoration: none;
+  font-family: var(--font-display); font-weight: 700; font-size: 1rem; color: var(--ink-mute);
+  transition: color 0.2s ease;
 }
-.prog-tab:hover { background: var(--cream); }
-.prog-tab-icon {
-  display: grid; place-items: center; flex-shrink: 0; width: 46px; height: 46px; border-radius: 12px;
-  background: color-mix(in srgb, var(--c) 14%, #fff); color: var(--c);
-  transition: background-color 0.25s ease, color 0.25s ease;
+.prog-tab::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; border-radius: 3px 3px 0 0;
+  background: var(--c); transform: scaleX(0); transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.3, 1);
 }
-.prog-tab-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
-.prog-tab strong { font-family: var(--font-display); font-size: 0.95rem; line-height: 1.25; }
-.prog-tab small { font-size: 0.78rem; line-height: 1.35; color: var(--ink-mute); }
-.prog-tab[aria-selected="true"] { background: var(--navy); color: #fff; }
-.prog-tab[aria-selected="true"] small { color: rgba(255, 255, 255, 0.7); }
-.prog-tab[aria-selected="true"] .prog-tab-icon { background: var(--c); color: #fff; }
+.prog-tab:hover { color: var(--ink); }
+.prog-tab:hover::after { transform: scaleX(0.35); }
+.prog-tab[aria-selected="true"] { color: var(--ink); }
+.prog-tab[aria-selected="true"]::after { transform: scaleX(1); }
 
 /* ---------- One programme ---------- */
 .prog-panels { padding-top: 80px; }
@@ -60,10 +61,9 @@ h1, h2, h3, h4, p { margin: 0; }
   border: 8px solid #fff; border-radius: 50%; box-shadow: var(--shadow-md);
 }
 .prog-text h2 {
-  position: relative; margin-bottom: 22px; padding-bottom: 20px;
+  margin-bottom: 22px;
   font-size: clamp(1.9rem, 3.2vw, 2.8rem); font-weight: 900; line-height: 1.16;
 }
-.prog-text h2::after { content: ""; position: absolute; left: 0; bottom: 0; width: 64px; height: 4px; border-radius: 4px; background: var(--c); }
 .prog-lead { margin-bottom: 16px; font-size: 1.15rem; line-height: 1.7; color: var(--ink); }
 .prog-text p:not(.prog-lead) { line-height: 1.8; color: var(--ink-mute); }
 .prog-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
@@ -85,7 +85,7 @@ h1, h2, h3, h4, p { margin: 0; }
 .prog-steps p { font-size: 0.93rem; line-height: 1.75; color: var(--ink-mute); }
 
 /* ---------- Approach quote ---------- */
-.prog-quote { padding: 110px 0 20px; text-align: center; }
+.prog-quote { padding: 110px 0 100px; text-align: center; }
 .prog-quote blockquote {
   position: relative; margin: 0; padding-top: 60px;
   font-family: var(--font-display); font-size: clamp(1.4rem, 2.6vw, 2rem); font-style: italic; line-height: 1.5; color: var(--ink);
@@ -95,19 +95,14 @@ h1, h2, h3, h4, p { margin: 0; }
   font-size: 6rem; line-height: 1; color: var(--amber); font-style: normal;
 }
 
-/* ---------- Call-to-action band ---------- */
-.callout {
-  display: flex; align-items: center; justify-content: space-between; gap: 30px; flex-wrap: wrap;
-  padding: 46px clamp(26px, 5vw, 56px); border-radius: 22px; background: var(--navy); box-shadow: var(--shadow-md);
-}
-.callout h2 { margin-bottom: 8px; font-size: clamp(1.5rem, 2.8vw, 2.1rem); color: #fff; }
-.callout p { max-width: 560px; line-height: 1.7; color: rgba(255, 255, 255, 0.85); }
-
 /* ---------- Smaller screens ---------- */
-@media (max-width: 1100px) {
-  .prog-tabs { grid-template-columns: repeat(5, minmax(150px, 1fr)); overflow-x: auto; scrollbar-width: none; }
-  .prog-tabs::-webkit-scrollbar { display: none; }
-  .prog-tab small { display: none; }
+@media (max-width: 1000px) {
+  /* the strip scrolls sideways: soft fades at the edges show there is more */
+  .prog-tabs {
+    justify-content: flex-start;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 28px, #000 calc(100% - 28px), transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 28px, #000 calc(100% - 28px), transparent);
+  }
 }
 @media (max-width: 860px) {
   .prog-story { grid-template-columns: 1fr; }
@@ -118,13 +113,13 @@ h1, h2, h3, h4, p { margin: 0; }
 @media (max-width: 640px) {
   .section { padding: 64px 0; }
   .prog-picker { padding-top: 60px; }
-  .prog-tabs { grid-template-columns: repeat(5, 76%); gap: 8px; margin: 28px -20px 0; border-radius: 0; border-left: 0; border-right: 0; scroll-snap-type: x mandatory; }
-  .prog-tab { scroll-snap-align: center; }
+  .prog-tabs { flex-wrap: wrap; justify-content: center; gap: 2px 16px; margin-top: 26px; padding: 4px 10px; overflow: visible; -webkit-mask-image: none; mask-image: none; }
+  .prog-tab { padding: 10px 2px 9px; font-size: 0.8rem; }
+  .prog-tab::after { height: 2px; }
   .prog-panels { padding-top: 50px; }
   .prog-steps { grid-template-columns: 1fr; }
   .prog-how { padding: 30px 22px; }
   .prog-step-num { width: 2.8rem; font-size: 2.2rem; }
   .prog-steps li:nth-child(2) { border-top: 1px solid rgba(19, 50, 74, 0.12); padding-top: 26px; }
-  .prog-quote { padding-top: 80px; }
-  .callout .btn { width: 100%; }
+  .prog-quote { padding: 80px 0 70px; }
 }

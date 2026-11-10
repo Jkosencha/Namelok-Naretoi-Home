@@ -73,50 +73,6 @@ if (counterContainer) {
   counterObserver.observe(counterContainer);
 }
 
-// Scroll-reveal animation for content blocks
-const revealSelectors = [
-  ".featured-story",
-  ".tl-card",
-  ".story-tile",
-  ".next-story-inner",
-  ".home-program",
-  ".aboutUsLeft",
-  ".aboutUsText",
-  ".lift-section",
-  ".stories-head",
-  ".stories-subtitle",
-  ".story-card",
-  ".section4-heading",
-  ".mv-card",
-  ".gallery-heading",
-  ".s3d",
-  ".partners-title",
-  ".partner-marquee",
-  ".service-card",
-  ".video-section",
-];
-
-const revealEls = document.querySelectorAll(revealSelectors.join(","));
-revealEls.forEach((el, i) => {
-  el.classList.add("reveal");
-  el.style.transitionDelay = Math.min((i % 6) * 0.08, 0.4) + "s";
-});
-
-const revealObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("is-visible");
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  },
-  // Trigger as soon as any part is on screen (minus the bottom 8%), so very wide
-  // or very tall blocks can never stay hidden
-  { threshold: 0, rootMargin: "0px 0px -8% 0px" }
-);
-revealEls.forEach((el) => revealObserver.observe(el));
-
 // Navbar shadow/blur state on scroll
 const navTitle = document.querySelector(".title");
 if (navTitle) {

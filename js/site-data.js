@@ -147,7 +147,7 @@
       document.getElementById("storyTitle").textContent = "Story not found";
       return;
     }
-    document.title = `${s.title} – Namelok Naretoi Home`;
+    document.title = `${s.title} | Namelok Naretoi Home`;
     document.getElementById("storyTitle").innerHTML = s.child_name ? `<span class="hero-accent">${esc(s.child_name)}’s</span> Story` : esc(s.title);
     const [label] = tag(s);
     const profile = document.getElementById("storyProfile");
