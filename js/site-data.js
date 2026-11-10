@@ -61,9 +61,10 @@
     return `<article class="story-card">
       <img src="${esc(img(s.image_url))}" alt="" loading="lazy" />
       <div class="story-card-body">
+        <span class="story-card-tag">${tag(s)[0]}</span>
         <h3>${esc(s.title)}</h3>
         <p>${esc(s.summary)}</p>
-        <a href="${storyUrl(s)}">Read More ${ARROW}</a>
+        <a href="${storyUrl(s)}">Read more ${ARROW}</a>
       </div>
     </article>`;
   }
@@ -82,7 +83,7 @@
   function applyStories(stories) {
     if (!stories.length) return;
     const homeGrid = document.querySelector(".stories-section .stories-grid");
-    if (homeGrid) homeGrid.innerHTML = stories.slice(0, 6).map(storyCard).join("");
+    if (homeGrid) homeGrid.innerHTML = stories.slice(0, 8).map(storyCard).join("");
 
     const featured = stories.find((s) => s.featured) || stories[0];
     const feat = document.querySelector(".featured-story");
