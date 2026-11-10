@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Support disabled children and girls rescued from FGM and early marriage in Narok, Kenya. Every shilling goes to their care, schooling and safety." />
-    <meta property="og:title" content="Donate – Namelok Naretoi Home" />
+    <meta property="og:title" content="Donate | Namelok Naretoi Home" />
     <meta property="og:description" content="Support disabled children and girls rescued from FGM and early marriage in Narok, Kenya. Every shilling goes to their care, schooling and safety." />
     <meta property="og:image" content="images/namelokBG2.jpg" />
     <meta property="og:type" content="website" />
@@ -14,22 +14,12 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="css/theme.css?v=5" />
-    <link rel="stylesheet" href="css/index.css?v=34" />
+    <link rel="stylesheet" href="css/theme.css?v=17" />
+    <link rel="stylesheet" href="css/index.css?v=39" />
     <style>
-      /* ── Donate: centred photo hero with a card that overlaps it ── */
-      .dn-hero {
-        position: relative;
-        padding: 170px 0 250px;
-        background: url("images/namelokBG2.jpg") center 30% / cover no-repeat;
-        color: #fff;
-      }
-      .dn-hero::before { content: ""; position: absolute; inset: 0; background: linear-gradient(105deg, rgba(13, 37, 54, 0.96) 0%, rgba(19, 50, 74, 0.84) 50%, rgba(58, 155, 136, 0.55) 100%); }
-      .dn-hero-inner { position: relative; width: 92%; max-width: 880px; margin: 0 auto; }
-      .dn-hero h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.4rem, 5vw, 3.4rem); line-height: 1.1; margin: 10px 0 14px; color: #fff; }
-      .dn-hero p { max-width: 460px; font-size: 1.02rem; line-height: 1.75; color: rgba(255, 255, 255, 0.82); margin: 0; }
-
-      .dn-wrap { position: relative; width: 92%; max-width: 880px; margin: -180px auto 0; padding-bottom: 90px; }
+      /* the card overlaps the bottom of the page header */
+      .page-hero-inner { padding-bottom: 190px; }
+      .dn-wrap { position: relative; z-index: 1; width: 92%; max-width: 880px; margin: -150px auto 0; padding-bottom: 90px; }
       .dn-card { background: var(--surface); border-radius: var(--radius-md); box-shadow: var(--shadow-lg); overflow: hidden; }
       .dn-card [hidden] { display: none !important; }
       .dn-label { display: block; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-mute); margin-bottom: 12px; }
@@ -109,8 +99,8 @@
       .dn-ask, .dn-go { border-radius: 0 !important; }
 
       @media (max-width: 860px) {
-        .dn-hero { padding: 130px 0 200px; }
-        .dn-wrap { margin-top: -150px; padding-bottom: 60px; }
+        .page-hero-inner { padding-bottom: 150px; }
+        .dn-wrap { margin-top: -110px; padding-bottom: 60px; }
         .dn-amounts { grid-template-columns: 1fr; gap: 14px; padding: 26px 22px 20px; }
         .dn-or { margin: 0; text-align: center; }
         .dn-top { flex-direction: column; align-items: stretch; gap: 10px; padding-bottom: 16px; }
@@ -122,7 +112,7 @@
         .dn-actions > * { min-width: 0; flex: 1; padding: 14px 10px; white-space: normal; font-size: 0.76rem; letter-spacing: 0.06em; }
       }
     </style>
-    <title>Donate – Namelok Naretoi Home</title>
+    <title>Donate | Namelok Naretoi Home</title>
   </head>
 
   <body class="donate-page-v2">
@@ -131,10 +121,15 @@
     <script src="components/navbar.js?v=12"></script>
 
     <!-- Hero -->
-    <section class="dn-hero">
-      <div class="dn-hero-inner">
-        <h1>Donate <span class="hero-accent">Today</span></h1>
-        <p>Every shilling you give goes directly to supporting disabled children and rescued girls in Narok.</p>
+    <section class="page-hero page-hero-donate">
+      <div class="page-hero-inner">
+        <div class="page-hero-content">
+          <h1>Donate <span class="hero-accent">Today</span></h1>
+          <p>Every shilling you give goes directly to supporting disabled children and rescued girls in Narok.</p>
+          <nav class="page-hero-crumbs" aria-label="Breadcrumb">
+            <a href="index.html">Home</a><span aria-hidden="true">&rsaquo;</span>Donate
+          </nav>
+        </div>
       </div>
     </section>
 
@@ -236,12 +231,16 @@
     </div>
 
     <!-- CTA Strip -->
-    <div class="cross-cta-strip">
-      <h2>Have questions before you give?</h2>
-      <p>Our team is happy to walk you through where your donation goes and how to get involved.</p>
-      <a href="contact.html">Contact Us</a>
-    </div>
 
+    <section class="next-story-section">
+      <div class="next-story-inner">
+        <h2>Have questions before you give?</h2>
+        <p>Our team is happy to walk you through where your donation goes and how to get involved.</p>
+        <div class="next-story-actions">
+          <a href="contact.html" class="next-story-btn">Contact Us</a>
+        </div>
+      </div>
+    </section>
     <div id="footer"></div>
     <script src="components/footer.js?v=4"></script>
 
@@ -252,7 +251,7 @@
 
     <script src="js/supabase-config.js?v=1"></script>
     <script src="js/site-data.js?v=5"></script>
-    <script src="js/index.js?v=17"></script>
+    <script src="js/index.js?v=19"></script>
 
     <script>
       // Amounts in each currency. M-Pesa only takes Kenya shillings, so USD gifts go by PayPal or bank.
@@ -360,5 +359,6 @@
         button.disabled = false;
       }
     </script>
+    <script src="js/reveal.js?v=2"></script>
   </body>
 </html>

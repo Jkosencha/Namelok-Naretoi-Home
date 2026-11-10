@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Get in touch with Namelok Naretoi Home in Narok, Kenya about partnerships, volunteering, donations or our programmes. Call 0722 537 380." />
-    <meta property="og:title" content="Contact Us – Namelok Naretoi Home" />
+    <meta property="og:title" content="Contact Us | Namelok Naretoi Home" />
     <meta property="og:description" content="Get in touch with Namelok Naretoi Home in Narok, Kenya about partnerships, volunteering, donations or our programmes. Call 0722 537 380." />
     <meta property="og:image" content="images/namelokBG3.jpg" />
     <meta property="og:type" content="website" />
@@ -14,30 +14,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="css/theme.css?v=5" />
-    <link rel="stylesheet" href="css/index.css?v=34" />
-    <title>Contact Us – Namelok Naretoi Home</title>
+    <link rel="stylesheet" href="css/theme.css?v=17" />
+    <link rel="stylesheet" href="css/index.css?v=39" />
+    <title>Contact Us | Namelok Naretoi Home</title>
     <style>
-      /* ── Contact: photo hero with a card that overlaps it ── */
       .contact-page { background: var(--paper); }
 
-      .ct-hero {
-        position: relative;
-        padding: 170px 0 250px;
-        background: url("images/namelokBG3.jpg") center 35% / cover no-repeat;
-        color: #fff;
-      }
-      .ct-hero::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(105deg, rgba(13, 37, 54, 0.96) 0%, rgba(19, 50, 74, 0.84) 50%, rgba(58, 155, 136, 0.55) 100%);
-      }
-      .ct-hero-inner { position: relative; width: 92%; max-width: 960px; margin: 0 auto; }
-      .ct-hero h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.4rem, 5vw, 3.4rem); line-height: 1.1; margin: 10px 0 14px; color: #fff; }
-      .ct-hero p { max-width: 460px; font-size: 1.02rem; line-height: 1.75; color: rgba(255, 255, 255, 0.82); margin: 0; }
-
-      .ct-wrap { position: relative; width: 92%; max-width: 960px; margin: -190px auto 0; padding-bottom: 90px; }
+      /* the card overlaps the bottom of the page header */
+      .page-hero-inner { padding-bottom: 190px; }
+      .ct-wrap { position: relative; z-index: 1; width: 92%; max-width: 960px; margin: -150px auto 0; padding-bottom: 90px; }
       .ct-card {
         display: grid;
         grid-template-columns: 1.55fr 1fr;
@@ -137,8 +122,8 @@
       .ct-row .ico, .ct-select-list li .ic { border-radius: 0; }
 
       @media (max-width: 860px) {
-        .ct-hero { padding: 130px 0 200px; }
-        .ct-wrap { margin-top: -150px; padding-bottom: 60px; }
+        .page-hero-inner { padding-bottom: 150px; }
+        .ct-wrap { margin-top: -110px; padding-bottom: 60px; }
         .ct-card { grid-template-columns: 1fr; }
         .ct-form { padding: 30px 22px 28px; }
         .ct-info { padding: 30px 22px; }
@@ -155,10 +140,15 @@
     <script src="components/navbar.js?v=12"></script>
 
     <!-- Hero -->
-    <section class="ct-hero">
-      <div class="ct-hero-inner">
-        <h1>Get in <span class="hero-accent">Touch</span></h1>
-        <p>Partnerships, volunteering or questions about our programmes: give us a call or send a message, we'd love to hear from you.</p>
+    <section class="page-hero page-hero-contact">
+      <div class="page-hero-inner">
+        <div class="page-hero-content">
+          <h1>Get in <span class="hero-accent">Touch</span></h1>
+          <p>Partnerships, volunteering or questions about our programmes: give us a call or send a message, we'd love to hear from you.</p>
+          <nav class="page-hero-crumbs" aria-label="Breadcrumb">
+            <a href="index.html">Home</a><span aria-hidden="true">&rsaquo;</span>Contact
+          </nav>
+        </div>
       </div>
     </section>
 
@@ -232,12 +222,16 @@
     </div>
 
     <!-- CTA Strip -->
-    <div class="cross-cta-strip">
-      <h2>Want to make a direct impact?</h2>
-      <p>Your donation helps us continue supporting disabled children and rescued girls in Narok.</p>
-      <a href="donate.html">Donate Now</a>
-    </div>
 
+    <section class="next-story-section">
+      <div class="next-story-inner">
+        <h2>Want to make a direct impact?</h2>
+        <p>Your donation helps us continue supporting disabled children and rescued girls in Narok.</p>
+        <div class="next-story-actions">
+          <a href="donate.html" class="next-story-btn">Donate Now</a>
+        </div>
+      </div>
+    </section>
     <div id="footer"></div>
     <script src="components/footer.js?v=4"></script>
 
@@ -248,7 +242,7 @@
 
     <script src="js/supabase-config.js?v=1"></script>
     <script src="js/site-data.js?v=5"></script>
-    <script src="js/index.js?v=17"></script>
+    <script src="js/index.js?v=19"></script>
 
     <script>
       // Styled reason list: mirrors the hidden <select>, works with mouse and keyboard
@@ -331,5 +325,6 @@
         document.getElementById('successMsg').style.display = 'block';
       }
     </script>
+    <script src="js/reveal.js?v=2"></script>
   </body>
 </html>
