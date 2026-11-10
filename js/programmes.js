@@ -1,8 +1,9 @@
-// Programmes page: the programme buttons, plus scroll progress, back-to-top, reveal and footer year.
+// Programmes page: the programme buttons, plus scroll progress, back-to-top and footer year.
 // Load it AFTER the navbar script.
 (() => {
   // ── Programme buttons: each opens its programme below, and the address (#education…) follows ──
-  const tabs = [...document.querySelectorAll(".prog-tab")];
+  const strip = document.querySelector(".prog-tabs");
+  const tabs = [...strip.querySelectorAll(".prog-tab")];
   const panels = tabs.map((t) => document.getElementById(t.getAttribute("aria-controls")));
   const show = (id) => {
     if (!panels.some((p) => p.id === id)) return false;
@@ -10,16 +11,15 @@
       const on = t.getAttribute("aria-controls") === id;
       t.setAttribute("aria-selected", String(on));
       t.tabIndex = on ? 0 : -1;
-      if (on) t.scrollIntoView({ block: "nearest", inline: "center" });   // the row scrolls sideways on phones
+      if (on) strip.scrollTo({ left: t.offsetLeft - (strip.clientWidth - t.offsetWidth) / 2, behavior: "smooth" });   // on phones the strip slides sideways
     });
     panels.forEach((p) => { p.hidden = p.id !== id; });
     return true;
   };
   // Bring the open programme into view, under the sticky buttons
-  const bar = document.querySelector(".prog-tabs");
   const reveal = (id) => {
     const top = document.getElementById(id).getBoundingClientRect().top;
-    const below = parseFloat(getComputedStyle(bar).top) + bar.offsetHeight + 24;   // just under the sticky buttons
+    const below = parseFloat(getComputedStyle(strip).top) + strip.offsetHeight + 24;   // just under the sticky buttons
     if (top < below || top > innerHeight * 0.6) window.scrollTo({ top: window.scrollY + top - below, behavior: "smooth" });
   };
   tabs.forEach((tab, i) => {
@@ -59,21 +59,6 @@
   };
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
-
-  // ── Fade blocks in as they scroll into view ──
-  const targets = document.querySelectorAll(".prog-picker h2, .prog-tabs, .prog-quote, .callout");
-  if ("IntersectionObserver" in window) {
-    targets.forEach((el) => el.classList.add("reveal"));
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          io.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0, rootMargin: "0px 0px -8% 0px" });
-    targets.forEach((el) => io.observe(el));
-  }
 
   document.querySelectorAll(".nl-year").forEach((el) => { el.textContent = new Date().getFullYear(); });
 })();
