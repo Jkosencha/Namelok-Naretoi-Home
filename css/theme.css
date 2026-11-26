@@ -194,8 +194,8 @@ a:hover > .arrow-icon, button:hover > .arrow-icon { transform: translateX(4px); 
   padding-top: var(--nav-h);
   background: var(--navy); color: #fff; text-align: center;
 }
-.page-hero::before {                 /* the photo, in black and white */
-  content: ""; position: absolute; inset: 0; z-index: -2;
+.page-hero::before {                 /* the photo, in black and white; drifts down a little as you scroll */
+  content: ""; position: absolute; inset: -90px 0 0; z-index: -2; translate: 0 var(--hero-shift, 0px);
   background: var(--hero-img, none) center / cover no-repeat;
   filter: grayscale(1) contrast(1.1);
   animation: heroZoom 1.4s cubic-bezier(0.2, 0.7, 0.3, 1);
