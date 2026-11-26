@@ -116,9 +116,9 @@ export function Overview() {
               </CardContent>
             </Card>
 
-            <Card className="relative min-h-40 justify-center gap-4 overflow-hidden border-0 bg-[#3e4a5e] lg:col-span-2 xl:col-span-1 xl:col-start-3 xl:row-start-2 px-6 py-6 text-white dark:bg-[#2b3546]">
+            <Card className="relative min-h-40 justify-center gap-4 overflow-hidden border-0 bg-[#2b5577] lg:col-span-2 xl:col-span-1 xl:col-start-3 xl:row-start-2 px-6 py-6 text-white dark:bg-[#1d3f5a]">
               <p className="relative z-10 max-w-56 text-base font-semibold leading-snug">See what visitors see on the Namelok website</p>
-              <Button asChild variant="secondary" className="relative z-10 w-fit bg-white text-[#1f2937] hover:bg-white/90"><a href="../index.html" target="_blank" rel="noopener">Open website</a></Button>
+              <Button asChild variant="secondary" className="relative z-10 w-fit bg-[#f5a623] text-[#13324a] hover:bg-[#de9010]"><a href="../index.html" target="_blank" rel="noopener">Open website</a></Button>
               <span aria-hidden className="absolute -bottom-12 -right-10 size-44 rounded-full border-[26px] border-chart-2" />
               <span aria-hidden className="absolute -bottom-4 -right-2 size-24 rounded-full border-[14px] border-chart-3" />
             </Card>
