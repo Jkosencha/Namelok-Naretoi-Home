@@ -146,7 +146,7 @@
   color: rgba(255, 255, 255, 0.92);
 }
 
-.home-hero-photo { position: relative; }
+.home-hero-photo { position: relative; overflow: hidden; }
 
 .home-hero-photo img {
   position: absolute;
@@ -1566,6 +1566,7 @@
 .featured-story-img {
   position: relative;
   min-height: 420px;
+  overflow: hidden;
 }
 
 .featured-story-img img {

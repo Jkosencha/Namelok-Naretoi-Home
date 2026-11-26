@@ -9,7 +9,7 @@ import type { Backend } from "@/lib/backend"
 // Dark slate page with soft floating circles, like the sign-in reference
 function AuthPage({ children }: { children: ReactNode }) {
   return (
-    <main className="relative flex min-h-svh items-center justify-center overflow-hidden bg-[#3a4558] p-4 sm:p-8">
+    <main className="relative flex min-h-svh items-center justify-center overflow-hidden bg-[#1d3f5a] p-4 sm:p-8">
       <span aria-hidden className="absolute -left-24 -top-24 size-80 rounded-full bg-white/[0.04]" />
       <span aria-hidden className="absolute -bottom-32 left-1/3 size-96 rounded-full bg-white/[0.035]" />
       <span aria-hidden className="absolute right-[8%] top-[12%] size-24 rounded-full bg-white/[0.06]" />
@@ -64,7 +64,7 @@ export function LoginScreen({ db, onSignedIn }: { db: Backend; onSignedIn: (user
   const field = "h-11 rounded-full border-0 bg-black/25 px-5 text-white placeholder:text-white/45 focus-visible:ring-2 focus-visible:ring-white/40"
   return (
     <AuthPage>
-      <div className="grid w-full max-w-[1000px] overflow-hidden rounded-[28px] bg-[#46536a] shadow-2xl md:grid-cols-[1.15fr_1fr]">
+      <div className="grid w-full max-w-[1000px] overflow-hidden rounded-[28px] bg-[#13324a] shadow-2xl md:grid-cols-[1.15fr_1fr]">
         {/* Left: white panel with a curved edge, the logo and a photo in a soft blob */}
         <div className="relative hidden min-h-[560px] md:block">
           <svg aria-hidden className="absolute inset-0 size-full" viewBox="0 0 600 600" preserveAspectRatio="none">
@@ -73,15 +73,15 @@ export function LoginScreen({ db, onSignedIn }: { db: Backend; onSignedIn: (user
           <div className="relative flex h-full flex-col justify-between p-9 pr-24">
             <div className="flex items-center gap-3">
               <img src="../images/logo.png" alt="" className="size-12" />
-              <span className="font-semibold leading-tight text-[#2d3646]">Namelok Naretoi Home<br /><span className="text-sm font-normal text-[#6b7587]">Narok, Kenya</span></span>
+              <span className="font-semibold leading-tight text-[#13324a]">Namelok Naretoi Home<br /><span className="text-sm font-normal text-[#5a6b7b]">Narok, Kenya</span></span>
             </div>
             <div className="relative mx-auto my-6 w-[86%]">
-              <span aria-hidden className="absolute -left-6 -top-5 size-16 rounded-full bg-[#46536a]/8" />
-              <span aria-hidden className="absolute -bottom-4 right-2 size-10 rounded-full bg-[#46536a]/10" />
-              <span aria-hidden className="absolute -right-8 top-8 size-6 rounded-full bg-[#46536a]/12" />
+              <span aria-hidden className="absolute -left-6 -top-5 size-16 rounded-full bg-[#13324a]/8" />
+              <span aria-hidden className="absolute -bottom-4 right-2 size-10 rounded-full bg-[#13324a]/10" />
+              <span aria-hidden className="absolute -right-8 top-8 size-6 rounded-full bg-[#13324a]/12" />
               <svg viewBox="0 0 400 360" className="relative w-full drop-shadow-xl" role="img" aria-label="Children at Namelok Naretoi Home">
                 <defs><clipPath id="loginBlob"><path d="M210 12C288 10 368 52 388 132C408 212 362 300 282 336C202 372 104 352 52 290C0 228 4 136 58 78C102 30 148 14 210 12Z" /></clipPath></defs>
-                <path d="M216 2C300 0 384 46 396 134C410 230 352 312 270 344C188 376 86 352 38 286C-10 220 0 124 60 64C108 18 154 4 216 2Z" fill="#46536a" opacity="0.08" />
+                <path d="M216 2C300 0 384 46 396 134C410 230 352 312 270 344C188 376 86 352 38 286C-10 220 0 124 60 64C108 18 154 4 216 2Z" fill="#13324a" opacity="0.08" />
                 <image href="../images/namelokBG.jpg" x="0" y="0" width="400" height="360" preserveAspectRatio="xMidYMid slice" clipPath="url(#loginBlob)" />
               </svg>
             </div>
@@ -111,7 +111,7 @@ export function LoginScreen({ db, onSignedIn }: { db: Backend; onSignedIn: (user
             </div>
             {err && <p role="alert" className="rounded-xl bg-red-500/15 px-4 py-2.5 text-sm text-red-100">{err}</p>}
             {note && <p role="status" className="rounded-xl bg-white/10 px-4 py-2.5 text-sm text-white/90">{note}</p>}
-            <Button type="submit" disabled={busy} className="mt-2 h-11 rounded-full bg-[#7fa6b0] text-base font-semibold text-[#1f2937] hover:bg-[#8fb3bd]">{busy ? "Signing in…" : "Sign in"}</Button>
+            <Button type="submit" disabled={busy} className="mt-2 h-11 rounded-full bg-[#f5a623] text-base font-semibold text-[#13324a] hover:bg-[#de9010]">{busy ? "Signing in…" : "Sign in"}</Button>
           </form>
         </div>
       </div>
